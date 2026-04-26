@@ -1,0 +1,40 @@
+<view class="page with-tab">
+  <view class="search-top">
+    <view class="search-card card">
+      <view class="search-icon"></view>
+      <input class="search-input" value="{{keyword}}" focus placeholder="搜索育儿问题，例如：宝宝发烧能洗澡吗？" confirm-type="search" bindinput="onInput" bindconfirm="search" />
+      <button wx:if="{{keyword}}" class="btn-plain clear-btn" bindtap="clearKeyword">×</button>
+    </view>
+    <button class="btn-plain primary-button search-submit" bindtap="search">搜索</button>
+  </view>
+
+  <view wx:if="{{history.length}}" class="section">
+    <view class="section-head">
+      <view class="section-title">搜索历史</view>
+      <button class="btn-plain section-more" bindtap="clearHistory">清空</button>
+    </view>
+    <view class="history-wrap">
+      <view wx:for="{{history}}" wx:key="*this" class="tap-card chip" bindtap="searchHistory" data-keyword="{{item}}">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <view class="section-title">推荐问题</view>
+      <view class="section-more">按热度排序</view>
+    </view>
+    <view class="question-list">
+      <view wx:for="{{suggestions}}" wx:key="id" class="tap-card question-row card" bindtap="goQuestion" data-id="{{item.id}}">
+        <view class="question-content">
+          <view class="question-title">{{item.title}}</view>
+          <view class="question-summary">{{item.summary}}</view>
+          <view class="question-meta">
+            <text class="tag">{{item.tag}}</text>
+            <text>{{item.heatText}}热度</text>
+          </view>
+        </view>
+        <view class="row-arrow">›</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,115 @@
+<view class="page with-tab">
+  <view class="result-search card">
+    <view class="search-icon"></view>
+    <view class="result-keyword">{{keyword || '搜索育儿问题'}}</view>
+    <button class="btn-plain change-btn" bindtap="goSearch">换一个</button>
+  </view>
+
+  <view wx:if="{{noResult}}" class="empty-card card">
+    <view class="empty-title">暂时没有找到精确共识</view>
+    <view class="empty-desc">可以换一种问法，或者先查看首页热门问题。MVP 阶段会逐步扩充 mock 内容。</view>
+    <button class="btn-plain primary-button" bindtap="goSearch">重新搜索</button>
+  </view>
+
+  <block wx:if="{{result}}">
+    <view class="summary-card card">
+      <view class="summary-head">
+        <view class="badge">权</view>
+        <view class="summary-title">主流共识</view>
+        <button class="btn-plain favorite-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite">{{isFavorite ? '已收藏' : '收藏'}}</button>
+      </view>
+      <view class="conclusion-box">
+        <view class="check-dot">✓</view>
+        <view class="conclusion-text">{{result.conclusion}}</view>
+      </view>
+      <view class="summary-meta">基于 {{result.sourceCount}} 篇内容 · {{result.expertCount}} 位专家/达人观点整理 · 可信度{{result.confidenceLevel}}</view>
+
+      <view class="chart-title">观点比例分布</view>
+      <view class="chart-card">
+        <view class="donut-wrap">
+          <view class="donut">
+          <view class="donut-inner">
+            <view>共识</view>
+            <view>分布</view>
+          </view>
+          </view>
+        </view>
+        <view class="bars">
+          <view wx:for="{{result.viewpoints}}" wx:key="id" class="bar-row">
+            <view class="bar-label">
+              <view class="dot dot-{{index}}"></view>
+              <text>{{item.title}}</text>
+            </view>
+            <view class="bar-track">
+              <view class="bar-fill fill-{{index}}" style="width: {{item.percentage}}%;"></view>
+            </view>
+            <view class="bar-percent percent-{{index}}">{{item.percentage}}%</view>
+          </view>
+        </view>
+      </view>
+      <view class="sample-note">{{result.sampleNote}}</view>
+      <view class="quick-action-row">
+        <view wx:for="{{result.viewpoints}}" wx:key="id" class="quick-view quick-{{index}}">
+          <text>{{item.percentage}}%</text>{{item.title}}
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title"><text class="question-mark">?</text><text>为什么这么认为</text></view>
+      <view class="reason-grid">
+        <view wx:for="{{result.reasons}}" wx:key="id" class="reason-card tone-{{item.tone}}">
+          <view class="reason-icon">{{item.icon}}</view>
+          <view class="reason-title">{{item.title}}</view>
+          <view class="reason-desc">{{item.description}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-head">
+        <view class="section-title"><text class="shield-small">权</text><text>权威内容推荐</text></view>
+        <button class="btn-plain section-more" bindtap="goAuthority">更多内容 ›</button>
+      </view>
+      <view class="authority-list">
+        <view wx:for="{{result.authoritySources}}" wx:key="id" class="tap-card authority-row card" bindtap="goAuthority">
+          <view class="authority-icon">{{item.icon}}</view>
+          <view class="authority-main">
+            <view class="authority-title">{{item.typeName}} <text class="trust-dot">{{item.trustLabel}}</text></view>
+            <view class="authority-summary">{{item.summary}}</view>
+          </view>
+          <view class="row-arrow">›</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section minority-card card">
+      <view class="minority-title">少数不同观点</view>
+      <view class="minority-text">{{result.minorityView}}</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title"><text class="warn-mark">!</text><text>安全提醒</text></view>
+      <view class="warning-grid">
+        <view wx:for="{{result.warnings}}" wx:key="*this" class="warning-tile warning-{{index}}">
+          <view class="warning-icon">!</view>
+          <view>{{item}}</view>
+        </view>
+      </view>
+      <view class="disclaimer card">{{result.disclaimer}}</view>
+    </view>
+
+    <view class="section">
+      <view class="section-head">
+        <view class="section-title">相关问题</view>
+      </view>
+      <view class="related-grid">
+        <view wx:for="{{result.relatedQuestionItems}}" wx:key="id" class="tap-card related-card card" bindtap="goQuestion" data-id="{{item.id}}">
+          <view class="related-title">{{item.shortTitle}}</view>
+          <view class="related-sub">{{item.summary}}</view>
+          <view class="related-arrow">›</view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

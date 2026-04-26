@@ -1,0 +1,81 @@
+.simple-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  padding: 30rpx 8rpx 24rpx;
+}
+
+.simple-title {
+  color: #2f2a25;
+  font-size: 46rpx;
+  font-weight: 700;
+}
+
+.simple-sub {
+  margin-top: 8rpx;
+  color: #8b8178;
+  font-size: 26rpx;
+}
+
+.empty-card {
+  padding: 34rpx;
+}
+
+.empty-title {
+  color: #2f2a25;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.empty-desc {
+  margin: 14rpx 0 26rpx;
+  color: #8b8178;
+  font-size: 26rpx;
+  line-height: 1.55;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  width: 100%;
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  width: 100%;
+  min-height: 92rpx;
+  padding: 0 24rpx;
+  text-align: left;
+}
+
+.history-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: #eef6ea;
+  color: #6f985a;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.history-keyword {
+  flex: 1;
+  min-width: 0;
+  color: #2f2a25;
+  font-size: 28rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row-arrow {
+  color: #9a938b;
+  font-size: 42rpx;
+}

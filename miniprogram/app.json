@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/search/index",
+    "pages/question/result",
+    "pages/authority/index",
+    "pages/category/index",
+    "pages/profile/index",
+    "pages/favorites/index",
+    "pages/history/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FAF7F2",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "育儿共识",
+    "backgroundColor": "#FAF7F2",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#8B8178",
+    "selectedColor": "#7EA66A",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/tab/home.png",
+        "selectedIconPath": "assets/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/search/index",
+        "text": "问答",
+        "iconPath": "assets/tab/qa.png",
+        "selectedIconPath": "assets/tab/qa-active.png"
+      },
+      {
+        "pagePath": "pages/category/index",
+        "text": "分类",
+        "iconPath": "assets/tab/category.png",
+        "selectedIconPath": "assets/tab/category-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "assets/tab/profile.png",
+        "selectedIconPath": "assets/tab/profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,42 @@
+@import "../../app.wxss";
+
+.question-card {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  padding: 24rpx;
+  text-align: left;
+}
+
+.question-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.question-title {
+  color: #2f2a25;
+  font-size: 29rpx;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.question-summary {
+  margin-top: 8rpx;
+  color: #756d66;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
+.question-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 14rpx;
+  color: #8b8178;
+  font-size: 22rpx;
+}
+
+.row-arrow {
+  color: #9a938b;
+  font-size: 42rpx;
+}

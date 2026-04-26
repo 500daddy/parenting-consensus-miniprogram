@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="simple-head">
+    <view>
+      <view class="simple-title">搜索历史</view>
+      <view class="simple-sub">最近关注的问题</view>
+    </view>
+    <button wx:if="{{history.length}}" class="btn-plain ghost-button" bindtap="clearHistory">清空</button>
+  </view>
+
+  <view wx:if="{{!history.length}}" class="empty-card card">
+    <view class="empty-title">还没有搜索记录</view>
+    <view class="empty-desc">搜索过的问题会自动保存在本地，方便再次查看。</view>
+    <button class="btn-plain primary-button" bindtap="goSearchTab">去搜索问题</button>
+  </view>
+
+  <view wx:else class="history-list">
+    <view wx:for="{{history}}" wx:key="*this" class="tap-card history-row card" bindtap="goSearch" data-keyword="{{item}}">
+      <view class="history-icon">问</view>
+      <view class="history-keyword">{{item}}</view>
+      <view class="row-arrow">›</view>
+    </view>
+  </view>
+</view>

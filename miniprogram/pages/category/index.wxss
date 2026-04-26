@@ -1,0 +1,143 @@
+.category-page {
+  padding-top: 28rpx;
+}
+
+.category-header {
+  position: relative;
+  padding: 30rpx 28rpx;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf3 100%);
+}
+
+.category-title {
+  color: #2f2a25;
+  font-size: 46rpx;
+  font-weight: 700;
+}
+
+.category-subtitle {
+  margin-top: 10rpx;
+  color: #8b8178;
+  font-size: 26rpx;
+}
+
+.category-chip-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14rpx 12rpx;
+  margin-top: 24rpx;
+}
+
+.category-chip-wrap .chip {
+  width: 100%;
+  min-width: 0;
+  padding: 0 10rpx;
+  font-size: 23rpx;
+}
+
+.chip-icon {
+  margin-right: 8rpx;
+  color: #7ea66a;
+  font-weight: 700;
+}
+
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  width: 100%;
+}
+
+.question-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  width: 100%;
+  padding: 22rpx;
+  text-align: left;
+}
+
+.question-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 50%;
+  background: #eef6ea;
+  color: #6f985a;
+  font-size: 30rpx;
+  font-weight: 700;
+  flex: none;
+}
+
+.question-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.question-title {
+  color: #2f2a25;
+  font-size: 28rpx;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.question-summary {
+  margin-top: 8rpx;
+  color: #756d66;
+  font-size: 23rpx;
+  line-height: 1.45;
+}
+
+.question-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 14rpx;
+  color: #8b8178;
+  font-size: 22rpx;
+}
+
+.row-arrow {
+  color: #9a938b;
+  font-size: 42rpx;
+}
+
+.authority-mini {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  padding: 20rpx;
+  gap: 12rpx;
+}
+
+.authority-mini-item {
+  text-align: center;
+}
+
+.mini-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  margin: 0 auto 12rpx;
+  border-radius: 50%;
+  background: #eef6ea;
+  color: #6f985a;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.mini-title {
+  color: #2f2a25;
+  font-size: 25rpx;
+  font-weight: 700;
+}
+
+.mini-desc {
+  margin-top: 6rpx;
+  color: #8b8178;
+  font-size: 22rpx;
+}

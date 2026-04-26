@@ -1,0 +1,60 @@
+<view class="page with-tab">
+  <view class="hero compact">
+    <view class="hero-title">权威观点</view>
+    <view class="hero-subtitle">优先看可信来源，再看观点分歧</view>
+    <view class="home-illus" aria-hidden="true">
+      <view class="sun"></view>
+      <view class="leaf one"></view>
+      <view class="leaf two"></view>
+      <view class="house"></view>
+    </view>
+  </view>
+
+  <scroll-view class="chip-row" scroll-x enable-flex>
+    <view wx:for="{{filters}}" wx:key="type" class="tap-card chip {{activeType == item.type ? 'active' : ''}}" bindtap="changeFilter" data-type="{{item.type}}">{{item.name}}</view>
+  </scroll-view>
+
+  <view class="trust-tip card">
+    <view class="tip-icon">权</view>
+    <view>优先展示可信度较高、信息更完整的内容</view>
+    <view class="tip-arrow">›</view>
+  </view>
+
+  <view class="source-list">
+    <view wx:for="{{sources}}" wx:key="id" class="source-card card">
+      <view class="source-icon-large">{{item.icon}}</view>
+      <view class="source-main">
+        <view class="source-head">
+          <view class="source-title">{{item.name}}</view>
+          <text class="tag">{{item.trustLabel}}</text>
+        </view>
+        <view class="source-summary">{{item.summary}}</view>
+        <view class="tag-line">
+          <text wx:for="{{item.tags}}" wx:key="*this" class="tag">{{item}}</text>
+        </view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="warn-mark">!</text><text>需要特别注意</text></view>
+    <view class="warning-grid">
+      <view wx:for="{{warnings}}" wx:key="*this" class="warning-tile">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <view class="section-title">相关问题</view>
+      <view class="section-more">查看更多 ›</view>
+    </view>
+    <view class="related-grid">
+      <view wx:for="{{relatedQuestions}}" wx:key="id" class="tap-card related-card card" bindtap="goQuestion" data-id="{{item.id}}">
+        <view class="related-title">{{item.shortTitle}}</view>
+        <view class="related-sub">{{item.summary}}</view>
+        <view class="related-arrow">›</view>
+      </view>
+    </view>
+  </view>
+</view>

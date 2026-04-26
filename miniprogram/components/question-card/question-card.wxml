@@ -1,0 +1,11 @@
+<button class="btn-plain question-card card" bindtap="onTap">
+  <view class="question-main">
+    <view class="question-title">{{question.title}}</view>
+    <view class="question-summary">{{question.summary}}</view>
+    <view class="question-meta">
+      <text class="tag">{{question.tag}}</text>
+      <text wx:if="{{question.heatText}}">{{question.heatText}}热度</text>
+    </view>
+  </view>
+  <view class="row-arrow">›</view>
+</button>
