@@ -8,6 +8,10 @@ const filters = [
   { type: 'creator', name: '认证达人' }
 ]
 
+function normalizeType(type) {
+  return filters.some((item) => item.type === type) ? type : 'all'
+}
+
 Page({
   data: {
     filters,
@@ -19,7 +23,7 @@ Page({
   },
 
   onLoad(options) {
-    const activeType = options.type || 'all'
+    const activeType = normalizeType(options.type || 'all')
     const questionId = options.questionId || ''
     const result = questionId ? service.getQuestionResult({ id: questionId }) : null
     this.setData({
@@ -37,7 +41,7 @@ Page({
   },
 
   changeFilter(event) {
-    this.setData({ activeType: event.currentTarget.dataset.type })
+    this.setData({ activeType: normalizeType(event.currentTarget.dataset.type) })
     this.loadSources()
   },
 
