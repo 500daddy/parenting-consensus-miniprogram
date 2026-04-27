@@ -1,4 +1,4 @@
-<button class="btn-plain question-card card" bindtap="onTap">
+<view class="tap-card question-card card" bindtap="onTap">
   <view class="question-main">
     <view class="question-title">{{question.title}}</view>
     <view class="question-summary">{{question.summary}}</view>
@@ -8,4 +8,4 @@
     </view>
   </view>
   <view class="row-arrow">›</view>
-</button>
+</view>

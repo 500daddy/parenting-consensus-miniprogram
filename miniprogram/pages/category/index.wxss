@@ -102,8 +102,17 @@
 }
 
 .row-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46rpx;
+  height: 46rpx;
+  border-radius: 50%;
+  background: #f4f1ec;
   color: #9a938b;
-  font-size: 42rpx;
+  font-size: 32rpx;
+  line-height: 1;
+  flex: none;
 }
 
 .authority-mini {
