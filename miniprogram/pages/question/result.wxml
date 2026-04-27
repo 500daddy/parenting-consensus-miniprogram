@@ -6,8 +6,11 @@
   </view>
 
   <view wx:if="{{noResult}}" class="empty-card card">
-    <view class="empty-title">暂时没有找到精确共识</view>
-    <view class="empty-desc">可以换一种问法，或者先查看首页热门问题。MVP 阶段会逐步扩充 mock 内容。</view>
+    <view class="empty-icon">问</view>
+    <view class="empty-copy">
+      <view class="empty-title">暂时没有找到精确共识</view>
+      <view class="empty-desc">可以换一种问法，或者先查看首页热门问题。MVP 阶段会逐步扩充 mock 内容。</view>
+    </view>
     <button class="btn-plain primary-button" bindtap="goSearch">重新搜索</button>
   </view>
 
@@ -28,10 +31,10 @@
       <view class="chart-card">
         <view class="donut-wrap">
           <view class="donut">
-          <view class="donut-inner">
-            <view>共识</view>
-            <view>分布</view>
-          </view>
+            <view class="donut-inner">
+              <view>共识</view>
+              <view>分布</view>
+            </view>
           </view>
         </view>
         <view class="bars">
@@ -70,7 +73,10 @@
         <view wx:for="{{result.authoritySources}}" wx:key="id" class="tap-card authority-row card" bindtap="goAuthority">
           <view class="authority-icon">{{item.icon}}</view>
           <view class="authority-main">
-            <view class="authority-title">{{item.typeName}} <text class="trust-dot">{{item.trustLabel}}</text></view>
+            <view class="authority-head">
+              <view class="authority-title">{{item.typeName}}</view>
+              <text class="trust-dot">{{item.trustLabel}}</text>
+            </view>
             <view class="authority-summary">{{item.summary}}</view>
             <view class="authority-tags">
               <text wx:for="{{item.tags}}" wx:key="*this" class="authority-tag">{{item}}</text>
