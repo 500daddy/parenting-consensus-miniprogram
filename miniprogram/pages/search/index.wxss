@@ -1,18 +1,24 @@
 .search-top {
   display: flex;
-  gap: 16rpx;
+  gap: 14rpx;
   align-items: center;
-  padding-top: 18rpx;
+  padding-top: 22rpx;
 }
 
 .search-top .search-card {
   flex: 1;
   min-width: 0;
+  min-height: 92rpx;
+  padding: 0 24rpx;
+  border-color: #efe6db;
+  box-shadow: 0 12rpx 30rpx rgba(80, 60, 40, 0.08);
 }
 
 .search-submit {
-  width: 130rpx;
+  width: 132rpx;
+  height: 84rpx;
   flex: none;
+  box-shadow: 0 10rpx 22rpx rgba(126, 166, 106, 0.22);
 }
 
 .clear-btn {
@@ -25,28 +31,53 @@
   background: #eef6ea;
   color: #7ea66a;
   font-size: 38rpx;
+  flex: none;
 }
 
 .history-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 16rpx;
+  gap: 14rpx;
+}
+
+.history-wrap .chip {
+  min-height: 58rpx;
+  border-color: #deebd8;
+  background: #f5fbf1;
+  color: #5f8c4a;
+  font-size: 24rpx;
+  font-weight: 600;
 }
 
 .question-list {
   display: flex;
   flex-direction: column;
-  gap: 18rpx;
+  gap: 16rpx;
   width: 100%;
 }
 
 .question-row {
   display: flex;
   align-items: center;
-  gap: 20rpx;
+  gap: 18rpx;
   width: 100%;
-  padding: 26rpx;
+  min-height: 168rpx;
+  padding: 24rpx;
   text-align: left;
+}
+
+.question-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 50%;
+  background: #eef6ea;
+  color: #6f985a;
+  font-size: 28rpx;
+  font-weight: 700;
+  flex: none;
 }
 
 .question-content {
@@ -56,7 +87,7 @@
 
 .question-title {
   color: #2f2a25;
-  font-size: 30rpx;
+  font-size: 29rpx;
   line-height: 1.35;
   font-weight: 700;
 }
@@ -64,8 +95,8 @@
 .question-summary {
   margin-top: 10rpx;
   color: #756d66;
-  font-size: 25rpx;
-  line-height: 1.5;
+  font-size: 24rpx;
+  line-height: 1.45;
 }
 
 .question-meta {

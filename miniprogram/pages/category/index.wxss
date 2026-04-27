@@ -1,5 +1,5 @@
 .category-page {
-  padding-top: 28rpx;
+  padding-top: 26rpx;
 }
 
 .category-header {
@@ -25,7 +25,8 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14rpx 12rpx;
-  margin-top: 24rpx;
+  margin-top: 22rpx;
+  margin-bottom: 2rpx;
 }
 
 .category-chip-wrap .chip {
@@ -44,7 +45,7 @@
 .question-list {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: 18rpx;
   width: 100%;
 }
 
@@ -53,6 +54,7 @@
   align-items: center;
   gap: 16rpx;
   width: 100%;
+  min-height: 164rpx;
   padding: 22rpx;
   text-align: left;
 }
@@ -108,11 +110,12 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   width: 100%;
-  padding: 20rpx;
-  gap: 12rpx;
+  padding: 22rpx 18rpx;
+  gap: 14rpx;
 }
 
 .authority-mini-item {
+  min-width: 0;
   text-align: center;
 }
 

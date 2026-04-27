@@ -19,7 +19,28 @@
 }
 
 .empty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 34rpx;
+}
+
+.empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 82rpx;
+  height: 82rpx;
+  margin-bottom: 20rpx;
+  border-radius: 50%;
+  background: #eef6ea;
+  color: #6f985a;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.empty-copy {
+  width: 100%;
 }
 
 .empty-title {
@@ -29,10 +50,14 @@
 }
 
 .empty-desc {
-  margin: 14rpx 0 26rpx;
+  margin: 14rpx 0 28rpx;
   color: #8b8178;
   font-size: 26rpx;
   line-height: 1.55;
+}
+
+.empty-card .primary-button {
+  min-width: 220rpx;
 }
 
 .history-list {
@@ -47,7 +72,7 @@
   align-items: center;
   gap: 18rpx;
   width: 100%;
-  min-height: 92rpx;
+  min-height: 104rpx;
   padding: 0 24rpx;
   text-align: left;
 }
@@ -69,7 +94,8 @@
   flex: 1;
   min-width: 0;
   color: #2f2a25;
-  font-size: 28rpx;
+  font-size: 29rpx;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

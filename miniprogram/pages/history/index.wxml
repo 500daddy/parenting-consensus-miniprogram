@@ -8,8 +8,11 @@
   </view>
 
   <view wx:if="{{!history.length}}" class="empty-card card">
-    <view class="empty-title">还没有搜索记录</view>
-    <view class="empty-desc">搜索过的问题会自动保存在本地，方便再次查看。</view>
+    <view class="empty-icon">问</view>
+    <view class="empty-copy">
+      <view class="empty-title">还没有搜索记录</view>
+      <view class="empty-desc">搜索过的问题会自动保存在本地，方便再次查看。</view>
+    </view>
     <button class="btn-plain primary-button" bindtap="goSearchTab">去搜索问题</button>
   </view>
 

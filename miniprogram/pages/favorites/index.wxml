@@ -5,13 +5,17 @@
   </view>
 
   <view wx:if="{{!favorites.length}}" class="empty-card card">
-    <view class="empty-title">还没有收藏</view>
-    <view class="empty-desc">在问题汇总页点“收藏”，就能把常用育儿共识放到这里。</view>
+    <view class="empty-icon">收</view>
+    <view class="empty-copy">
+      <view class="empty-title">还没有收藏</view>
+      <view class="empty-desc">在问题汇总页点“收藏”，就能把常用育儿共识放到这里。</view>
+    </view>
     <button class="btn-plain primary-button" bindtap="goSearch">去搜索问题</button>
   </view>
 
   <view wx:else class="question-list">
     <view wx:for="{{favorites}}" wx:key="id" class="tap-card question-row card" bindtap="goQuestion" data-id="{{item.id}}">
+      <view class="question-badge">{{item.tagIcon}}</view>
       <view class="question-main">
         <view class="question-title">{{item.title}}</view>
         <view class="question-summary">{{item.summary}}</view>

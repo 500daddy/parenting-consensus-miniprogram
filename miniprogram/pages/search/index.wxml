@@ -25,6 +25,7 @@
     </view>
     <view class="question-list">
       <view wx:for="{{suggestions}}" wx:key="id" class="tap-card question-row card" bindtap="goQuestion" data-id="{{item.id}}">
+        <view class="question-badge">{{item.tagIcon}}</view>
         <view class="question-content">
           <view class="question-title">{{item.title}}</view>
           <view class="question-summary">{{item.summary}}</view>
