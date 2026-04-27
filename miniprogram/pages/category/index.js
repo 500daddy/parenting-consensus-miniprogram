@@ -16,9 +16,8 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 })
     }
-    const pending = wx.getStorageSync('pending_category_id')
+    const pending = service.consumePendingCategory()
     if (pending) {
-      wx.removeStorageSync('pending_category_id')
       this.setData({ activeCategory: normalizeCategoryId(pending) })
     }
     this.setData({

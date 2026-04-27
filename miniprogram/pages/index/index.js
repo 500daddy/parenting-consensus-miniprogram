@@ -37,7 +37,7 @@ Page({
 
   goCategory(event) {
     const id = event.currentTarget.dataset.id
-    wx.setStorageSync('pending_category_id', id)
+    service.setPendingCategory(id)
     wx.switchTab({ url: '/pages/category/index' })
   },
 

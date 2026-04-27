@@ -2,6 +2,7 @@ const data = require('../mock/data.js')
 
 const HISTORY_KEY = 'parenting_consensus_history'
 const FAVORITES_KEY = 'parenting_consensus_favorites'
+const PENDING_CATEGORY_KEY = 'pending_category_id'
 
 function getCategory(id) {
   return data.categories.find((item) => item.id === id)
@@ -103,6 +104,24 @@ function clearHistory() {
   setStorageList(HISTORY_KEY, [])
 }
 
+function setPendingCategory(categoryId) {
+  try {
+    wx.setStorageSync(PENDING_CATEGORY_KEY, categoryId)
+  } catch (error) {
+    // Storage may be unavailable in some preview runtimes.
+  }
+}
+
+function consumePendingCategory() {
+  try {
+    const categoryId = wx.getStorageSync(PENDING_CATEGORY_KEY)
+    wx.removeStorageSync(PENDING_CATEGORY_KEY)
+    return categoryId || ''
+  } catch (error) {
+    return ''
+  }
+}
+
 function getFavorites() {
   const ids = getStorageList(FAVORITES_KEY)
   return ids.map(getQuestionById).filter(Boolean)
@@ -127,6 +146,7 @@ function toggleFavorite(questionId) {
 module.exports = {
   HISTORY_KEY,
   FAVORITES_KEY,
+  PENDING_CATEGORY_KEY,
   categories: data.categories,
   questions: data.questions,
   profile: data.profile,
@@ -141,6 +161,8 @@ module.exports = {
   addHistory,
   getHistory,
   clearHistory,
+  setPendingCategory,
+  consumePendingCategory,
   getFavorites,
   isFavorite,
   toggleFavorite
