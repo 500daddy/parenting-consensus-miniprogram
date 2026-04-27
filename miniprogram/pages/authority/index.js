@@ -41,6 +41,11 @@ Page({
     this.loadSources()
   },
 
+  showAllSources() {
+    this.setData({ activeType: 'all' })
+    this.loadSources()
+  },
+
   goQuestion(event) {
     const id = event.currentTarget.dataset.id
     wx.navigateTo({ url: `/pages/question/result?id=${id}` })

@@ -41,6 +41,10 @@ Page({
     wx.navigateTo({ url: `/pages/question/result?id=${event.currentTarget.dataset.id}` })
   },
 
+  goSearch() {
+    wx.switchTab({ url: '/pages/search/index' })
+  },
+
   goAuthority() {
     wx.navigateTo({ url: '/pages/authority/index' })
   }

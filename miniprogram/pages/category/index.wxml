@@ -15,7 +15,7 @@
       <view class="section-title">热门问题</view>
       <view class="section-more">{{questions.length}} 个问题</view>
     </view>
-    <view class="question-list">
+    <view wx:if="{{questions.length}}" class="question-list">
       <view wx:for="{{questions}}" wx:key="id" class="tap-card question-row card" bindtap="goQuestion" data-id="{{item.id}}">
         <view class="question-badge">{{item.tagIcon}}</view>
         <view class="question-main">
@@ -25,6 +25,14 @@
         </view>
         <view class="row-arrow">›</view>
       </view>
+    </view>
+    <view wx:else class="category-empty card">
+      <view class="category-empty-icon">问</view>
+      <view class="category-empty-main">
+        <view class="category-empty-title">这个分类还在整理中</view>
+        <view class="category-empty-desc">可以先去问答页搜索具体问题，或切换到“全部”查看已整理内容。</view>
+      </view>
+      <button class="btn-plain empty-action" bindtap="goSearch">去搜索</button>
     </view>
   </view>
 

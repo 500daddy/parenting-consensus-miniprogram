@@ -9,7 +9,7 @@
     <view class="empty-icon">问</view>
     <view class="empty-copy">
       <view class="empty-title">暂时没有找到精确共识</view>
-      <view class="empty-desc">可以换一种问法，或者先查看首页热门问题。MVP 阶段会逐步扩充 mock 内容。</view>
+      <view class="empty-desc">可以换一种问法，或者先查看首页和问答页里已经整理好的热门问题。</view>
     </view>
     <button class="btn-plain primary-button" bindtap="goSearch">重新搜索</button>
   </view>

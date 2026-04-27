@@ -38,11 +38,11 @@
       <view class="row-arrow">›</view>
     </view>
   </view>
-  <view wx:else class="source-empty card">
+  <view wx:else class="tap-card source-empty card" bindtap="showAllSources">
     <view class="source-empty-icon">权</view>
     <view class="source-empty-main">
       <view class="source-empty-title">当前筛选暂无来源</view>
-      <view class="source-empty-desc">可以切回“全部”，先查看这个问题已整理到的可信内容。</view>
+      <view class="source-empty-desc">点这里切回“全部”，先查看这个问题已整理到的可信内容。</view>
     </view>
   </view>
 
