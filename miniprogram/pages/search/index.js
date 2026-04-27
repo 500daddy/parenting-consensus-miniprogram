@@ -42,6 +42,7 @@ Page({
   goQuestion(event) {
     const id = event.currentTarget.dataset.id
     const question = service.getQuestionById(id)
+    if (!question) return
     service.addHistory(question.shortTitle)
     wx.navigateTo({ url: `/pages/question/result?id=${id}` })
   },

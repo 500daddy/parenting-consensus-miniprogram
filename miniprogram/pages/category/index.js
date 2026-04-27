@@ -1,5 +1,9 @@
 const service = require('../../utils/mockService.js')
 
+function normalizeCategoryId(id) {
+  return !id || id === 'all' || service.getCategory(id) ? (id || 'all') : 'all'
+}
+
 Page({
   data: {
     categories: [],
@@ -15,7 +19,7 @@ Page({
     const pending = wx.getStorageSync('pending_category_id')
     if (pending) {
       wx.removeStorageSync('pending_category_id')
-      this.setData({ activeCategory: pending })
+      this.setData({ activeCategory: normalizeCategoryId(pending) })
     }
     this.setData({
       categories: [{ id: 'all', name: '全部', icon: '全' }].concat(service.categories),
@@ -25,7 +29,7 @@ Page({
   },
 
   changeCategory(event) {
-    this.setData({ activeCategory: event.currentTarget.dataset.id })
+    this.setData({ activeCategory: normalizeCategoryId(event.currentTarget.dataset.id) })
     this.loadQuestions()
   },
 
