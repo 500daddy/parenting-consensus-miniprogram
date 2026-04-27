@@ -114,24 +114,51 @@
 
 .warning-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12rpx;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14rpx;
   margin-top: 18rpx;
 }
 
 .warning-tile {
-  min-height: 92rpx;
+  min-height: 86rpx;
   display: flex;
+  flex-direction: row;
+  gap: 12rpx;
   align-items: center;
-  justify-content: center;
-  padding: 12rpx;
+  justify-content: flex-start;
+  padding: 16rpx;
   border: 1rpx solid #f7d9c6;
   border-radius: 16rpx;
   background: #fff7f1;
   color: #b86146;
-  font-size: 22rpx;
+  font-size: 23rpx;
   line-height: 1.25;
-  text-align: center;
+  text-align: left;
+}
+
+.warning-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  background: #f36f5b;
+  color: #ffffff;
+  font-size: 22rpx;
+  font-weight: 700;
+  flex: none;
+}
+
+.warning-1 .warning-icon,
+.warning-3 .warning-icon {
+  background: #f4a340;
+}
+
+.warning-text {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
 }
 
 .related-grid {

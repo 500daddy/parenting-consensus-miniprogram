@@ -40,7 +40,10 @@
   <view class="section">
     <view class="section-title"><text class="warn-mark">!</text><text>需要特别注意</text></view>
     <view class="warning-grid">
-      <view wx:for="{{warnings}}" wx:key="*this" class="warning-tile">{{item}}</view>
+      <view wx:for="{{warnings}}" wx:key="*this" class="warning-tile warning-{{index}}">
+        <view class="warning-icon">!</view>
+        <view class="warning-text">{{item}}</view>
+      </view>
     </view>
   </view>
 
