@@ -31,14 +31,14 @@
 
 .category-track {
   display: inline-flex;
-  gap: 12rpx;
+  gap: 10rpx;
   min-width: 100%;
 }
 
 .home-chip {
   width: auto;
   min-width: 0;
-  min-height: 60rpx;
+  min-height: 58rpx;
   margin-right: 0;
   padding: 0 18rpx 0 14rpx;
   background: #fffdfb;
@@ -124,7 +124,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 224rpx;
-  min-height: 214rpx;
+  min-height: 208rpx;
   margin-right: 14rpx;
   padding: 22rpx;
   overflow: hidden;
@@ -153,7 +153,7 @@
   min-height: 88rpx;
   color: #2f2a25;
   font-size: 24rpx;
-  line-height: 1.45;
+  line-height: 1.42;
   font-weight: 600;
   white-space: normal;
 }
@@ -178,7 +178,7 @@
 .source-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10rpx;
+  gap: 9rpx;
   padding: 12rpx;
   border: 1rpx solid #eee6dc;
   border-radius: 24rpx;

@@ -48,11 +48,6 @@
         </view>
       </view>
       <view class="sample-note">{{result.sampleNote}}</view>
-      <view class="quick-action-row">
-        <view wx:for="{{result.viewpoints}}" wx:key="id" class="quick-view quick-{{index}}">
-          <text>{{item.percentage}}%</text>{{item.title}}
-        </view>
-      </view>
     </view>
 
     <view class="section">
@@ -77,6 +72,9 @@
           <view class="authority-main">
             <view class="authority-title">{{item.typeName}} <text class="trust-dot">{{item.trustLabel}}</text></view>
             <view class="authority-summary">{{item.summary}}</view>
+            <view class="authority-tags">
+              <text wx:for="{{item.tags}}" wx:key="*this" class="authority-tag">{{item}}</text>
+            </view>
           </view>
           <view class="row-arrow">›</view>
         </view>
@@ -93,7 +91,7 @@
       <view class="warning-grid">
         <view wx:for="{{result.warnings}}" wx:key="*this" class="warning-tile warning-{{index}}">
           <view class="warning-icon">!</view>
-          <view>{{item}}</view>
+          <view class="warning-text">{{item}}</view>
         </view>
       </view>
       <view class="disclaimer card">{{result.disclaimer}}</view>

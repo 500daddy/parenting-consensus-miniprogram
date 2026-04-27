@@ -33,12 +33,12 @@
     </view>
     <scroll-view class="hot-scroll" scroll-x>
       <view class="hot-track">
-      <view wx:for="{{hotQuestions}}" wx:key="id" class="tap-card hot-card hot-{{index}} card" bindtap="goQuestion" data-id="{{item.id}}">
-        <view class="hot-title">{{item.title}}</view>
-        <view class="hot-meta">{{item.heatText}}热度</view>
-        <view class="tag">{{item.tag}}</view>
-        <view class="hot-watermark">{{item.tagIcon}}</view>
-      </view>
+        <view wx:for="{{hotQuestions}}" wx:key="id" class="tap-card hot-card hot-{{index}} card" bindtap="goQuestion" data-id="{{item.id}}">
+          <view class="hot-title">{{item.title}}</view>
+          <view class="hot-meta">{{item.heatText}}热度</view>
+          <view class="tag">{{item.tag}}</view>
+          <view class="hot-watermark">{{item.tagIcon}}</view>
+        </view>
       </view>
     </scroll-view>
   </view>
