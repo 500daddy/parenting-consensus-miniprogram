@@ -51,6 +51,6 @@ Page({
   },
 
   goSearch() {
-    wx.navigateTo({ url: '/pages/search/index' })
+    wx.switchTab({ url: '/pages/search/index' })
   }
 })
