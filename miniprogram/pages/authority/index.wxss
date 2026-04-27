@@ -59,6 +59,46 @@
   width: 100%;
 }
 
+.source-empty {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  margin-top: 22rpx;
+  padding: 26rpx;
+}
+
+.source-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: #fff4e4;
+  color: #f4a340;
+  font-size: 28rpx;
+  font-weight: 700;
+  flex: none;
+}
+
+.source-empty-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.source-empty-title {
+  color: #2f2a25;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.source-empty-desc {
+  margin-top: 8rpx;
+  color: #8b8178;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
 .source-card {
   display: flex;
   align-items: flex-start;
