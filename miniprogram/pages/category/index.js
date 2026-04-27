@@ -45,7 +45,9 @@ Page({
     wx.switchTab({ url: '/pages/search/index' })
   },
 
-  goAuthority() {
-    wx.navigateTo({ url: '/pages/authority/index' })
+  goAuthority(event) {
+    const type = event && event.currentTarget ? event.currentTarget.dataset.type : ''
+    const query = type ? `?type=${type}` : ''
+    wx.navigateTo({ url: `/pages/authority/index${query}` })
   }
 })

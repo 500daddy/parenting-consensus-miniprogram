@@ -42,7 +42,7 @@
       <button class="btn-plain section-more" bindtap="goAuthority">更多来源 ›</button>
     </view>
     <view class="authority-mini card">
-      <view wx:for="{{authoritySources}}" wx:key="id" class="authority-mini-item">
+      <view wx:for="{{authoritySources}}" wx:key="id" class="tap-card authority-mini-item" bindtap="goAuthority" data-type="{{item.type}}">
         <view class="mini-icon">{{item.icon}}</view>
         <view class="mini-title">{{item.typeName}}</view>
         <view class="mini-desc">{{item.trustLabel}}</view>

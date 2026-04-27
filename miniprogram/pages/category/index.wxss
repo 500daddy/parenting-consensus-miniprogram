@@ -178,6 +178,8 @@
 
 .authority-mini-item {
   min-width: 0;
+  border-radius: 18rpx;
+  padding: 10rpx 4rpx 12rpx;
   text-align: center;
 }
 
