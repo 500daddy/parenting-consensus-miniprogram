@@ -9,7 +9,7 @@
 1. 打开微信开发者工具。
 2. 选择“导入项目”。
 3. 项目目录选择 `C:\Users\admin\Documents\New project`。
-4. AppID 可使用测试号或保持 `touristappid`。
+4. 当前 `project.config.json` 已配置 AppID；如需在其他账号调试，可在微信开发者工具里切换为自己的测试号。
 
 ## 已完成
 
@@ -24,6 +24,8 @@
 
 - mock 数据在 `miniprogram/mock/data.js`。
 - 查询、搜索、收藏和历史逻辑在 `miniprogram/utils/mockService.js`。
+- 本地缓存 key：`parenting_consensus_history`、`parenting_consensus_favorites`。
+- 通用卡片组件已预留在 `miniprogram/components/`，后续可逐步替换页面内重复卡片。
 - 社区功能本期不展示，但已在数据层预留 `communityPosts` 和 `relatedPostIds`，后续可新增 `pages/community/index` 并接入 tab。
 
 ## 验证建议
@@ -32,3 +34,4 @@
 - 在结果页点击收藏，再到“我的 - 我的收藏”查看。
 - 在首页点击分类 chip，确认进入分类 tab 后筛选正确。
 - 在权威观点页切换“儿科医生 / 医学指南 / 育儿百科 / 认证达人”。
+- 检查底部 tab 的选中态是否明显，页面内容是否被底栏遮挡。
