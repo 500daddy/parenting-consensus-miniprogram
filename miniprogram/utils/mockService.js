@@ -15,7 +15,7 @@ function formatHeat(value) {
 }
 
 function getQuestionById(id) {
-  return data.questions.find((item) => item.id === id) || data.questions[0]
+  return data.questions.find((item) => item.id === id)
 }
 
 function getDefaultQuestionId(keyword) {
@@ -72,7 +72,8 @@ function getQuestionsByCategory(categoryId) {
 
 function getStorageList(key) {
   try {
-    return wx.getStorageSync(key) || []
+    const value = wx.getStorageSync(key)
+    return Array.isArray(value) ? value : []
   } catch (error) {
     return []
   }
