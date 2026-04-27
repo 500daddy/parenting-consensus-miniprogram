@@ -23,7 +23,7 @@
   </view>
 
   <view wx:if="{{sources.length}}" class="source-list">
-    <view wx:for="{{sources}}" wx:key="id" class="source-card card">
+    <view wx:for="{{sources}}" wx:key="id" class="tap-card source-card card" bindtap="showSourceDetail" data-id="{{item.id}}">
       <view class="source-icon-large">{{item.icon}}</view>
       <view class="source-main">
         <view class="source-head">

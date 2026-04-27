@@ -46,6 +46,18 @@ Page({
     this.loadSources()
   },
 
+  showSourceDetail(event) {
+    const id = event.currentTarget.dataset.id
+    const source = this.data.sources.find((item) => item.id === id)
+    if (!source) return
+    wx.showModal({
+      title: source.name,
+      content: `${source.summary}\n\n依据标签：${source.tags.join('、')}`,
+      showCancel: false,
+      confirmText: '知道了'
+    })
+  },
+
   goQuestion(event) {
     const id = event.currentTarget.dataset.id
     wx.navigateTo({ url: `/pages/question/result?id=${id}` })
