@@ -59,7 +59,7 @@ Page({
 
   updateSuggestions(keyword) {
     const text = (keyword || '').trim()
-    const questions = text ? service.searchQuestions(text) : service.questions.slice(0, 6)
+    const questions = text ? service.searchQuestions(text) : service.getAvailableQuestions()
     this.setData({
       suggestions: questions.map((item) => Object.assign({}, item, {
         heatText: service.formatHeat(item.heat)

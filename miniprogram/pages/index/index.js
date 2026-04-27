@@ -12,7 +12,7 @@ Page({
     const todayResult = service.getQuestionResult({ id: 'q_004' }) || service.getQuestionResult({ id: 'q_001' })
     this.setData({
       categories: service.categories,
-      hotQuestions: service.questions.slice(0, 3).map((item) => Object.assign({}, item, {
+      hotQuestions: service.getAvailableQuestions().slice(0, 3).map((item) => Object.assign({}, item, {
         heatText: service.formatHeat(item.heat)
       })),
       authoritySources: service.getAuthoritySources('all').slice(0, 4),

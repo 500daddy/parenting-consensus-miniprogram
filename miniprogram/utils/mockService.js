@@ -19,6 +19,14 @@ function getQuestionById(id) {
   return data.questions.find((item) => item.id === id)
 }
 
+function hasQuestionResult(id) {
+  return Boolean(id && data.questionResults[id])
+}
+
+function getAvailableQuestions() {
+  return data.questions.filter((item) => hasQuestionResult(item.id))
+}
+
 function getDefaultQuestionId(keyword) {
   const text = (keyword || '').trim()
   if (!text) return 'q_001'
@@ -31,9 +39,10 @@ function getDefaultQuestionId(keyword) {
 
 function searchQuestions(keyword) {
   const text = (keyword || '').trim()
-  if (!text) return data.questions.slice(0, 5)
+  const availableQuestions = getAvailableQuestions()
+  if (!text) return availableQuestions.slice(0, 5)
   const lower = text.toLowerCase()
-  const direct = data.questions.filter((item) => {
+  const direct = availableQuestions.filter((item) => {
     const category = getCategory(item.categoryId)
     return item.title.toLowerCase().indexOf(lower) > -1 ||
       item.shortTitle.toLowerCase().indexOf(lower) > -1 ||
@@ -42,7 +51,7 @@ function searchQuestions(keyword) {
   })
   if (direct.length) return direct
   const fallbackId = getDefaultQuestionId(text)
-  return fallbackId ? [getQuestionById(fallbackId)] : []
+  return hasQuestionResult(fallbackId) ? [getQuestionById(fallbackId)] : []
 }
 
 function getQuestionResult(options) {
@@ -67,8 +76,9 @@ function getAuthoritySources(type, questionId) {
 }
 
 function getQuestionsByCategory(categoryId) {
-  if (!categoryId || categoryId === 'all') return data.questions
-  return data.questions.filter((item) => item.categoryId === categoryId)
+  const availableQuestions = getAvailableQuestions()
+  if (!categoryId || categoryId === 'all') return availableQuestions
+  return availableQuestions.filter((item) => item.categoryId === categoryId)
 }
 
 function getStorageList(key) {
@@ -153,6 +163,8 @@ module.exports = {
   formatHeat,
   getCategory,
   getQuestionById,
+  hasQuestionResult,
+  getAvailableQuestions,
   getDefaultQuestionId,
   searchQuestions,
   getQuestionResult,
