@@ -10,8 +10,10 @@
     </view>
   </view>
 
-  <scroll-view class="chip-row" scroll-x enable-flex>
-    <view wx:for="{{filters}}" wx:key="type" class="tap-card chip {{activeType == item.type ? 'active' : ''}}" bindtap="changeFilter" data-type="{{item.type}}">{{item.name}}</view>
+  <scroll-view class="chip-row authority-filter" scroll-x enable-flex>
+    <view class="filter-track">
+      <view wx:for="{{filters}}" wx:key="type" class="tap-card chip {{activeType == item.type ? 'active' : ''}}" bindtap="changeFilter" data-type="{{item.type}}">{{item.name}}</view>
+    </view>
   </scroll-view>
 
   <view class="trust-tip card">
@@ -26,7 +28,7 @@
       <view class="source-main">
         <view class="source-head">
           <view class="source-title">{{item.name}}</view>
-          <text class="tag">{{item.trustLabel}}</text>
+          <text class="tag trust-tag">{{item.trustLabel}}</text>
         </view>
         <view class="source-summary">{{item.summary}}</view>
         <view class="tag-line">

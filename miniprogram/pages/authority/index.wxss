@@ -2,6 +2,24 @@
   padding-bottom: 28rpx;
 }
 
+.authority-filter {
+  margin-top: 4rpx;
+}
+
+.filter-track {
+  display: inline-flex;
+  gap: 14rpx;
+  min-width: 100%;
+  padding: 2rpx 0 6rpx;
+}
+
+.filter-track .chip {
+  min-width: 134rpx;
+  min-height: 60rpx;
+  flex: none;
+  font-size: 25rpx;
+}
+
 .trust-tip {
   display: flex;
   align-items: center;
@@ -43,10 +61,11 @@
 
 .source-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 18rpx;
   width: 100%;
   padding: 24rpx;
+  text-align: left;
 }
 
 .source-icon-large {
@@ -70,14 +89,23 @@
 
 .source-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12rpx;
+  width: 100%;
 }
 
 .source-title {
+  flex: 1;
+  min-width: 0;
   color: #2f2a25;
   font-size: 30rpx;
+  line-height: 1.25;
   font-weight: 700;
+}
+
+.trust-tag {
+  flex: none;
+  margin-top: 1rpx;
 }
 
 .source-summary {
@@ -95,8 +123,18 @@
 }
 
 .row-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48rpx;
+  height: 48rpx;
+  margin-top: 22rpx;
+  border-radius: 50%;
+  background: #f4f1ec;
   color: #9a938b;
-  font-size: 46rpx;
+  font-size: 34rpx;
+  line-height: 1;
+  flex: none;
 }
 
 .warn-mark {
@@ -205,6 +243,10 @@
 }
 
 @media (max-width: 360px) {
+  .filter-track .chip {
+    min-width: 126rpx;
+  }
+
   .warning-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
