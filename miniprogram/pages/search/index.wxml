@@ -20,10 +20,10 @@
 
   <view class="section">
     <view class="section-head">
-      <view class="section-title">推荐问题</view>
-      <view class="section-more">按热度排序</view>
+      <view class="section-title">{{sectionTitle}}</view>
+      <view class="section-more">{{sectionHint}}</view>
     </view>
-    <view class="question-list">
+    <view wx:if="{{suggestions.length}}" class="question-list">
       <view wx:for="{{suggestions}}" wx:key="id" class="tap-card question-row card" bindtap="goQuestion" data-id="{{item.id}}">
         <view class="question-badge">{{item.tagIcon}}</view>
         <view class="question-content">
@@ -35,6 +35,13 @@
           </view>
         </view>
         <view class="row-arrow">›</view>
+      </view>
+    </view>
+    <view wx:else class="search-empty card">
+      <view class="search-empty-icon">问</view>
+      <view class="search-empty-main">
+        <view class="search-empty-title">暂无相近问题</view>
+        <view class="search-empty-desc">可以直接点“搜索”，查看是否有对应共识结果。</view>
       </view>
     </view>
   </view>

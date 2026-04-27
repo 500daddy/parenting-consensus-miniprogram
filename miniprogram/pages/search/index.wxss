@@ -121,3 +121,42 @@
   line-height: 1;
   flex: none;
 }
+
+.search-empty {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  padding: 26rpx;
+}
+
+.search-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 66rpx;
+  height: 66rpx;
+  border-radius: 50%;
+  background: #fff4e4;
+  color: #f4a340;
+  font-size: 26rpx;
+  font-weight: 700;
+  flex: none;
+}
+
+.search-empty-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-empty-title {
+  color: #2f2a25;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.search-empty-desc {
+  margin-top: 8rpx;
+  color: #8b8178;
+  font-size: 24rpx;
+  line-height: 1.45;
+}

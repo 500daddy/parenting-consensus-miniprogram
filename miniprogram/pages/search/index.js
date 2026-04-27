@@ -5,23 +5,22 @@ Page({
     keyword: '',
     suggestions: [],
     history: [],
-    emptyText: ''
+    sectionTitle: '推荐问题',
+    sectionHint: '按热度排序'
   },
 
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1 })
     }
-    this.setData({
-      suggestions: service.questions.slice(0, 6).map((item) => Object.assign({}, item, {
-        heatText: service.formatHeat(item.heat)
-      })),
-      history: service.getHistory()
-    })
+    this.setData({ history: service.getHistory() })
+    this.updateSuggestions(this.data.keyword)
   },
 
   onInput(event) {
-    this.setData({ keyword: event.detail.value })
+    const keyword = event.detail.value
+    this.setData({ keyword })
+    this.updateSuggestions(keyword)
   },
 
   search() {
@@ -49,10 +48,23 @@ Page({
 
   clearKeyword() {
     this.setData({ keyword: '' })
+    this.updateSuggestions('')
   },
 
   clearHistory() {
     service.clearHistory()
     this.setData({ history: [] })
+  },
+
+  updateSuggestions(keyword) {
+    const text = (keyword || '').trim()
+    const questions = text ? service.searchQuestions(text) : service.questions.slice(0, 6)
+    this.setData({
+      suggestions: questions.map((item) => Object.assign({}, item, {
+        heatText: service.formatHeat(item.heat)
+      })),
+      sectionTitle: text ? '相关问题' : '推荐问题',
+      sectionHint: text ? `${questions.length} 个匹配` : '按热度排序'
+    })
   }
 })
