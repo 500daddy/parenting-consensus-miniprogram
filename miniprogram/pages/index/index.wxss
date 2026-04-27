@@ -107,8 +107,7 @@
   white-space: nowrap;
 }
 
-.hot-track,
-.source-track {
+.hot-track {
   display: inline-flex;
   min-width: 100%;
 }
@@ -184,11 +183,6 @@
   border-radius: 24rpx;
   background: #ffffff;
   box-shadow: 0 8rpx 24rpx rgba(80, 60, 40, 0.06);
-}
-
-.source-scroll {
-  width: 100%;
-  white-space: nowrap;
 }
 
 .source-entry {

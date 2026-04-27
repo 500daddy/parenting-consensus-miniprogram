@@ -1,7 +1,10 @@
 <view class="tap-card source-card card" bindtap="onTap">
   <view class="source-icon">{{source.icon}}</view>
   <view class="source-main">
-    <view class="source-title">{{source.name}} <text class="tag">{{source.trustLabel}}</text></view>
+    <view class="source-head">
+      <view class="source-title">{{source.name}}</view>
+      <text class="tag trust-tag">{{source.trustLabel}}</text>
+    </view>
     <view class="source-summary">{{source.summary}}</view>
   </view>
   <view class="row-arrow">›</view>
