@@ -24,8 +24,9 @@ Page({
 
   onLoad(options) {
     const activeType = normalizeType(options.type || 'all')
-    const questionId = options.questionId || ''
-    const result = questionId ? service.getQuestionResult({ id: questionId }) : null
+    const requestedQuestionId = options.questionId || ''
+    const result = requestedQuestionId ? service.getQuestionResult({ id: requestedQuestionId }) : null
+    const questionId = result ? requestedQuestionId : ''
     this.setData({
       activeType,
       questionId,
