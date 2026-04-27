@@ -26,7 +26,7 @@ Page({
   },
 
   showFeedback() {
-    wx.showToast({ title: '反馈入口 MVP 暂未开放', icon: 'none' })
+    wx.showToast({ title: '反馈功能暂未开放', icon: 'none' })
   },
 
   showDisclaimer() {
