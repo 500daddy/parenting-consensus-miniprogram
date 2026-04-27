@@ -26,19 +26,26 @@
   height: 82rpx;
   border-radius: 999rpx;
   color: #8b8178;
+  border: 1rpx solid transparent;
 }
 
 .tab-item.active {
   background: #eef6ea;
-  color: #6f985a;
+  border-color: #d8e8cf;
+  color: #5f8c4a;
 }
 
 .tab-icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42rpx;
-  height: 42rpx;
+  width: 46rpx;
+  height: 46rpx;
+  border-radius: 50%;
+}
+
+.tab-item.active .tab-icon-wrap {
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .tab-icon {
@@ -47,12 +54,12 @@
 }
 
 .tab-text {
-  margin-top: 5rpx;
+  margin-top: 4rpx;
   font-size: 22rpx;
   line-height: 1;
   font-weight: 500;
 }
 
 .tab-item.active .tab-text {
-  font-weight: 700;
+  font-weight: 800;
 }
