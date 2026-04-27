@@ -40,9 +40,11 @@ Page({
     wx.showToast({ title: isFavorite ? '已收藏' : '已取消', icon: 'none' })
   },
 
-  goAuthority() {
+  goAuthority(event) {
     if (!this.data.result) return
-    wx.navigateTo({ url: `/pages/authority/index?questionId=${this.data.result.questionId}` })
+    const type = event && event.currentTarget ? event.currentTarget.dataset.type : ''
+    const typeQuery = type ? `&type=${type}` : ''
+    wx.navigateTo({ url: `/pages/authority/index?questionId=${this.data.result.questionId}${typeQuery}` })
   },
 
   goQuestion(event) {

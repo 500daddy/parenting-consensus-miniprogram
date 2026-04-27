@@ -70,7 +70,7 @@
         <button class="btn-plain section-more" bindtap="goAuthority">更多内容 ›</button>
       </view>
       <view class="authority-list">
-        <view wx:for="{{result.authoritySources}}" wx:key="id" class="tap-card authority-row card" bindtap="goAuthority">
+        <view wx:for="{{result.authoritySources}}" wx:key="id" class="tap-card authority-row card" bindtap="goAuthority" data-type="{{item.type}}">
           <view class="authority-icon">{{item.icon}}</view>
           <view class="authority-main">
             <view class="authority-head">
