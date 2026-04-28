@@ -47,7 +47,7 @@ function getDefaultQuestionId(keyword) {
 function searchQuestions(keyword) {
   const text = (keyword || '').trim()
   const availableQuestions = getAvailableQuestions()
-  if (!text) return availableQuestions.slice(0, 5)
+  if (!text) return availableQuestions
   const lower = text.toLowerCase()
   const direct = availableQuestions.filter((item) => {
     const category = getCategory(item.categoryId)
