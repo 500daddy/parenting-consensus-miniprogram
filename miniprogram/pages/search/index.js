@@ -53,8 +53,19 @@ Page({
   },
 
   clearHistory() {
-    service.clearHistory()
-    this.setData({ history: [] })
+    if (!this.data.history.length) return
+    wx.showModal({
+      title: '清空搜索历史',
+      content: '清空后，本地保存的搜索记录会被删除。',
+      confirmText: '清空',
+      confirmColor: '#d96f45',
+      success: (res) => {
+        if (!res.confirm) return
+        service.clearHistory()
+        this.setData({ history: [] })
+        wx.showToast({ title: '已清空', icon: 'none' })
+      }
+    })
   },
 
   updateSuggestions(keyword) {
