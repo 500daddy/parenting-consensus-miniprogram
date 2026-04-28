@@ -9,7 +9,7 @@ const keywordRules = [
   { pattern: /咳嗽|咳痰|有痰|呼吸/, questionId: 'q_004' },
   { pattern: /挑食|蔬菜|不爱吃|吃菜|喂养/, questionId: 'q_005' },
   { pattern: /疫苗|接种|低烧|退烧药|发热反应/, questionId: 'q_006' },
-  { pattern: /发烧|发热|洗澡|退烧|体温/, questionId: 'q_001' }
+  { pattern: /发烧|发热|高烧|高热|洗澡|退烧|体温/, questionId: 'q_001' }
 ]
 
 function getCategory(id) {
