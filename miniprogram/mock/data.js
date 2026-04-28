@@ -162,6 +162,18 @@ const authoritySources = [
     summary: '接种后轻微低热可先观察护理，关注精神状态、体温趋势和接种部位反应。若持续高热、精神差或局部严重红肿，应及时咨询医生。',
     tags: ['接种后观察', '指南推荐', '风险提醒'],
     questionIds: ['q_006']
+  },
+  {
+    id: 'a_008',
+    name: '辅食添加指南解读',
+    type: 'guide',
+    typeName: '医学指南',
+    trustLevel: 'high',
+    trustLabel: '高可信',
+    icon: '碗',
+    summary: '6个月左右开始添加辅食时，应关注铁摄入、食物质地和过敏观察。可从富含铁的泥糊状食物开始，少量单一添加。',
+    tags: ['辅食添加', '含铁食物', '过敏观察'],
+    questionIds: ['q_003']
   }
 ]
 
@@ -240,7 +252,7 @@ const questionResults = {
       { id: 'r_203', title: '质地细腻', description: '泥糊状更适合刚开始练习吞咽。', icon: '碗', tone: 'purple' },
       { id: 'r_204', title: '观察过敏', description: '皮疹、呕吐、腹泻等需及时停食观察。', icon: '敏', tone: 'red' }
     ],
-    authoritySourceIds: ['a_003'],
+    authoritySourceIds: ['a_008', 'a_003'],
     minorityView: '少数观点会建议从蔬菜泥开始培养口味，但多数资料仍强调含铁食物的重要性。',
     warnings: ['明显过敏反应', '频繁呕吐', '进食后呼吸异常', '持续腹泻'],
     relatedQuestions: ['q_005'],
