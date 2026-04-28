@@ -142,6 +142,7 @@ for (const id of Object.keys(data.questionResults)) {
   assertInvariant(rawResult.viewpoints.length === 3, `Question result ${id} should include exactly 3 viewpoints`)
   assertInvariant(rawResult.reasons.length === 4, `Question result ${id} should include exactly 4 reasons`)
   assertInvariant(rawResult.warnings.length === 4, `Question result ${id} should include exactly 4 warnings`)
+  assertInvariant(rawResult.authoritySourceIds.length >= 2, `Question result ${id} should include at least 2 authority sources`)
   assertInvariant(rawResult.viewpoints.reduce((sum, item) => sum + item.percentage, 0) === 100, `Question result ${id} viewpoint percentages do not sum to 100`)
   assertInvariant(rawResult.viewpoints.every((item) => item.color && /^#[0-9A-Fa-f]{6}$/.test(item.color)), `Question result ${id} has invalid viewpoint color`)
   assertInvariant(rawResult.reasons.every((item) => reasonTones.has(item.tone)), `Question result ${id} has invalid reason tone`)
