@@ -20,6 +20,7 @@ global.wx = {
 const root = path.resolve(__dirname, '..')
 const miniprogramRoot = path.join(root, 'miniprogram')
 const missing = []
+const invariantErrors = []
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'))
@@ -29,6 +30,12 @@ function assertExists(relativePath) {
   const fullPath = path.join(miniprogramRoot, relativePath)
   if (!fs.existsSync(fullPath)) {
     missing.push(relativePath)
+  }
+}
+
+function assertInvariant(condition, message) {
+  if (!condition) {
+    invariantErrors.push(message)
   }
 }
 
@@ -65,8 +72,35 @@ for (const ext of ['js', 'json', 'wxml', 'wxss']) {
 
 walk(miniprogramRoot)
 
+const data = require(path.join(miniprogramRoot, 'mock/data.js'))
+const service = require(path.join(miniprogramRoot, 'utils/mockService.js'))
+
+for (const id of Object.keys(data.questionResults)) {
+  const result = service.getQuestionResult({ id })
+  assertInvariant(Boolean(result), `Missing service result for ${id}`)
+  if (result) {
+    for (const item of result.relatedQuestionItems) {
+      assertInvariant(service.hasQuestionResult(item.id), `Related question ${item.id} from ${id} has no result`)
+    }
+    for (const source of result.authoritySources) {
+      assertInvariant(source.questionIds.indexOf(id) > -1, `Authority source ${source.id} is not linked to ${id}`)
+    }
+  }
+}
+
+for (const category of data.categories) {
+  for (const question of service.getQuestionsByCategory(category.id)) {
+    assertInvariant(service.hasQuestionResult(question.id), `Category ${category.id} exposes unavailable question ${question.id}`)
+  }
+}
+
 if (missing.length) {
   console.error(`Missing files:\n${missing.join('\n')}`)
+  process.exit(1)
+}
+
+if (invariantErrors.length) {
+  console.error(`Data invariant errors:\n${invariantErrors.join('\n')}`)
   process.exit(1)
 }
 
