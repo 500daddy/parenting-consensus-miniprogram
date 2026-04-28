@@ -122,6 +122,16 @@ function sanitizeHistory(items) {
     .slice(0, 12)
 }
 
+function sanitizeFavoriteIds(items) {
+  const seen = {}
+  return items.filter((id) => typeof id === 'string' && hasQuestionResult(id))
+    .filter((id) => {
+      if (seen[id]) return false
+      seen[id] = true
+      return true
+    })
+}
+
 function addHistory(keyword) {
   const text = (keyword || '').trim()
   if (!text) return
@@ -157,17 +167,17 @@ function consumePendingCategory() {
 }
 
 function getFavorites() {
-  const ids = getStorageList(FAVORITES_KEY)
+  const ids = sanitizeFavoriteIds(getStorageList(FAVORITES_KEY))
   return ids.map(getQuestionById).filter((item) => item && hasQuestionResult(item.id))
 }
 
 function isFavorite(questionId) {
-  return hasQuestionResult(questionId) && getStorageList(FAVORITES_KEY).indexOf(questionId) > -1
+  return hasQuestionResult(questionId) && sanitizeFavoriteIds(getStorageList(FAVORITES_KEY)).indexOf(questionId) > -1
 }
 
 function toggleFavorite(questionId) {
   if (!hasQuestionResult(questionId)) return false
-  const ids = getStorageList(FAVORITES_KEY).filter(hasQuestionResult)
+  const ids = sanitizeFavoriteIds(getStorageList(FAVORITES_KEY))
   const index = ids.indexOf(questionId)
   if (index > -1) {
     ids.splice(index, 1)
