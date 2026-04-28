@@ -54,6 +54,13 @@ function walk(dir) {
 }
 
 const app = readJson(path.join(miniprogramRoot, 'app.json'))
+const projectConfig = readJson(path.join(root, 'project.config.json'))
+
+assertInvariant(projectConfig.miniprogramRoot === 'miniprogram/', 'project.config.json miniprogramRoot should be miniprogram/')
+assertInvariant(app.tabBar.custom === true, 'app.json should keep the custom tabBar enabled')
+assertInvariant(app.tabBar.list.length === 4, 'app.json tabBar should expose exactly 4 MVP tabs')
+assertInvariant(app.tabBar.list.every((item) => item.pagePath.indexOf('community') === -1 && item.text !== '社区'), 'Community tab should remain hidden in MVP')
+assertInvariant(app.pages.every((page) => page.indexOf('community') === -1), 'Community page should not be registered in MVP')
 
 for (const page of app.pages) {
   for (const ext of ['js', 'json', 'wxml', 'wxss']) {
