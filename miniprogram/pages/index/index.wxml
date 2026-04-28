@@ -69,11 +69,11 @@
         <view class="consensus-title">宝宝咳嗽有痰，需要立刻去医院吗？</view>
         <view class="consensus-sub">基于 {{todayResult.sourceCount}} 篇内容 · {{todayResult.expertCount}} 位专家/达人观点达成共识</view>
         <view class="stack-bar">
-          <view wx:for="{{todayResult.viewpoints}}" wx:key="id" class="stack-seg seg-{{index}}" style="width: {{item.percentage}}%;"></view>
+          <view wx:for="{{todayResult.viewpoints}}" wx:key="id" class="stack-seg" style="width: {{item.percentage}}%; background: {{item.color}};"></view>
         </view>
         <view class="legend-row">
           <view wx:for="{{todayResult.viewpoints}}" wx:key="id" class="legend-item">
-            <view class="dot dot-{{index}}"></view>
+            <view class="dot" style="background: {{item.color}};"></view>
             <text>{{item.title}} {{item.percentage}}%</text>
           </view>
         </view>

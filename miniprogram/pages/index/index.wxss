@@ -311,18 +311,6 @@
   height: 100%;
 }
 
-.seg-0 {
-  background: #7ea66a;
-}
-
-.seg-1 {
-  background: #f4a340;
-}
-
-.seg-2 {
-  background: #f36f5b;
-}
-
 .legend-row {
   display: flex;
   flex-wrap: wrap;
@@ -342,18 +330,6 @@
   width: 14rpx;
   height: 14rpx;
   border-radius: 50%;
-}
-
-.dot-0 {
-  background: #7ea66a;
-}
-
-.dot-1 {
-  background: #f4a340;
-}
-
-.dot-2 {
-  background: #f36f5b;
 }
 
 .arrow-pill {

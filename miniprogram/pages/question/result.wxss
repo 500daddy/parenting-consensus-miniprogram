@@ -263,21 +263,6 @@
   border-radius: 999rpx;
 }
 
-.fill-0,
-.dot-0 {
-  background: #7ea66a;
-}
-
-.fill-1,
-.dot-1 {
-  background: #f4a340;
-}
-
-.fill-2,
-.dot-2 {
-  background: #f36f5b;
-}
-
 .dot {
   width: 16rpx;
   height: 16rpx;
@@ -289,18 +274,6 @@
   text-align: right;
   font-size: 25rpx;
   font-weight: 700;
-}
-
-.percent-0 {
-  color: #7ea66a;
-}
-
-.percent-1 {
-  color: #f4a340;
-}
-
-.percent-2 {
-  color: #f36f5b;
 }
 
 .reason-grid {

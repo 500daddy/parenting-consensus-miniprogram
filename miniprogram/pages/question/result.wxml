@@ -53,13 +53,13 @@
         <view class="bars">
           <view wx:for="{{result.viewpoints}}" wx:key="id" class="bar-row">
             <view class="bar-label">
-              <view class="dot dot-{{index}}"></view>
+              <view class="dot" style="background: {{item.color}};"></view>
               <text>{{item.title}}</text>
             </view>
             <view class="bar-track">
-              <view class="bar-fill fill-{{index}}" style="width: {{item.percentage}}%;"></view>
+              <view class="bar-fill" style="width: {{item.percentage}}%; background: {{item.color}};"></view>
             </view>
-            <view class="bar-percent percent-{{index}}">{{item.percentage}}%</view>
+            <view class="bar-percent" style="color: {{item.color}};">{{item.percentage}}%</view>
           </view>
         </view>
       </view>
