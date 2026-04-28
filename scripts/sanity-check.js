@@ -166,6 +166,7 @@ for (const source of data.authoritySources) {
   assertInvariant(trustLevels.has(source.trustLevel), `Authority source ${source.id} has invalid trustLevel ${source.trustLevel}`)
   for (const questionId of source.questionIds) {
     assertInvariant(questionIds.has(questionId), `Authority source ${source.id} references missing question ${questionId}`)
+    assertInvariant(service.hasQuestionResult(questionId), `Authority source ${source.id} references unavailable question ${questionId}`)
   }
 }
 
