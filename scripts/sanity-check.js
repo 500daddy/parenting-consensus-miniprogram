@@ -1,9 +1,14 @@
 const fs = require('fs')
 const path = require('path')
 
+const capturedComponents = []
+
 global.App = (config) => config
 global.Page = (config) => config
-global.Component = (config) => config
+global.Component = (config) => {
+  capturedComponents.push(config)
+  return config
+}
 global.wx = {
   navigateTo() {},
   switchTab() {},
@@ -78,6 +83,20 @@ for (const ext of ['js', 'json', 'wxml', 'wxss']) {
 }
 
 walk(miniprogramRoot)
+
+const customTabBar = capturedComponents.find((config) => config.data && Array.isArray(config.data.list))
+assertInvariant(Boolean(customTabBar), 'Custom tabBar component config was not loaded')
+if (customTabBar) {
+  assertInvariant(customTabBar.data.list.length === app.tabBar.list.length, 'Custom tabBar item count should match app.json')
+  app.tabBar.list.forEach((item, index) => {
+    const customItem = customTabBar.data.list[index]
+    assertInvariant(Boolean(customItem), `Custom tabBar missing item at index ${index}`)
+    if (customItem) {
+      assertInvariant(customItem.pagePath.replace(/^\//, '') === item.pagePath, `Custom tabBar pagePath mismatch at index ${index}`)
+      assertInvariant(customItem.text === item.text, `Custom tabBar text mismatch at index ${index}`)
+    }
+  })
+}
 
 const data = require(path.join(miniprogramRoot, 'mock/data.js'))
 const service = require(path.join(miniprogramRoot, 'utils/mockService.js'))
