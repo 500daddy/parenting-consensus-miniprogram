@@ -116,7 +116,9 @@ const keywordExpectations = [
   ['第一口辅食吃什么', 'q_003'],
   ['宝宝咳嗽有痰', 'q_004'],
   ['挑食不爱吃蔬菜', 'q_005'],
-  ['疫苗后低烧', 'q_006']
+  ['疫苗后低烧', 'q_006'],
+  ['高热能洗澡吗', 'q_001'],
+  ['退烧药什么时候吃', 'q_006']
 ]
 
 for (const [keyword, expectedId] of keywordExpectations) {
