@@ -8,6 +8,8 @@ const filters = [
   { type: 'creator', name: '认证达人' }
 ]
 
+const defaultWarnings = ['精神差/持续高热', '呼吸急促', '抽搐', '伴随严重脱水']
+
 function normalizeType(type) {
   return filters.some((item) => item.type === type) ? type : 'all'
 }
@@ -18,7 +20,7 @@ Page({
     activeType: 'all',
     questionId: '',
     sources: [],
-    warnings: ['精神差/持续高热', '呼吸急促', '抽搐', '伴随严重脱水'],
+    warnings: defaultWarnings,
     relatedQuestions: []
   },
 
@@ -30,6 +32,7 @@ Page({
     this.setData({
       activeType,
       questionId,
+      warnings: result ? result.warnings : defaultWarnings,
       relatedQuestions: result ? result.relatedQuestionItems : service.getAvailableQuestions().slice(0, 2)
     })
     this.loadSources()
