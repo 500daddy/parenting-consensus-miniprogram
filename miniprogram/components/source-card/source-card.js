@@ -7,7 +7,9 @@ Component({
   },
   methods: {
     onTap() {
-      this.triggerEvent('tapsource', { id: this.data.source.id, type: this.data.source.type })
+      const source = this.data.source || {}
+      if (!source.id) return
+      this.triggerEvent('tapsource', { id: source.id, type: source.type })
     }
   }
 })

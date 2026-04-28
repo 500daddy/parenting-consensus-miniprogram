@@ -32,15 +32,3 @@
 .stack-seg {
   height: 100%;
 }
-
-.seg-0 {
-  background: #7ea66a;
-}
-
-.seg-1 {
-  background: #f4a340;
-}
-
-.seg-2 {
-  background: #f36f5b;
-}

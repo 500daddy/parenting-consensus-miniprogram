@@ -7,7 +7,9 @@ Component({
   },
   methods: {
     onTap() {
-      this.triggerEvent('tapconsensus', { id: this.data.result.questionId })
+      const id = this.data.result && this.data.result.questionId
+      if (!id) return
+      this.triggerEvent('tapconsensus', { id })
     }
   }
 })

@@ -2,6 +2,6 @@
   <view class="consensus-title">{{result.title}}</view>
   <view class="consensus-sub">基于 {{result.sourceCount}} 篇内容 · {{result.expertCount}} 位专家/达人观点整理</view>
   <view class="stack-bar">
-    <view wx:for="{{result.viewpoints}}" wx:key="id" class="stack-seg seg-{{index}}" style="width: {{item.percentage}}%;"></view>
+    <view wx:for="{{result.viewpoints}}" wx:key="id" class="stack-seg" style="width: {{item.percentage}}%; background: {{item.color}};"></view>
   </view>
 </view>

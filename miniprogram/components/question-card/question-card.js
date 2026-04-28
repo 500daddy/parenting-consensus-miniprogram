@@ -7,7 +7,9 @@ Component({
   },
   methods: {
     onTap() {
-      this.triggerEvent('tapquestion', { id: this.data.question.id })
+      const id = this.data.question && this.data.question.id
+      if (!id) return
+      this.triggerEvent('tapquestion', { id })
     }
   }
 })
