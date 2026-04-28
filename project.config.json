@@ -1,7 +1,7 @@
 {
-  "description": "育儿共识微信小程序 MVP",
+  "description": "养娃新手村微信小程序 MVP",
   "appid": "wx738acf76b93f38a1",
-  "projectname": "parenting-consensus",
+  "projectname": "养娃新手村",
   "miniprogramRoot": "miniprogram/",
   "compileType": "miniprogram",
   "setting": {

@@ -1,9 +1,4 @@
 <view class="page with-tab category-page">
-  <view class="category-header card">
-    <view class="category-title">分类</view>
-    <view class="category-subtitle">按育儿场景快速找到共识</view>
-  </view>
-
   <view class="category-chip-wrap">
     <view wx:for="{{categories}}" wx:key="id" class="tap-card chip {{activeCategory == item.id ? 'active' : ''}}" bindtap="changeCategory" data-id="{{item.id}}">
       <text class="chip-icon">{{item.icon}}</text>{{item.name}}

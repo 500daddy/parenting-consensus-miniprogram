@@ -1,19 +1,17 @@
 <view class="page with-tab home-page">
   <view class="hero">
-    <view class="hero-title">育儿共识</view>
-    <view class="hero-subtitle">科学育儿 · 安心选择</view>
-    <view class="home-illus" aria-hidden="true">
-      <view class="sun"></view>
-      <view class="leaf one"></view>
-      <view class="leaf two"></view>
-      <view class="house"></view>
+    <image class="hero-photo" src="/assets/hero/village-hero.png" mode="aspectFill" />
+    <view class="hero-scrim"></view>
+    <view class="hero-copy">
+      <view class="hero-title">养娃新手村</view>
+      <view class="hero-subtitle">养娃路上，先来村里问问</view>
     </view>
   </view>
 
   <view class="search-panel card">
     <view class="tap-card search-card" bindtap="goSearch">
       <view class="search-icon"></view>
-      <view class="search-placeholder">搜索育儿问题，例如：宝宝发烧能洗澡吗？</view>
+      <view class="search-placeholder">来村里问问，例如：宝宝发烧能洗澡吗？</view>
     </view>
   </view>
 
