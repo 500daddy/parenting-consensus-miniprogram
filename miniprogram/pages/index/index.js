@@ -47,6 +47,8 @@ Page({
   },
 
   goToday() {
-    wx.navigateTo({ url: '/pages/question/result?id=q_004' })
+    const questionId = this.data.todayResult && this.data.todayResult.questionId
+    if (!questionId) return
+    wx.navigateTo({ url: `/pages/question/result?id=${questionId}` })
   }
 })

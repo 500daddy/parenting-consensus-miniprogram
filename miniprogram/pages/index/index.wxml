@@ -66,7 +66,7 @@
     <view class="tap-card consensus-card card" bindtap="goToday">
       <view class="consensus-icon">识</view>
       <view class="consensus-main">
-        <view class="consensus-title">宝宝咳嗽有痰，需要立刻去医院吗？</view>
+        <view class="consensus-title">{{todayResult.title}}</view>
         <view class="consensus-sub">基于 {{todayResult.sourceCount}} 篇内容 · {{todayResult.expertCount}} 位专家/达人观点达成共识</view>
         <view class="stack-bar">
           <view wx:for="{{todayResult.viewpoints}}" wx:key="id" class="stack-seg" style="width: {{item.percentage}}%; background: {{item.color}};"></view>
