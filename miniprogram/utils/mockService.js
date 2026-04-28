@@ -134,15 +134,16 @@ function consumePendingCategory() {
 
 function getFavorites() {
   const ids = getStorageList(FAVORITES_KEY)
-  return ids.map(getQuestionById).filter(Boolean)
+  return ids.map(getQuestionById).filter((item) => item && hasQuestionResult(item.id))
 }
 
 function isFavorite(questionId) {
-  return getStorageList(FAVORITES_KEY).indexOf(questionId) > -1
+  return hasQuestionResult(questionId) && getStorageList(FAVORITES_KEY).indexOf(questionId) > -1
 }
 
 function toggleFavorite(questionId) {
-  const ids = getStorageList(FAVORITES_KEY)
+  if (!hasQuestionResult(questionId)) return false
+  const ids = getStorageList(FAVORITES_KEY).filter(hasQuestionResult)
   const index = ids.indexOf(questionId)
   if (index > -1) {
     ids.splice(index, 1)
