@@ -14,6 +14,10 @@ function normalizeType(type) {
   return filters.some((item) => item.type === type) ? type : 'all'
 }
 
+function getFallbackQuestions(questionId) {
+  return service.getAvailableQuestions().filter((item) => item.id !== questionId).slice(0, 2)
+}
+
 Page({
   data: {
     filters,
@@ -33,7 +37,7 @@ Page({
       activeType,
       questionId,
       warnings: result ? result.warnings : defaultWarnings,
-      relatedQuestions: result ? result.relatedQuestionItems : service.getAvailableQuestions().slice(0, 2)
+      relatedQuestions: result && result.relatedQuestionItems.length ? result.relatedQuestionItems : getFallbackQuestions(questionId)
     })
     this.loadSources()
   },

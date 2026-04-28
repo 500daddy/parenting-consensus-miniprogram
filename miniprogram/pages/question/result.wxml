@@ -116,7 +116,7 @@
       <view class="disclaimer card">{{result.disclaimer}}</view>
     </view>
 
-    <view class="section">
+    <view wx:if="{{result.relatedQuestionItems.length}}" class="section">
       <view class="section-head">
         <view class="section-title">相关问题</view>
       </view>

@@ -75,7 +75,7 @@ function getQuestionResult(options) {
   result.authoritySources = result.authoritySourceIds.map((sourceId) => {
     return data.authoritySources.find((source) => source.id === sourceId)
   }).filter(Boolean)
-  result.relatedQuestionItems = result.relatedQuestions.map(getQuestionById).filter(Boolean)
+  result.relatedQuestionItems = result.relatedQuestions.map(getQuestionById).filter((item) => item && hasQuestionResult(item.id))
   return result
 }
 
