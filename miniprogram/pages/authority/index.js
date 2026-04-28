@@ -30,7 +30,7 @@ Page({
     this.setData({
       activeType,
       questionId,
-      relatedQuestions: result ? result.relatedQuestionItems : service.questions.slice(0, 2)
+      relatedQuestions: result ? result.relatedQuestionItems : service.getAvailableQuestions().slice(0, 2)
     })
     this.loadSources()
   },
