@@ -14,6 +14,19 @@
     <button class="btn-plain primary-button" bindtap="goSearch">重新搜索</button>
   </view>
 
+  <view wx:if="{{noResult && fallbackQuestions.length}}" class="section">
+    <view class="section-head">
+      <view class="section-title">先看看这些问题</view>
+    </view>
+    <view class="related-grid">
+      <view wx:for="{{fallbackQuestions}}" wx:key="id" class="tap-card related-card card" bindtap="goQuestion" data-id="{{item.id}}">
+        <view class="related-title">{{item.shortTitle}}</view>
+        <view class="related-sub">{{item.summary}}</view>
+        <view class="related-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
   <block wx:if="{{result}}">
     <view class="summary-card card">
       <view class="summary-head">

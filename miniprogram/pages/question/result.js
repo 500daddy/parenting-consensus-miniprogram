@@ -5,7 +5,8 @@ Page({
     keyword: '',
     result: null,
     isFavorite: false,
-    noResult: false
+    noResult: false,
+    fallbackQuestions: []
   },
 
   onLoad(options) {
@@ -16,7 +17,11 @@ Page({
     }
     const result = service.getQuestionResult({ id, keyword })
     if (!result) {
-      this.setData({ keyword, noResult: true })
+      this.setData({
+        keyword,
+        noResult: true,
+        fallbackQuestions: service.getAvailableQuestions().slice(0, 3)
+      })
       return
     }
     this.setData({
