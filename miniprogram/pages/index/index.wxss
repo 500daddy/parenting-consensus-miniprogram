@@ -1,9 +1,9 @@
 .home-page {
-  padding-top: 76rpx;
+  padding-top: 66rpx;
 }
 
 .search-panel {
-  margin-top: -4rpx;
+  margin-top: -12rpx;
   padding: 10rpx;
   border-radius: 22rpx;
 }
@@ -17,6 +17,14 @@
   text-align: left;
 }
 
+.home-page > .section {
+  margin-top: 26rpx;
+}
+
+.home-page .section-head {
+  margin-bottom: 14rpx;
+}
+
 .chip-icon {
   margin-right: 8rpx;
   color: #7ea66a;
@@ -25,7 +33,7 @@
 
 .category-scroll {
   width: 100%;
-  margin-top: 24rpx;
+  margin-top: 20rpx;
   white-space: nowrap;
 }
 
@@ -38,11 +46,11 @@
 .home-chip {
   width: auto;
   min-width: 0;
-  min-height: 58rpx;
+  min-height: 54rpx;
   margin-right: 0;
   padding: 0 18rpx 0 14rpx;
   background: #fffdfb;
-  font-size: 24rpx;
+  font-size: 23rpx;
   flex: none;
   box-shadow: 0 4rpx 14rpx rgba(80, 60, 40, 0.04);
 }
@@ -123,9 +131,9 @@
   flex-direction: column;
   justify-content: space-between;
   width: 224rpx;
-  min-height: 208rpx;
+  min-height: 198rpx;
   margin-right: 14rpx;
-  padding: 22rpx;
+  padding: 20rpx;
   overflow: hidden;
   text-align: left;
   vertical-align: top;
@@ -149,10 +157,10 @@
 .hot-title {
   position: relative;
   z-index: 1;
-  min-height: 88rpx;
+  min-height: 84rpx;
   color: #2f2a25;
-  font-size: 24rpx;
-  line-height: 1.42;
+  font-size: 23rpx;
+  line-height: 1.36;
   font-weight: 600;
   white-space: normal;
 }
@@ -160,7 +168,7 @@
 .hot-meta {
   position: relative;
   z-index: 1;
-  margin: 14rpx 0 12rpx;
+  margin: 10rpx 0 10rpx;
   color: #8b8178;
   font-size: 22rpx;
 }
@@ -187,8 +195,8 @@
 
 .source-entry {
   width: 100%;
-  min-height: 184rpx;
-  padding: 16rpx 8rpx;
+  min-height: 168rpx;
+  padding: 14rpx 8rpx;
   border-radius: 18rpx;
   background: #fbfdf8;
   text-align: center;
@@ -210,13 +218,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64rpx;
-  height: 64rpx;
-  margin: 0 auto 10rpx;
+  width: 58rpx;
+  height: 58rpx;
+  margin: 0 auto 8rpx;
   border-radius: 50%;
   background: #eef6ea;
   color: #6f985a;
-  font-size: 28rpx;
+  font-size: 26rpx;
   font-weight: 700;
 }
 
@@ -242,15 +250,15 @@
 }
 
 .source-desc {
-  min-height: 40rpx;
-  margin-top: 7rpx;
+  min-height: 38rpx;
+  margin-top: 6rpx;
   color: #8b8178;
   font-size: 18rpx;
   line-height: 1.25;
 }
 
 .source-count {
-  margin-top: 10rpx;
+  margin-top: 8rpx;
   color: #8b8178;
   font-size: 20rpx;
 }
@@ -259,8 +267,8 @@
   width: 100%;
   display: flex;
   align-items: flex-start;
-  gap: 20rpx;
-  padding: 26rpx;
+  gap: 18rpx;
+  padding: 22rpx;
   text-align: left;
   margin-bottom: 28rpx;
 }
@@ -269,12 +277,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 86rpx;
-  height: 86rpx;
+  width: 76rpx;
+  height: 76rpx;
   border-radius: 50%;
   background: #fff2dd;
   color: #f4a340;
-  font-size: 34rpx;
+  font-size: 32rpx;
   font-weight: 700;
   flex: none;
 }
@@ -285,14 +293,14 @@
 }
 
 .consensus-title {
-  font-size: 29rpx;
-  line-height: 1.35;
+  font-size: 28rpx;
+  line-height: 1.32;
   font-weight: 700;
   color: #2f2a25;
 }
 
 .consensus-sub {
-  margin-top: 10rpx;
+  margin-top: 8rpx;
   color: #8b8178;
   font-size: 22rpx;
   line-height: 1.4;
@@ -300,8 +308,8 @@
 
 .stack-bar {
   display: flex;
-  height: 24rpx;
-  margin-top: 16rpx;
+  height: 22rpx;
+  margin-top: 14rpx;
   overflow: hidden;
   border-radius: 999rpx;
   background: #eee6dc;
@@ -315,7 +323,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8rpx 16rpx;
-  margin-top: 12rpx;
+  margin-top: 10rpx;
 }
 
 .legend-item {
@@ -336,8 +344,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 54rpx;
-  height: 54rpx;
+  width: 50rpx;
+  height: 50rpx;
   border-radius: 50%;
   background: #fbf3ea;
   color: #c17442;
@@ -347,7 +355,7 @@
 
 @media (max-width: 360px) {
   .home-page {
-    padding-top: 76rpx;
+    padding-top: 66rpx;
   }
 
   .source-grid {
