@@ -110,6 +110,21 @@ for (const source of data.authoritySources) {
   }
 }
 
+const keywordExpectations = [
+  ['宝宝发烧能洗澡吗', 'q_001'],
+  ['宝宝夜醒频繁怎么办', 'q_002'],
+  ['第一口辅食吃什么', 'q_003'],
+  ['宝宝咳嗽有痰', 'q_004'],
+  ['挑食不爱吃蔬菜', 'q_005'],
+  ['疫苗后低烧', 'q_006']
+]
+
+for (const [keyword, expectedId] of keywordExpectations) {
+  const actualId = service.getDefaultQuestionId(keyword)
+  assertInvariant(actualId === expectedId, `Keyword "${keyword}" maps to ${actualId || 'none'} instead of ${expectedId}`)
+  assertInvariant(service.searchQuestions(keyword).some((item) => item.id === expectedId), `Search results for "${keyword}" do not include ${expectedId}`)
+}
+
 for (const category of data.categories) {
   for (const question of service.getQuestionsByCategory(category.id)) {
     assertInvariant(service.hasQuestionResult(question.id), `Category ${category.id} exposes unavailable question ${question.id}`)
