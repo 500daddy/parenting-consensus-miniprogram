@@ -103,6 +103,9 @@ const service = require(path.join(miniprogramRoot, 'utils/mockService.js'))
 const categoryIds = new Set(data.categories.map((item) => item.id))
 const questionIds = new Set(data.questions.map((item) => item.id))
 const authorityIds = new Set(data.authoritySources.map((item) => item.id))
+const authorityTypes = new Set(['doctor', 'guide', 'wiki', 'creator'])
+const trustLevels = new Set(['high', 'medium'])
+const reasonTones = new Set(['green', 'orange', 'red', 'purple'])
 
 for (const question of data.questions) {
   assertInvariant(categoryIds.has(question.categoryId), `Question ${question.id} uses unknown category ${question.categoryId}`)
@@ -116,6 +119,9 @@ for (const id of Object.keys(data.questionResults)) {
   assertInvariant(categoryIds.has(rawResult.categoryId), `Question result ${id} uses unknown category ${rawResult.categoryId}`)
   assertInvariant(rawResult.viewpoints.reduce((sum, item) => sum + item.percentage, 0) === 100, `Question result ${id} viewpoint percentages do not sum to 100`)
   assertInvariant(rawResult.viewpoints.every((item) => item.color && /^#[0-9A-Fa-f]{6}$/.test(item.color)), `Question result ${id} has invalid viewpoint color`)
+  assertInvariant(rawResult.reasons.every((item) => reasonTones.has(item.tone)), `Question result ${id} has invalid reason tone`)
+  assertInvariant(rawResult.warnings.length > 0, `Question result ${id} should include warnings`)
+  assertInvariant(Boolean(rawResult.disclaimer), `Question result ${id} should include disclaimer`)
   for (const sourceId of rawResult.authoritySourceIds) {
     assertInvariant(authorityIds.has(sourceId), `Question result ${id} references missing authority source ${sourceId}`)
   }
@@ -131,6 +137,8 @@ for (const id of Object.keys(data.questionResults)) {
 }
 
 for (const source of data.authoritySources) {
+  assertInvariant(authorityTypes.has(source.type), `Authority source ${source.id} has invalid type ${source.type}`)
+  assertInvariant(trustLevels.has(source.trustLevel), `Authority source ${source.id} has invalid trustLevel ${source.trustLevel}`)
   for (const questionId of source.questionIds) {
     assertInvariant(questionIds.has(questionId), `Authority source ${source.id} references missing question ${questionId}`)
   }
