@@ -139,10 +139,12 @@ for (const id of Object.keys(data.questionResults)) {
   assertInvariant(questionIds.has(id), `Question result ${id} has no matching question`)
   assertInvariant(rawResult.questionId === id, `Question result ${id} has mismatched questionId ${rawResult.questionId}`)
   assertInvariant(categoryIds.has(rawResult.categoryId), `Question result ${id} uses unknown category ${rawResult.categoryId}`)
+  assertInvariant(rawResult.viewpoints.length === 3, `Question result ${id} should include exactly 3 viewpoints`)
+  assertInvariant(rawResult.reasons.length === 4, `Question result ${id} should include exactly 4 reasons`)
+  assertInvariant(rawResult.warnings.length === 4, `Question result ${id} should include exactly 4 warnings`)
   assertInvariant(rawResult.viewpoints.reduce((sum, item) => sum + item.percentage, 0) === 100, `Question result ${id} viewpoint percentages do not sum to 100`)
   assertInvariant(rawResult.viewpoints.every((item) => item.color && /^#[0-9A-Fa-f]{6}$/.test(item.color)), `Question result ${id} has invalid viewpoint color`)
   assertInvariant(rawResult.reasons.every((item) => reasonTones.has(item.tone)), `Question result ${id} has invalid reason tone`)
-  assertInvariant(rawResult.warnings.length > 0, `Question result ${id} should include warnings`)
   assertInvariant(Boolean(rawResult.disclaimer), `Question result ${id} should include disclaimer`)
   for (const sourceId of rawResult.authoritySourceIds) {
     assertInvariant(authorityIds.has(sourceId), `Question result ${id} references missing authority source ${sourceId}`)
