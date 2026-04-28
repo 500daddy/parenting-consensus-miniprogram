@@ -3,6 +3,14 @@ const data = require('../mock/data.js')
 const HISTORY_KEY = 'parenting_consensus_history'
 const FAVORITES_KEY = 'parenting_consensus_favorites'
 const PENDING_CATEGORY_KEY = 'pending_category_id'
+const keywordRules = [
+  { pattern: /夜醒|睡眠|入睡|哄睡/, questionId: 'q_002' },
+  { pattern: /辅食|米粉|吃什么|第一口/, questionId: 'q_003' },
+  { pattern: /咳嗽|咳痰|有痰|呼吸/, questionId: 'q_004' },
+  { pattern: /挑食|蔬菜|不爱吃|吃菜|喂养/, questionId: 'q_005' },
+  { pattern: /疫苗|接种|低烧|退烧药|发热反应/, questionId: 'q_006' },
+  { pattern: /发烧|发热|洗澡|退烧|体温/, questionId: 'q_001' }
+]
 
 function getCategory(id) {
   return data.categories.find((item) => item.id === id)
@@ -30,12 +38,8 @@ function getAvailableQuestions() {
 function getDefaultQuestionId(keyword) {
   const text = (keyword || '').trim()
   if (!text) return 'q_001'
-  if (/夜醒|睡眠|入睡|哄睡/.test(text)) return 'q_002'
-  if (/辅食|米粉|吃什么|第一口/.test(text)) return 'q_003'
-  if (/咳嗽|咳痰|有痰|呼吸/.test(text)) return 'q_004'
-  if (/挑食|蔬菜|不爱吃|吃菜|喂养/.test(text)) return 'q_005'
-  if (/疫苗|接种|低烧|退烧药|发热反应/.test(text)) return 'q_006'
-  if (/发烧|发热|洗澡|退烧|体温/.test(text)) return 'q_001'
+  const rule = keywordRules.find((item) => item.pattern.test(text))
+  if (rule) return rule.questionId
   const matched = data.questions.find((item) => item.title.indexOf(text) > -1 || text.indexOf(item.shortTitle) > -1)
   return matched ? matched.id : ''
 }
