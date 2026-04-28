@@ -129,6 +129,8 @@ const authorityTypes = new Set(['doctor', 'guide', 'wiki', 'creator'])
 const trustLevels = new Set(['high', 'medium'])
 const reasonTones = new Set(['green', 'orange', 'red', 'purple'])
 
+assertInvariant(Array.isArray(data.communityPosts), 'communityPosts should remain as a reserved array boundary')
+
 for (const question of data.questions) {
   assertInvariant(categoryIds.has(question.categoryId), `Question ${question.id} uses unknown category ${question.categoryId}`)
 }
