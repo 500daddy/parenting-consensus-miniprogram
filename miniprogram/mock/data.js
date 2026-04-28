@@ -138,6 +138,30 @@ const authoritySources = [
     summary: '夜醒改善通常需要连续观察作息、白天小睡、入睡联想和夜间安抚方式，而不是只调整某一个动作。',
     tags: ['睡眠记录', '行为建议', '认证达人'],
     questionIds: ['q_002']
+  },
+  {
+    id: 'a_006',
+    name: '儿科营养门诊',
+    type: 'doctor',
+    typeName: '儿科医生',
+    trustLevel: 'high',
+    trustLabel: '高可信',
+    icon: '养',
+    summary: '挑食处理重点是评估生长曲线和整体摄入，不建议用强迫或追喂制造压力。可通过重复暴露、家庭共餐和食物形态调整逐步改善。',
+    tags: ['营养评估', '生长曲线', '儿科门诊建议'],
+    questionIds: ['q_005']
+  },
+  {
+    id: 'a_007',
+    name: '预防接种指南解读',
+    type: 'guide',
+    typeName: '医学指南',
+    trustLevel: 'high',
+    trustLabel: '高可信',
+    icon: '苗',
+    summary: '接种后轻微低热可先观察护理，关注精神状态、体温趋势和接种部位反应。若持续高热、精神差或局部严重红肿，应及时咨询医生。',
+    tags: ['接种后观察', '指南推荐', '风险提醒'],
+    questionIds: ['q_006']
   }
 ]
 
@@ -270,7 +294,7 @@ const questionResults = {
       { id: 'r_403', title: '形态影响入口', description: '颜色、大小和软硬都会影响接受程度。', icon: '菜', tone: 'purple' },
       { id: 'r_404', title: '少用压力交换', description: '把吃菜和奖励惩罚绑定，容易强化对抗。', icon: '压', tone: 'red' }
     ],
-    authoritySourceIds: ['a_004'],
+    authoritySourceIds: ['a_006', 'a_004'],
     minorityView: '少数观点认为：短期内不必执着某一种蔬菜，只要整体饮食结构可接受，可以先用水果、薯类或其他蔬菜过渡。',
     warnings: ['体重增长明显不佳', '长期只接受极少食物', '进食时频繁呕吐', '疑似吞咽困难'],
     relatedQuestions: ['q_003', 'q_002'],
@@ -297,7 +321,7 @@ const questionResults = {
       { id: 'r_503', title: '补水和休息', description: '少量多次饮水、保证休息，有助于恢复舒适。', icon: '水', tone: 'orange' },
       { id: 'r_504', title: '用药先确认', description: '退烧药剂量需按体重和月龄判断。', icon: '药', tone: 'purple' }
     ],
-    authoritySourceIds: ['a_002'],
+    authoritySourceIds: ['a_002', 'a_007'],
     minorityView: '少数观点会建议更早使用退烧药来减轻不适，但多数建议先结合体温、精神状态和医生建议判断。',
     warnings: ['持续高热不退', '精神差或嗜睡', '呼吸异常', '接种处明显红肿化脓'],
     relatedQuestions: ['q_001', 'q_004'],
