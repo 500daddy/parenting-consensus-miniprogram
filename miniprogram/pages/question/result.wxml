@@ -43,7 +43,7 @@
       <view class="chart-title">观点比例分布</view>
       <view class="chart-card">
         <view class="donut-wrap">
-          <view class="donut">
+          <view class="donut" style="{{result.donutStyle}}">
             <view class="donut-inner">
               <view>共识</view>
               <view>分布</view>

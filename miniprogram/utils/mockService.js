@@ -54,12 +54,24 @@ function searchQuestions(keyword) {
   return hasQuestionResult(fallbackId) ? [getQuestionById(fallbackId)] : []
 }
 
+function buildDonutStyle(viewpoints) {
+  let start = 0
+  const segments = viewpoints.map((item, index) => {
+    const end = index === viewpoints.length - 1 ? 100 : Math.min(start + item.percentage, 100)
+    const segment = `${item.color} ${start}% ${end}%`
+    start = end
+    return segment
+  })
+  return `background: conic-gradient(${segments.join(', ')});`
+}
+
 function getQuestionResult(options) {
   const id = options && options.id ? options.id : getDefaultQuestionId(options && options.keyword)
   if (!id || !data.questionResults[id]) return null
   const result = Object.assign({}, data.questionResults[id])
   result.question = getQuestionById(id)
   result.category = getCategory(result.categoryId)
+  result.donutStyle = buildDonutStyle(result.viewpoints)
   result.authoritySources = result.authoritySourceIds.map((sourceId) => {
     return data.authoritySources.find((source) => source.id === sourceId)
   }).filter(Boolean)
