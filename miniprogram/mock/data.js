@@ -249,6 +249,60 @@ const questionResults = {
     relatedQuestions: ['q_001', 'q_006'],
     relatedPostIds: [],
     disclaimer: '本内容仅用于育儿信息参考，不能替代医生诊断。如出现呼吸困难、口唇发青、精神差或持续高热，请及时就医。'
+  },
+  q_005: {
+    questionId: 'q_005',
+    title: '宝宝挑食不爱吃蔬菜怎么办？',
+    categoryId: 'feeding',
+    conclusion: '多数观点认为：挑食不宜靠强迫解决，可以通过重复温和暴露、家庭共餐和变化呈现方式，逐步提高宝宝对蔬菜的接受度。',
+    sourceCount: 128,
+    expertCount: 31,
+    confidenceLevel: '中高',
+    sampleNote: '观点比例基于当前样本内容和来源权重整理，仅供参考。',
+    viewpoints: [
+      { id: 'v_401', title: '重复温和暴露', percentage: 57, type: 'majority', summary: '同一种蔬菜可多次少量尝试，避免一次失败就放弃。', color: '#7EA66A' },
+      { id: 'v_402', title: '调整形态和搭配', percentage: 29, type: 'neutral', summary: '改变切法、软硬和搭配方式，降低宝宝尝试门槛。', color: '#F4A340' },
+      { id: 'v_403', title: '避免强迫进食', percentage: 14, type: 'minority', summary: '强迫可能增加排斥，建议先保证整体饮食均衡。', color: '#F36F5B' }
+    ],
+    reasons: [
+      { id: 'r_401', title: '接受需要时间', description: '宝宝可能需要多次接触，才愿意尝试新口味。', icon: '尝', tone: 'green' },
+      { id: 'r_402', title: '家人示范有效', description: '共同进餐能让宝宝更容易模仿和尝试。', icon: '家', tone: 'orange' },
+      { id: 'r_403', title: '形态影响入口', description: '颜色、大小和软硬都会影响接受程度。', icon: '菜', tone: 'purple' },
+      { id: 'r_404', title: '少用压力交换', description: '把吃菜和奖励惩罚绑定，容易强化对抗。', icon: '压', tone: 'red' }
+    ],
+    authoritySourceIds: ['a_004'],
+    minorityView: '少数观点认为：短期内不必执着某一种蔬菜，只要整体饮食结构可接受，可以先用水果、薯类或其他蔬菜过渡。',
+    warnings: ['体重增长明显不佳', '长期只接受极少食物', '进食时频繁呕吐', '疑似吞咽困难'],
+    relatedQuestions: ['q_003', 'q_002'],
+    relatedPostIds: [],
+    disclaimer: '本内容仅用于育儿信息参考，不能替代医生诊断。如宝宝长期摄入极少、体重增长不佳或进食伴随呕吐、吞咽困难，请及时咨询医生。'
+  },
+  q_006: {
+    questionId: 'q_006',
+    title: '疫苗后低烧需要吃退烧药吗？',
+    categoryId: 'vaccine',
+    conclusion: '多数观点认为：疫苗后轻微低热且精神状态尚可时，可先补水、休息并观察；若体温较高、精神差或持续不退，再咨询医生是否用药。',
+    sourceCount: 116,
+    expertCount: 29,
+    confidenceLevel: '中高',
+    sampleNote: '观点比例基于当前样本内容和来源权重整理，仅供参考。',
+    viewpoints: [
+      { id: 'v_501', title: '观察护理为主', percentage: 62, type: 'majority', summary: '低热、精神尚可时多先观察，注意补水和休息。', color: '#7EA66A' },
+      { id: 'v_502', title: '按体温和状态判断', percentage: 26, type: 'neutral', summary: '体温升高或明显不适时，可咨询医生是否用退烧药。', color: '#F4A340' },
+      { id: 'v_503', title: '不建议预防性用药', percentage: 12, type: 'minority', summary: '未发热或仅轻微不适时，不建议自行提前用退烧药。', color: '#F36F5B' }
+    ],
+    reasons: [
+      { id: 'r_501', title: '轻微反应常见', description: '接种后短期低热可作为常见反应观察。', icon: '苗', tone: 'green' },
+      { id: 'r_502', title: '精神状态更关键', description: '精神差、嗜睡或持续哭闹比数字更需要警惕。', icon: '神', tone: 'red' },
+      { id: 'r_503', title: '补水和休息', description: '少量多次饮水、保证休息，有助于恢复舒适。', icon: '水', tone: 'orange' },
+      { id: 'r_504', title: '用药先确认', description: '退烧药剂量需按体重和月龄判断。', icon: '药', tone: 'purple' }
+    ],
+    authoritySourceIds: ['a_002'],
+    minorityView: '少数观点会建议更早使用退烧药来减轻不适，但多数建议先结合体温、精神状态和医生建议判断。',
+    warnings: ['持续高热不退', '精神差或嗜睡', '呼吸异常', '接种处明显红肿化脓'],
+    relatedQuestions: ['q_001', 'q_004'],
+    relatedPostIds: [],
+    disclaimer: '本内容仅用于育儿信息参考，不能替代医生诊断。如宝宝出现持续高热、精神差、呼吸异常或接种处严重红肿，请及时就医。'
   }
 }
 

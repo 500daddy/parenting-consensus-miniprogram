@@ -32,6 +32,9 @@ function getDefaultQuestionId(keyword) {
   if (!text) return 'q_001'
   if (/夜醒|睡眠|入睡|哄睡/.test(text)) return 'q_002'
   if (/辅食|米粉|吃什么|第一口/.test(text)) return 'q_003'
+  if (/咳嗽|咳痰|有痰|呼吸/.test(text)) return 'q_004'
+  if (/挑食|蔬菜|不爱吃|吃菜|喂养/.test(text)) return 'q_005'
+  if (/疫苗|接种|低烧|退烧药|发热反应/.test(text)) return 'q_006'
   if (/发烧|发热|洗澡|退烧|体温/.test(text)) return 'q_001'
   const matched = data.questions.find((item) => item.title.indexOf(text) > -1 || text.indexOf(item.shortTitle) > -1)
   return matched ? matched.id : ''
