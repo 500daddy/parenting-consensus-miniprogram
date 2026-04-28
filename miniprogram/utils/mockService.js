@@ -98,16 +98,28 @@ function setStorageList(key, value) {
   }
 }
 
+function sanitizeHistory(items) {
+  const seen = {}
+  return items.filter((item) => typeof item === 'string')
+    .map((item) => item.trim())
+    .filter((item) => {
+      if (!item || seen[item]) return false
+      seen[item] = true
+      return true
+    })
+    .slice(0, 12)
+}
+
 function addHistory(keyword) {
   const text = (keyword || '').trim()
   if (!text) return
-  const history = getStorageList(HISTORY_KEY).filter((item) => item !== text)
+  const history = sanitizeHistory(getStorageList(HISTORY_KEY)).filter((item) => item !== text)
   history.unshift(text)
   setStorageList(HISTORY_KEY, history.slice(0, 12))
 }
 
 function getHistory() {
-  return getStorageList(HISTORY_KEY)
+  return sanitizeHistory(getStorageList(HISTORY_KEY))
 }
 
 function clearHistory() {
