@@ -19,7 +19,7 @@ input {
 }
 
 .page.with-tab {
-  padding-bottom: 156rpx;
+  padding-bottom: calc(156rpx + env(safe-area-inset-bottom));
 }
 
 .hero {
