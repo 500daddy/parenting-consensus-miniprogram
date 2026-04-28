@@ -11,6 +11,7 @@ Page({
 
   goSearch(event) {
     const keyword = event.currentTarget.dataset.keyword
+    if (!keyword) return
     wx.navigateTo({ url: `/pages/question/result?keyword=${encodeURIComponent(keyword)}` })
   },
 

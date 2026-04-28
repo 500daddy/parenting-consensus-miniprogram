@@ -81,6 +81,7 @@ Page({
 
   goQuestion(event) {
     const id = event.currentTarget.dataset.id
+    if (!id) return
     wx.navigateTo({ url: `/pages/question/result?id=${id}` })
   },
 

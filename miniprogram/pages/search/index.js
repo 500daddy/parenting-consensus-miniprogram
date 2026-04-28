@@ -35,6 +35,7 @@ Page({
 
   searchHistory(event) {
     const keyword = event.currentTarget.dataset.keyword
+    if (!keyword) return
     service.addHistory(keyword)
     wx.navigateTo({ url: `/pages/question/result?keyword=${encodeURIComponent(keyword)}` })
   },

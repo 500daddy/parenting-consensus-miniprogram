@@ -41,7 +41,9 @@ Page({
   },
 
   goQuestion(event) {
-    wx.navigateTo({ url: `/pages/question/result?id=${event.currentTarget.dataset.id}` })
+    const id = event.currentTarget.dataset.id
+    if (!id) return
+    wx.navigateTo({ url: `/pages/question/result?id=${id}` })
   },
 
   goSearch() {
