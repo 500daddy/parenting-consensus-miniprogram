@@ -74,9 +74,25 @@ walk(miniprogramRoot)
 
 const data = require(path.join(miniprogramRoot, 'mock/data.js'))
 const service = require(path.join(miniprogramRoot, 'utils/mockService.js'))
+const categoryIds = new Set(data.categories.map((item) => item.id))
+const questionIds = new Set(data.questions.map((item) => item.id))
+const authorityIds = new Set(data.authoritySources.map((item) => item.id))
+
+for (const question of data.questions) {
+  assertInvariant(categoryIds.has(question.categoryId), `Question ${question.id} uses unknown category ${question.categoryId}`)
+}
 
 for (const id of Object.keys(data.questionResults)) {
   const result = service.getQuestionResult({ id })
+  const rawResult = data.questionResults[id]
+  assertInvariant(questionIds.has(id), `Question result ${id} has no matching question`)
+  assertInvariant(rawResult.questionId === id, `Question result ${id} has mismatched questionId ${rawResult.questionId}`)
+  assertInvariant(categoryIds.has(rawResult.categoryId), `Question result ${id} uses unknown category ${rawResult.categoryId}`)
+  assertInvariant(rawResult.viewpoints.reduce((sum, item) => sum + item.percentage, 0) === 100, `Question result ${id} viewpoint percentages do not sum to 100`)
+  assertInvariant(rawResult.viewpoints.every((item) => item.color && /^#[0-9A-Fa-f]{6}$/.test(item.color)), `Question result ${id} has invalid viewpoint color`)
+  for (const sourceId of rawResult.authoritySourceIds) {
+    assertInvariant(authorityIds.has(sourceId), `Question result ${id} references missing authority source ${sourceId}`)
+  }
   assertInvariant(Boolean(result), `Missing service result for ${id}`)
   if (result) {
     for (const item of result.relatedQuestionItems) {
@@ -85,6 +101,12 @@ for (const id of Object.keys(data.questionResults)) {
     for (const source of result.authoritySources) {
       assertInvariant(source.questionIds.indexOf(id) > -1, `Authority source ${source.id} is not linked to ${id}`)
     }
+  }
+}
+
+for (const source of data.authoritySources) {
+  for (const questionId of source.questionIds) {
+    assertInvariant(questionIds.has(questionId), `Authority source ${source.id} references missing question ${questionId}`)
   }
 }
 
