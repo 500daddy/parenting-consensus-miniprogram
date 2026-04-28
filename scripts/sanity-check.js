@@ -2,9 +2,13 @@ const fs = require('fs')
 const path = require('path')
 
 const capturedComponents = []
+const capturedPages = []
 
 global.App = (config) => config
-global.Page = (config) => config
+global.Page = (config) => {
+  capturedPages.push(config)
+  return config
+}
 global.Component = (config) => {
   capturedComponents.push(config)
   return config
@@ -83,6 +87,24 @@ for (const ext of ['js', 'json', 'wxml', 'wxss']) {
 }
 
 walk(miniprogramRoot)
+
+for (const page of capturedPages) {
+  const context = Object.assign({}, page, {
+    data: Object.assign({}, page.data || {}),
+    setData(data) {
+      this.data = Object.assign({}, this.data, data)
+    },
+    getTabBar() {
+      return { setData() {} }
+    }
+  })
+  if (typeof page.onLoad === 'function') {
+    page.onLoad.call(context, {})
+  }
+  if (typeof page.onShow === 'function') {
+    page.onShow.call(context)
+  }
+}
 
 const customTabBar = capturedComponents.find((config) => config.data && Array.isArray(config.data.list))
 assertInvariant(Boolean(customTabBar), 'Custom tabBar component config was not loaded')
