@@ -64,12 +64,22 @@ function walk(dir) {
 
 const app = readJson(path.join(miniprogramRoot, 'app.json'))
 const projectConfig = readJson(path.join(root, 'project.config.json'))
+const brandName = '养娃新手村'
 
 assertInvariant(projectConfig.miniprogramRoot === 'miniprogram/', 'project.config.json miniprogramRoot should be miniprogram/')
+assertInvariant(projectConfig.description.indexOf(brandName) > -1, 'project.config.json description should use the current brand name')
+assertInvariant(projectConfig.projectname === brandName, 'project.config.json projectname should use the current brand name')
+assertInvariant(app.window.navigationBarTitleText === brandName, 'app.json window title should use the current brand name')
 assertInvariant(app.tabBar.custom === true, 'app.json should keep the custom tabBar enabled')
 assertInvariant(app.tabBar.list.length === 4, 'app.json tabBar should expose exactly 4 MVP tabs')
 assertInvariant(app.tabBar.list.every((item) => item.pagePath.indexOf('community') === -1 && item.text !== '社区'), 'Community tab should remain hidden in MVP')
 assertInvariant(app.pages.every((page) => page.indexOf('community') === -1), 'Community page should not be registered in MVP')
+assertExists('assets/hero/village-hero.png')
+
+for (const page of ['pages/search/index', 'pages/category/index', 'pages/profile/index']) {
+  const pageConfig = readJson(path.join(miniprogramRoot, `${page}.json`))
+  assertInvariant(pageConfig.navigationBarTitleText === '', `${page}.json should keep tab page title hidden`)
+}
 
 for (const page of app.pages) {
   for (const ext of ['js', 'json', 'wxml', 'wxss']) {
