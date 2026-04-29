@@ -1,7 +1,7 @@
 page {
   min-height: 100%;
-  background: #faf7f2;
-  color: #2f2a25;
+  background: #fff8ec;
+  color: #3a2d22;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -15,7 +15,7 @@ input {
 .page {
   min-height: 100vh;
   padding: 24rpx 26rpx 48rpx;
-  background: #faf7f2;
+  background: linear-gradient(180deg, #fff8ec 0%, #fffdf7 48%, #fff8ec 100%);
 }
 
 .page.with-tab {
@@ -113,10 +113,10 @@ input {
 
 .card {
   width: 100%;
-  background: #ffffff;
-  border: 1rpx solid #eee6dc;
-  border-radius: 22rpx;
-  box-shadow: 0 10rpx 28rpx rgba(80, 60, 40, 0.07);
+  background: rgba(255, 253, 246, 0.96);
+  border: 2rpx solid #ead8b8;
+  border-radius: 18rpx;
+  box-shadow: 0 6rpx 0 rgba(183, 143, 83, 0.1), 0 14rpx 28rpx rgba(92, 65, 36, 0.05);
 }
 
 .section {
@@ -137,12 +137,12 @@ input {
   gap: 12rpx;
   font-size: 32rpx;
   font-weight: 700;
-  color: #2f2a25;
+  color: #3a2d22;
 }
 
 .section-more {
   font-size: 24rpx;
-  color: #8b8178;
+  color: #8f724e;
 }
 
 .search-card {
@@ -197,19 +197,19 @@ input {
   gap: 6rpx;
   min-height: 56rpx;
   padding: 0 18rpx;
-  border: 1rpx solid #eee6dc;
-  border-radius: 999rpx;
-  background: #fffdfb;
-  color: #2f2a25;
+  border: 2rpx solid #ead8b8;
+  border-radius: 12rpx;
+  background: #fffdf6;
+  color: #3a2d22;
   font-size: 24rpx;
   line-height: 1;
   white-space: nowrap;
 }
 
 .chip.active {
-  border-color: #a8c695;
-  background: #eef6ea;
-  color: #5f8c4a;
+  border-color: #77a85f;
+  background: #eaf6df;
+  color: #376d35;
   font-weight: 600;
 }
 
@@ -218,9 +218,9 @@ input {
   align-items: center;
   min-height: 38rpx;
   padding: 0 14rpx;
-  border-radius: 10rpx;
-  background: #eef6ea;
-  color: #6f985a;
+  border-radius: 8rpx;
+  background: #eaf6df;
+  color: #4f8a43;
   font-size: 22rpx;
 }
 
@@ -273,8 +273,8 @@ input {
   justify-content: center;
   height: 78rpx;
   padding: 0 34rpx;
-  border-radius: 999rpx;
-  background: #7ea66a;
+  border-radius: 12rpx;
+  background: #75b86f;
   color: #ffffff;
   font-size: 28rpx;
   font-weight: 600;
@@ -286,10 +286,10 @@ input {
   justify-content: center;
   height: 72rpx;
   padding: 0 28rpx;
-  border: 1rpx solid #eee6dc;
-  border-radius: 999rpx;
-  background: #fffdfb;
-  color: #6f985a;
+  border: 2rpx solid #d8c39f;
+  border-radius: 12rpx;
+  background: #fffdf6;
+  color: #4f8a43;
   font-size: 26rpx;
 }
 
