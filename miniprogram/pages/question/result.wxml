@@ -1,4 +1,4 @@
-<view class="page with-tab">
+<view class="page with-tab result-page">
   <view class="result-search card">
     <view class="search-icon"></view>
     <view class="result-keyword">{{keyword || '搜索育儿问题'}}</view>
@@ -32,7 +32,9 @@
       <view class="summary-head">
         <view class="badge">权</view>
         <view class="summary-title">主流共识</view>
-        <button class="btn-plain favorite-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite">{{isFavorite ? '已收藏' : '收藏'}}</button>
+        <button class="btn-plain favorite-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite" aria-label="{{isFavorite ? '取消收藏' : '收藏'}}">
+          <text class="favorite-icon">{{isFavorite ? '★' : '☆'}}</text>
+        </button>
       </view>
       <view class="conclusion-box">
         <view class="check-dot">✓</view>

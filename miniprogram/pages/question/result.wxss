@@ -91,6 +91,12 @@
   gap: 14rpx;
 }
 
+.page.with-tab.result-page::after {
+  bottom: calc(104rpx + env(safe-area-inset-bottom));
+  height: 72rpx;
+  background: linear-gradient(180deg, rgba(255, 248, 236, 0) 0%, rgba(255, 248, 236, 0.54) 64%, rgba(255, 253, 246, 0.92) 100%);
+}
+
 .badge,
 .shield-small,
 .question-mark,
@@ -126,17 +132,29 @@
 }
 
 .favorite-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54rpx;
   height: 54rpx;
-  padding: 0 18rpx;
+  padding: 0;
+  border: 2rpx solid #f3d6ac;
   border-radius: 12rpx;
   background: #fff4e4;
   color: #d9821f;
-  font-size: 24rpx;
+  font-size: 28rpx;
+  line-height: 1;
+  flex: none;
 }
 
 .favorite-btn.active {
-  background: #eef6ea;
-  color: #6f985a;
+  border-color: #cfe3c4;
+  background: #eaf6df;
+  color: #4f8a43;
+}
+
+.favorite-icon {
+  line-height: 1;
 }
 
 .conclusion-box {
