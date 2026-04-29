@@ -260,6 +260,7 @@ input {
 
 .tap-card {
   box-sizing: border-box;
+  transition: opacity 120ms ease-out, transform 120ms ease-out;
 }
 
 .tap-card:active {

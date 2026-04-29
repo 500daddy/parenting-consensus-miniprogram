@@ -103,7 +103,7 @@
   justify-content: center;
   width: 68rpx;
   height: 68rpx;
-  border-radius: 50%;
+  border-radius: 12rpx;
   background: #eef6ea;
   color: #6f985a;
   font-size: 30rpx;

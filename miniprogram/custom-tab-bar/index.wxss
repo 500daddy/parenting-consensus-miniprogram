@@ -42,7 +42,7 @@
   justify-content: center;
   width: 46rpx;
   height: 46rpx;
-  border-radius: 50%;
+  border-radius: 12rpx;
 }
 
 .tab-item.active .tab-icon-wrap {
@@ -63,4 +63,8 @@
 
 .tab-item.active .tab-text {
   font-weight: 800;
+}
+
+.tab-item:active {
+  opacity: 0.86;
 }

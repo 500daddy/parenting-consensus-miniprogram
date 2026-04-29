@@ -1,5 +1,5 @@
 <view class="page with-tab home-page">
-  <view class="hero">
+  <view class="hero" style="padding-top: {{heroPaddingTop}}rpx;">
     <image class="hero-photo" src="/assets/hero/village-hero.png" mode="aspectFill" />
     <view class="hero-scrim"></view>
     <view class="hero-copy">
@@ -12,6 +12,7 @@
     <view class="tap-card search-card" bindtap="goSearch">
       <view class="search-icon"></view>
       <view class="search-placeholder">来村里问问，例如：宝宝发烧能洗澡吗？</view>
+      <view class="home-search-action">搜索</view>
     </view>
   </view>
 
