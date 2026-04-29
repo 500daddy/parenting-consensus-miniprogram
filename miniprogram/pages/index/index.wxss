@@ -2,6 +2,10 @@
   padding-top: 0;
 }
 
+.home-page::before {
+  display: none;
+}
+
 .hero {
   min-height: 336rpx;
   margin: 0 -26rpx;

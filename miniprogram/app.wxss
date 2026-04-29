@@ -39,9 +39,9 @@ input {
 }
 
 .page.with-tab::after {
-  bottom: calc(122rpx + env(safe-area-inset-bottom));
-  height: 110rpx;
-  background: linear-gradient(180deg, rgba(255, 248, 236, 0) 0%, rgba(255, 248, 236, 0.86) 58%, #fff8ec 100%);
+  bottom: calc(108rpx + env(safe-area-inset-bottom));
+  height: 132rpx;
+  background: linear-gradient(180deg, rgba(255, 248, 236, 0) 0%, rgba(255, 248, 236, 0.72) 50%, rgba(255, 253, 246, 0.96) 100%);
 }
 
 .hero {
