@@ -8,7 +8,8 @@
   gap: 24rpx;
   margin-top: 0;
   padding: 30rpx;
-  background: linear-gradient(135deg, #ffffff 0%, #f5fbf1 56%, #fff7eb 100%);
+  border-color: #ead8b8;
+  background: linear-gradient(135deg, #fffdf6 0%, #f5fbf1 56%, #fff7eb 100%);
 }
 
 .avatar {
@@ -17,9 +18,9 @@
   justify-content: center;
   width: 100rpx;
   height: 100rpx;
-  border-radius: 50%;
+  border-radius: 18rpx;
   background: #eef6ea;
-  border: 8rpx solid rgba(255, 255, 255, 0.82);
+  border: 4rpx solid rgba(255, 255, 255, 0.88);
   color: #6f985a;
   font-size: 40rpx;
   font-weight: 700;
@@ -56,9 +57,9 @@
   gap: 8rpx;
   min-height: 44rpx;
   padding: 0 18rpx;
-  border-radius: 999rpx;
-  background: rgba(255, 255, 255, 0.74);
-  border: 1rpx solid #e7efdf;
+  border-radius: 12rpx;
+  background: rgba(255, 253, 246, 0.78);
+  border: 2rpx solid #d8e8cf;
 }
 
 .stat-num {
@@ -74,6 +75,8 @@
 
 .baby-card {
   padding: 26rpx;
+  border-color: #ead8b8;
+  background: #fffdf6;
 }
 
 .baby-head {
@@ -106,9 +109,9 @@
   position: relative;
   min-height: 116rpx;
   padding: 18rpx 18rpx 18rpx 70rpx;
-  border-radius: 18rpx;
+  border-radius: 14rpx;
   background: #fffaf3;
-  border: 1rpx solid #f1e8dc;
+  border: 2rpx solid #f1e8dc;
 }
 
 .cell-icon {
@@ -120,7 +123,7 @@
   justify-content: center;
   width: 38rpx;
   height: 38rpx;
-  border-radius: 50%;
+  border-radius: 9rpx;
   background: #eef6ea;
   color: #6f985a;
   font-size: 18rpx;
@@ -142,6 +145,8 @@
 
 .menu-card {
   overflow: hidden;
+  border-color: #ead8b8;
+  background: #fffdf6;
 }
 
 .menu-row {
@@ -194,9 +199,9 @@
   justify-content: center;
   width: 42rpx;
   height: 42rpx;
-  border-radius: 50%;
-  background: #f4f1ec;
-  color: #8b8178;
+  border-radius: 12rpx;
+  background: #fff4e4;
+  color: #c17442;
   font-size: 34rpx;
   line-height: 1;
   flex: none;
