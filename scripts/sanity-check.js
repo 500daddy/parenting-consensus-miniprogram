@@ -35,6 +35,14 @@ function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'))
 }
 
+function readPngSize(relativePath) {
+  const buffer = fs.readFileSync(path.join(miniprogramRoot, relativePath))
+  return {
+    width: buffer.readUInt32BE(16),
+    height: buffer.readUInt32BE(20)
+  }
+}
+
 function assertExists(relativePath) {
   const fullPath = path.join(miniprogramRoot, relativePath)
   if (!fs.existsSync(fullPath)) {
@@ -75,6 +83,8 @@ assertInvariant(app.tabBar.list.length === 4, 'app.json tabBar should expose exa
 assertInvariant(app.tabBar.list.every((item) => item.pagePath.indexOf('community') === -1 && item.text !== '社区'), 'Community tab should remain hidden in MVP')
 assertInvariant(app.pages.every((page) => page.indexOf('community') === -1), 'Community page should not be registered in MVP')
 assertExists('assets/hero/village-hero.png')
+const heroSize = readPngSize('assets/hero/village-hero.png')
+assertInvariant(heroSize.width === 690 && heroSize.height === 300, 'village hero image should be 690x300')
 
 for (const page of ['pages/search/index', 'pages/category/index', 'pages/profile/index']) {
   const pageConfig = readJson(path.join(miniprogramRoot, `${page}.json`))
