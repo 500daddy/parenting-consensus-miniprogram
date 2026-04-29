@@ -14,6 +14,8 @@
   width: 100%;
   min-width: 0;
   padding: 0 10rpx;
+  border-color: #ead8b8;
+  background: #fffdf6;
   font-size: 23rpx;
 }
 
@@ -43,7 +45,7 @@
   justify-content: center;
   width: 66rpx;
   height: 66rpx;
-  border-radius: 50%;
+  border-radius: 12rpx;
   background: #fff4e4;
   color: #f4a340;
   font-size: 26rpx;
@@ -75,9 +77,9 @@
   justify-content: center;
   min-width: 104rpx;
   height: 54rpx;
-  border-radius: 999rpx;
-  background: #eef6ea;
-  color: #6f985a;
+  border-radius: 12rpx;
+  background: #eaf6df;
+  color: #4f8a43;
   font-size: 24rpx;
   font-weight: 600;
   flex: none;
@@ -90,6 +92,8 @@
   width: 100%;
   min-height: 164rpx;
   padding: 22rpx;
+  border-color: #ead8b8;
+  background: #fffdf6;
   text-align: left;
 }
 
@@ -141,9 +145,9 @@
   justify-content: center;
   width: 46rpx;
   height: 46rpx;
-  border-radius: 50%;
-  background: #f4f1ec;
-  color: #9a938b;
+  border-radius: 12rpx;
+  background: #fff4e4;
+  color: #c17442;
   font-size: 32rpx;
   line-height: 1;
   flex: none;
@@ -154,12 +158,14 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   width: 100%;
   padding: 22rpx 18rpx;
+  border-color: #ead8b8;
+  background: #fffdf6;
   gap: 14rpx;
 }
 
 .authority-mini-item {
   min-width: 0;
-  border-radius: 18rpx;
+  border-radius: 12rpx;
   padding: 10rpx 4rpx 12rpx;
   text-align: center;
 }
@@ -171,7 +177,7 @@
   width: 72rpx;
   height: 72rpx;
   margin: 0 auto 12rpx;
-  border-radius: 50%;
+  border-radius: 14rpx;
   background: #eef6ea;
   color: #6f985a;
   font-size: 30rpx;

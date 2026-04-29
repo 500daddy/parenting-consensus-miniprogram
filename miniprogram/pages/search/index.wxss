@@ -2,7 +2,7 @@
   display: flex;
   gap: 14rpx;
   align-items: center;
-  padding-top: 22rpx;
+  padding-top: 24rpx;
 }
 
 .search-top .search-card {
@@ -10,15 +10,17 @@
   min-width: 0;
   min-height: 92rpx;
   padding: 0 24rpx;
-  border-color: #efe6db;
-  box-shadow: 0 12rpx 30rpx rgba(80, 60, 40, 0.08);
+  border-color: #ead8b8;
+  background: #fffdf6;
+  box-shadow: 0 6rpx 0 rgba(183, 143, 83, 0.1), 0 12rpx 24rpx rgba(80, 60, 40, 0.05);
 }
 
 .search-submit {
   width: 132rpx;
   height: 84rpx;
+  border-radius: 14rpx;
   flex: none;
-  box-shadow: 0 10rpx 22rpx rgba(126, 166, 106, 0.22);
+  box-shadow: 0 6rpx 0 rgba(58, 111, 54, 0.18);
 }
 
 .clear-btn {
@@ -27,9 +29,9 @@
   justify-content: center;
   width: 52rpx;
   height: 52rpx;
-  border-radius: 50%;
-  background: #eef6ea;
-  color: #7ea66a;
+  border-radius: 12rpx;
+  background: #eaf6df;
+  color: #4f8a43;
   font-size: 38rpx;
   flex: none;
 }
@@ -61,8 +63,10 @@
   align-items: center;
   gap: 18rpx;
   width: 100%;
-  min-height: 168rpx;
-  padding: 24rpx;
+  min-height: 170rpx;
+  padding: 22rpx;
+  border-color: #ead8b8;
+  background: #fffdf6;
   text-align: left;
 }
 
@@ -72,7 +76,7 @@
   justify-content: center;
   width: 68rpx;
   height: 68rpx;
-  border-radius: 50%;
+  border-radius: 12rpx;
   background: #eef6ea;
   color: #6f985a;
   font-size: 28rpx;
@@ -114,9 +118,9 @@
   justify-content: center;
   width: 46rpx;
   height: 46rpx;
-  border-radius: 50%;
-  background: #f4f1ec;
-  color: #9a938b;
+  border-radius: 12rpx;
+  background: #fff4e4;
+  color: #c17442;
   font-size: 32rpx;
   line-height: 1;
   flex: none;
@@ -135,7 +139,7 @@
   justify-content: center;
   width: 66rpx;
   height: 66rpx;
-  border-radius: 50%;
+  border-radius: 12rpx;
   background: #fff4e4;
   color: #f4a340;
   font-size: 26rpx;
