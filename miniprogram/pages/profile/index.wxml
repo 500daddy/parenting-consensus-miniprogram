@@ -53,24 +53,24 @@
 
   <view class="section menu-card card">
     <view class="tap-card menu-row" bindtap="goFavorites">
-      <view class="menu-icon">藏</view>
+      <image class="menu-icon pixel-img" src="{{actionIconPaths.favorite}}" mode="aspectFit" />
       <view class="menu-main">我的收藏</view>
       <view class="menu-extra">{{favoriteCount}} 项</view>
       <view class="menu-arrow">›</view>
     </view>
     <view class="tap-card menu-row" bindtap="goHistory">
-      <view class="menu-icon">史</view>
+      <image class="menu-icon pixel-img" src="{{actionIconPaths.history}}" mode="aspectFit" />
       <view class="menu-main">搜索历史</view>
       <view class="menu-extra">{{historyCount}} 条</view>
       <view class="menu-arrow">›</view>
     </view>
     <view class="tap-card menu-row" bindtap="showFeedback">
-      <view class="menu-icon">馈</view>
+      <image class="menu-icon pixel-img" src="{{actionIconPaths.question}}" mode="aspectFit" />
       <view class="menu-main">意见反馈</view>
       <view class="menu-arrow">›</view>
     </view>
     <view class="tap-card menu-row last" bindtap="showDisclaimer">
-      <view class="menu-icon">责</view>
+      <image class="menu-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
       <view class="menu-main">免责声明</view>
       <view class="menu-arrow">›</view>
     </view>

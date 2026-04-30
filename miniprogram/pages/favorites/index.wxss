@@ -1,3 +1,7 @@
+.pixel-img {
+  display: block;
+}
+
 .simple-head {
   padding: 30rpx 8rpx 24rpx;
 }
@@ -22,17 +26,10 @@
 }
 
 .empty-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 82rpx;
   height: 82rpx;
   margin-bottom: 20rpx;
   border-radius: 14rpx;
-  background: #fff4e4;
-  color: #f4a340;
-  font-size: 30rpx;
-  font-weight: 700;
 }
 
 .empty-copy {
@@ -76,16 +73,9 @@
 }
 
 .question-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 66rpx;
   height: 66rpx;
   border-radius: 12rpx;
-  background: #eef6ea;
-  color: #6f985a;
-  font-size: 28rpx;
-  font-weight: 700;
   flex: none;
 }
 

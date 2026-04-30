@@ -6,7 +6,8 @@ Page({
     hotQuestions: [],
     authoritySources: [],
     todayResult: null,
-    heroPaddingTop: 112
+    heroPaddingTop: 112,
+    actionIconPaths: service.actionIconPaths
   },
 
   onLoad() {

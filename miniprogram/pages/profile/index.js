@@ -4,7 +4,8 @@ Page({
   data: {
     profile: service.profile,
     favoriteCount: 0,
-    historyCount: 0
+    historyCount: 0,
+    actionIconPaths: service.actionIconPaths
   },
 
   onShow() {

@@ -50,6 +50,14 @@ function assertExists(relativePath) {
   }
 }
 
+function assertMiniProgramAsset(assetPath) {
+  if (!assetPath || assetPath[0] !== '/') {
+    invariantErrors.push(`Invalid miniprogram asset path: ${assetPath || 'empty'}`)
+    return
+  }
+  assertExists(assetPath.replace(/^\//, ''))
+}
+
 function assertInvariant(condition, message) {
   if (!condition) {
     invariantErrors.push(message)
@@ -150,6 +158,22 @@ const trustLevels = new Set(['high', 'medium'])
 const reasonTones = new Set(['green', 'orange', 'red', 'purple'])
 
 assertInvariant(Array.isArray(data.communityPosts), 'communityPosts should remain as a reserved array boundary')
+
+for (const iconPath of Object.values(service.actionIconPaths)) {
+  assertMiniProgramAsset(iconPath)
+}
+
+for (const category of service.categories) {
+  assertMiniProgramAsset(category.iconPath)
+}
+
+for (const question of service.getAvailableQuestions()) {
+  assertMiniProgramAsset(question.tagIconPath)
+}
+
+for (const source of service.getAuthoritySources('all')) {
+  assertMiniProgramAsset(source.iconPath)
+}
 
 for (const question of data.questions) {
   assertInvariant(categoryIds.has(question.categoryId), `Question ${question.id} uses unknown category ${question.categoryId}`)

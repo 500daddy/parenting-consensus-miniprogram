@@ -1,3 +1,7 @@
+.pixel-img {
+  display: block;
+}
+
 .compact {
   padding-bottom: 28rpx;
 }
@@ -111,16 +115,9 @@
 }
 
 .source-icon-large {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 92rpx;
   height: 92rpx;
   border-radius: 16rpx;
-  background: #eef6ea;
-  color: #6f985a;
-  font-size: 34rpx;
-  font-weight: 700;
   flex: none;
 }
 

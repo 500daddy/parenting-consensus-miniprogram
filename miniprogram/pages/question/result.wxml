@@ -30,10 +30,10 @@
   <block wx:if="{{result}}">
     <view class="summary-card card">
       <view class="summary-head">
-        <view class="badge">权</view>
+        <image class="badge pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" />
         <view class="summary-title">主流共识</view>
         <button class="btn-plain favorite-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite" aria-label="{{isFavorite ? '取消收藏' : '收藏'}}">
-          <text class="favorite-icon">{{isFavorite ? '★' : '☆'}}</text>
+          <image class="favorite-icon pixel-img" src="{{isFavorite ? actionIconPaths.star : actionIconPaths.favorite}}" mode="aspectFit" />
         </button>
       </view>
       <view class="conclusion-box">
@@ -69,10 +69,10 @@
     </view>
 
     <view class="section">
-      <view class="section-title"><text class="question-mark">?</text><text>为什么这么认为</text></view>
+      <view class="section-title"><image class="question-mark pixel-img" src="{{actionIconPaths.question}}" mode="aspectFit" /><text>为什么这么认为</text></view>
       <view class="reason-grid">
         <view wx:for="{{result.reasons}}" wx:key="id" class="reason-card tone-{{item.tone}}">
-          <view class="reason-icon">{{item.icon}}</view>
+          <image class="reason-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
           <view class="reason-title">{{item.title}}</view>
           <view class="reason-desc">{{item.description}}</view>
         </view>
@@ -81,12 +81,12 @@
 
     <view class="section">
       <view class="section-head">
-        <view class="section-title"><text class="shield-small">权</text><text>权威内容推荐</text></view>
+        <view class="section-title"><image class="shield-small pixel-img" src="{{actionIconPaths.authority}}" mode="aspectFit" /><text>权威内容推荐</text></view>
         <button class="btn-plain section-more" bindtap="goAuthority">更多内容 ›</button>
       </view>
       <view class="authority-list">
         <view wx:for="{{result.authoritySources}}" wx:key="id" class="tap-card authority-row card" bindtap="goAuthority" data-type="{{item.type}}">
-          <view class="authority-icon">{{item.icon}}</view>
+          <image class="authority-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
           <view class="authority-main">
             <view class="authority-head">
               <view class="authority-title">{{item.typeName}}</view>
@@ -108,7 +108,7 @@
     </view>
 
     <view class="section">
-      <view class="section-title"><text class="warn-mark">!</text><text>安全提醒</text></view>
+      <view class="section-title"><image class="warn-mark pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" /><text>安全提醒</text></view>
       <view class="warning-grid">
         <view wx:for="{{result.warnings}}" wx:key="*this" class="warning-tile warning-{{index}}">
           <view class="warning-icon">!</view>

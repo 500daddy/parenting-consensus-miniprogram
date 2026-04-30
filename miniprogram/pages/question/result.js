@@ -6,7 +6,8 @@ Page({
     result: null,
     isFavorite: false,
     noResult: false,
-    fallbackQuestions: []
+    fallbackQuestions: [],
+    actionIconPaths: service.actionIconPaths
   },
 
   onLoad(options) {

@@ -24,7 +24,7 @@
 
   <view wx:if="{{sources.length}}" class="source-list">
     <view wx:for="{{sources}}" wx:key="id" class="tap-card source-card card" bindtap="showSourceDetail" data-id="{{item.id}}">
-      <view class="source-icon-large">{{item.icon}}</view>
+      <image class="source-icon-large pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
       <view class="source-main">
         <view class="source-head">
           <view class="source-title">{{item.name}}</view>

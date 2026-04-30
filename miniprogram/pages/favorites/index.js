@@ -2,7 +2,8 @@ const service = require('../../utils/mockService.js')
 
 Page({
   data: {
-    favorites: []
+    favorites: [],
+    actionIconPaths: service.actionIconPaths
   },
 
   onShow() {

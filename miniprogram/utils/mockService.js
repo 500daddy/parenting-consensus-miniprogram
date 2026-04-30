@@ -3,6 +3,42 @@ const data = require('../mock/data.js')
 const HISTORY_KEY = 'parenting_consensus_history'
 const FAVORITES_KEY = 'parenting_consensus_favorites'
 const PENDING_CATEGORY_KEY = 'pending_category_id'
+const ICON_ROOT = '/assets/icons/pixel-v2'
+const categoryIconPaths = {
+  feeding: `${ICON_ROOT}/category/feeding.png`,
+  sleep: `${ICON_ROOT}/category/sleep.png`,
+  fever_care: `${ICON_ROOT}/category/fever-care.png`,
+  solid_food: `${ICON_ROOT}/category/solid-food.png`,
+  early_education: `${ICON_ROOT}/category/early-education.png`,
+  vaccine: `${ICON_ROOT}/category/vaccine.png`,
+  emotion: `${ICON_ROOT}/category/emotion.png`,
+  toilet: `${ICON_ROOT}/category/toilet.png`
+}
+const sourceIconPaths = {
+  doctor: `${ICON_ROOT}/source/doctor.png`,
+  guide: `${ICON_ROOT}/source/medical-guide.png`,
+  wiki: `${ICON_ROOT}/source/parenting-wiki.png`,
+  creator: `${ICON_ROOT}/source/verified-creator.png`
+}
+const actionIconPaths = {
+  authority: `${ICON_ROOT}/action/authority.png`,
+  consensus: `${ICON_ROOT}/action/consensus.png`,
+  favorite: `${ICON_ROOT}/action/favorite.png`,
+  history: `${ICON_ROOT}/action/history.png`,
+  hot: `${ICON_ROOT}/action/hot.png`,
+  minority: `${ICON_ROOT}/action/minority.png`,
+  question: `${ICON_ROOT}/action/question.png`,
+  reminder: `${ICON_ROOT}/action/reminder.png`,
+  search: `${ICON_ROOT}/action/search.png`,
+  star: `${ICON_ROOT}/action/star.png`,
+  warning: `${ICON_ROOT}/action/warning.png`
+}
+const reasonIconPaths = {
+  green: actionIconPaths.consensus,
+  orange: actionIconPaths.reminder,
+  red: actionIconPaths.warning,
+  purple: actionIconPaths.question
+}
 const keywordRules = [
   { pattern: /夜醒|睡眠|入睡|哄睡/, questionId: 'q_002' },
   { pattern: /辅食|米粉|吃什么|第一口/, questionId: 'q_003' },
@@ -13,7 +49,29 @@ const keywordRules = [
 ]
 
 function getCategory(id) {
-  return data.categories.find((item) => item.id === id)
+  const category = data.categories.find((item) => item.id === id)
+  return category ? enrichCategory(category) : category
+}
+
+function enrichCategory(category) {
+  return Object.assign({}, category, {
+    iconPath: categoryIconPaths[category.id] || actionIconPaths.question
+  })
+}
+
+function enrichQuestion(question) {
+  if (!question) return question
+  return Object.assign({}, question, {
+    category: getCategory(question.categoryId),
+    tagIconPath: categoryIconPaths[question.categoryId] || actionIconPaths.question
+  })
+}
+
+function enrichSource(source) {
+  if (!source) return source
+  return Object.assign({}, source, {
+    iconPath: sourceIconPaths[source.type] || actionIconPaths.authority
+  })
 }
 
 function formatHeat(value) {
@@ -24,7 +82,7 @@ function formatHeat(value) {
 }
 
 function getQuestionById(id) {
-  return data.questions.find((item) => item.id === id)
+  return enrichQuestion(data.questions.find((item) => item.id === id))
 }
 
 function hasQuestionResult(id) {
@@ -32,7 +90,7 @@ function hasQuestionResult(id) {
 }
 
 function getAvailableQuestions() {
-  return data.questions.filter((item) => hasQuestionResult(item.id))
+  return data.questions.filter((item) => hasQuestionResult(item.id)).map(enrichQuestion)
 }
 
 function getDefaultQuestionId(keyword) {
@@ -79,8 +137,11 @@ function getQuestionResult(options) {
   result.question = getQuestionById(id)
   result.category = getCategory(result.categoryId)
   result.donutStyle = buildDonutStyle(result.viewpoints)
+  result.reasons = result.reasons.map((reason) => Object.assign({}, reason, {
+    iconPath: reasonIconPaths[reason.tone] || actionIconPaths.question
+  }))
   result.authoritySources = result.authoritySourceIds.map((sourceId) => {
-    return data.authoritySources.find((source) => source.id === sourceId)
+    return enrichSource(data.authoritySources.find((source) => source.id === sourceId))
   }).filter(Boolean)
   result.relatedQuestionItems = result.relatedQuestions.map(getQuestionById).filter((item) => item && hasQuestionResult(item.id))
   return result
@@ -91,7 +152,7 @@ function getAuthoritySources(type, questionId) {
     const typeMatched = !type || type === 'all' || item.type === type
     const questionMatched = !questionId || item.questionIds.indexOf(questionId) > -1
     return typeMatched && questionMatched
-  })
+  }).map(enrichSource)
 }
 
 function getQuestionsByCategory(categoryId) {
@@ -199,9 +260,10 @@ module.exports = {
   HISTORY_KEY,
   FAVORITES_KEY,
   PENDING_CATEGORY_KEY,
-  categories: data.categories,
-  questions: data.questions,
+  categories: data.categories.map(enrichCategory),
+  questions: data.questions.map(enrichQuestion),
   profile: data.profile,
+  actionIconPaths,
   formatHeat,
   getCategory,
   getQuestionById,

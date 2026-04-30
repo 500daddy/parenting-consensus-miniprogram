@@ -21,7 +21,7 @@ Page({
       this.setData({ activeCategory: normalizeCategoryId(pending) })
     }
     this.setData({
-      categories: [{ id: 'all', name: '全部', icon: '全' }].concat(service.categories),
+      categories: [{ id: 'all', name: '全部', icon: '全', iconPath: service.actionIconPaths.question }].concat(service.categories),
       authoritySources: service.getAuthoritySources('all').slice(0, 3)
     })
     this.loadQuestions()

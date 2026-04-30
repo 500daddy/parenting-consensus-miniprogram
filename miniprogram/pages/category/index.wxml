@@ -1,7 +1,7 @@
 <view class="page with-tab category-page">
   <view class="category-chip-wrap">
     <view wx:for="{{categories}}" wx:key="id" class="tap-card chip {{activeCategory == item.id ? 'active' : ''}}" bindtap="changeCategory" data-id="{{item.id}}">
-      <text class="chip-icon">{{item.icon}}</text>{{item.name}}
+      <image class="chip-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />{{item.name}}
     </view>
   </view>
 
@@ -12,7 +12,7 @@
     </view>
     <view wx:if="{{questions.length}}" class="question-list">
       <view wx:for="{{questions}}" wx:key="id" class="tap-card question-row card" bindtap="goQuestion" data-id="{{item.id}}">
-        <view class="question-badge">{{item.tagIcon}}</view>
+        <image class="question-badge pixel-img" src="{{item.tagIconPath}}" mode="aspectFit" />
         <view class="question-main">
           <view class="question-title">{{item.title}}</view>
           <view class="question-summary">{{item.summary}}</view>
@@ -38,7 +38,7 @@
     </view>
     <view class="authority-mini card">
       <view wx:for="{{authoritySources}}" wx:key="id" class="tap-card authority-mini-item" bindtap="goAuthority" data-type="{{item.type}}">
-        <view class="mini-icon">{{item.icon}}</view>
+        <image class="mini-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
         <view class="mini-title">{{item.typeName}}</view>
         <view class="mini-desc">{{item.trustLabel}}</view>
       </view>

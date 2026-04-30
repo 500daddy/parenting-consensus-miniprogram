@@ -1,3 +1,7 @@
+.pixel-img {
+  display: block;
+}
+
 .category-page {
   padding-top: 26rpx;
 }
@@ -21,8 +25,8 @@
 
 .chip-icon {
   margin-right: 8rpx;
-  color: #7ea66a;
-  font-weight: 700;
+  width: 34rpx;
+  height: 34rpx;
 }
 
 .question-list {
@@ -98,16 +102,9 @@
 }
 
 .question-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 68rpx;
   height: 68rpx;
   border-radius: 12rpx;
-  background: #eef6ea;
-  color: #6f985a;
-  font-size: 30rpx;
-  font-weight: 700;
   flex: none;
 }
 
@@ -171,17 +168,10 @@
 }
 
 .mini-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 72rpx;
   height: 72rpx;
   margin: 0 auto 12rpx;
   border-radius: 14rpx;
-  background: #eef6ea;
-  color: #6f985a;
-  font-size: 30rpx;
-  font-weight: 700;
 }
 
 .mini-title {
