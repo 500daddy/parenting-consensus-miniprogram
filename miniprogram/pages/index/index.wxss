@@ -271,80 +271,6 @@
   pointer-events: none;
 }
 
-.source-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 9rpx;
-  padding: 12rpx;
-  border: 2rpx solid #ead8b8;
-  border-radius: 18rpx;
-  background: #fffdf6;
-  box-shadow: 0 6rpx 0 rgba(183, 143, 83, 0.08);
-}
-
-.source-entry {
-  width: 100%;
-  min-height: 168rpx;
-  padding: 14rpx 8rpx;
-  border-radius: 12rpx;
-  background: #fbfdf8;
-  text-align: center;
-}
-
-.source-1 {
-  background: #f7faff;
-}
-
-.source-2 {
-  background: #fffdf5;
-}
-
-.source-3 {
-  background: #fff9f1;
-}
-
-.source-icon {
-  width: 58rpx;
-  height: 58rpx;
-  margin: 0 auto 8rpx;
-  border-radius: 10rpx;
-}
-
-.source-1 .source-icon {
-  background: #edf4ff;
-  color: #6b91d6;
-}
-
-.source-2 .source-icon {
-  background: #f2f8ef;
-  color: #6f985a;
-}
-
-.source-3 .source-icon {
-  background: #fff2dd;
-  color: #d9821f;
-}
-
-.source-name {
-  color: #2f2a25;
-  font-size: 22rpx;
-  font-weight: 700;
-}
-
-.source-desc {
-  min-height: 38rpx;
-  margin-top: 6rpx;
-  color: #8b8178;
-  font-size: 18rpx;
-  line-height: 1.25;
-}
-
-.source-count {
-  margin-top: 8rpx;
-  color: #8b8178;
-  font-size: 20rpx;
-}
-
 .consensus-card {
   width: 100%;
   display: flex;
@@ -428,6 +354,55 @@
   flex: none;
 }
 
+.safety-card {
+  padding: 24rpx;
+}
+
+.safety-copy {
+  margin-bottom: 18rpx;
+}
+
+.safety-title {
+  color: #3a2d22;
+  font-size: 28rpx;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.safety-sub {
+  margin-top: 8rpx;
+  color: #8b8178;
+  font-size: 22rpx;
+  line-height: 1.4;
+}
+
+.safety-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12rpx;
+}
+
+.safety-item {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  min-height: 72rpx;
+  padding: 12rpx;
+  border: 2rpx solid #f7d9c6;
+  border-radius: 14rpx;
+  background: #fff7f1;
+  color: #b86146;
+  font-size: 22rpx;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.safety-icon {
+  width: 34rpx;
+  height: 34rpx;
+  flex: none;
+}
+
 @media (max-width: 360px) {
   .home-page {
     padding-top: 0;
@@ -438,7 +413,7 @@
     padding-top: 104rpx;
   }
 
-  .source-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .safety-grid {
+    grid-template-columns: 1fr;
   }
 }

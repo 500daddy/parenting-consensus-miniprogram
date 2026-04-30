@@ -1,6 +1,6 @@
 <view class="page with-tab profile-page">
   <view class="profile-card card">
-    <view class="avatar">{{profile.avatarText}}</view>
+    <image class="avatar pixel-img" src="{{profileIconPaths.family}}" mode="aspectFit" />
     <view class="profile-main">
       <view class="profile-name">{{profile.nickName}}</view>
       <view class="profile-sub">把常查问题沉淀成安心知识库</view>
@@ -28,22 +28,22 @@
       </view>
       <view class="baby-grid">
         <view class="baby-cell">
-          <view class="cell-icon">名</view>
+          <image class="cell-icon pixel-img" src="{{profileIconPaths.name}}" mode="aspectFit" />
           <view class="cell-label">昵称</view>
           <view class="cell-value">{{profile.baby.name}}</view>
         </view>
         <view class="baby-cell">
-          <view class="cell-icon">月</view>
+          <image class="cell-icon pixel-img" src="{{profileIconPaths.month}}" mode="aspectFit" />
           <view class="cell-label">月龄</view>
           <view class="cell-value">{{profile.baby.age}}</view>
         </view>
         <view class="baby-cell">
-          <view class="cell-icon">性</view>
+          <image class="cell-icon pixel-img" src="{{profileIconPaths.gender}}" mode="aspectFit" />
           <view class="cell-label">性别</view>
           <view class="cell-value">{{profile.baby.gender}}</view>
         </view>
         <view class="baby-cell">
-          <view class="cell-icon">敏</view>
+          <image class="cell-icon pixel-img" src="{{profileIconPaths.allergy}}" mode="aspectFit" />
           <view class="cell-label">过敏史</view>
           <view class="cell-value">{{profile.baby.allergy}}</view>
         </view>

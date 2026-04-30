@@ -33,6 +33,13 @@ const actionIconPaths = {
   star: `${ICON_ROOT}/action/star.png`,
   warning: `${ICON_ROOT}/action/warning.png`
 }
+const profileIconPaths = {
+  allergy: `${ICON_ROOT}/profile/allergy.png`,
+  family: `${ICON_ROOT}/profile/family.png`,
+  gender: `${ICON_ROOT}/profile/gender.png`,
+  month: `${ICON_ROOT}/profile/month.png`,
+  name: `${ICON_ROOT}/profile/name.png`
+}
 const reasonIconPaths = {
   green: actionIconPaths.consensus,
   orange: actionIconPaths.reminder,
@@ -145,6 +152,19 @@ function getQuestionResult(options) {
   }).filter(Boolean)
   result.relatedQuestionItems = result.relatedQuestions.map(getQuestionById).filter((item) => item && hasQuestionResult(item.id))
   return result
+}
+
+function getDailyQuestionId(date) {
+  const questions = getAvailableQuestions()
+  if (!questions.length) return ''
+  const current = date instanceof Date ? date : new Date()
+  const startOfDay = new Date(current.getFullYear(), current.getMonth(), current.getDate())
+  const dayIndex = Math.floor(startOfDay.getTime() / 86400000)
+  return questions[dayIndex % questions.length].id
+}
+
+function getTodayQuestionResult(date) {
+  return getQuestionResult({ id: getDailyQuestionId(date) })
 }
 
 function getAuthoritySources(type, questionId) {
@@ -264,12 +284,15 @@ module.exports = {
   questions: data.questions.map(enrichQuestion),
   profile: data.profile,
   actionIconPaths,
+  profileIconPaths,
   formatHeat,
   getCategory,
   getQuestionById,
   hasQuestionResult,
   getAvailableQuestions,
   getDefaultQuestionId,
+  getDailyQuestionId,
+  getTodayQuestionResult,
   searchQuestions,
   getQuestionResult,
   getAuthoritySources,

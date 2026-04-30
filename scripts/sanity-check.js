@@ -163,6 +163,10 @@ for (const iconPath of Object.values(service.actionIconPaths)) {
   assertMiniProgramAsset(iconPath)
 }
 
+for (const iconPath of Object.values(service.profileIconPaths)) {
+  assertMiniProgramAsset(iconPath)
+}
+
 for (const category of service.categories) {
   assertMiniProgramAsset(category.iconPath)
 }
@@ -232,6 +236,10 @@ for (const [keyword, expectedId] of keywordExpectations) {
   assertInvariant(actualId === expectedId, `Keyword "${keyword}" maps to ${actualId || 'none'} instead of ${expectedId}`)
   assertInvariant(service.searchQuestions(keyword).some((item) => item.id === expectedId), `Search results for "${keyword}" do not include ${expectedId}`)
 }
+
+const todayQuestionId = service.getDailyQuestionId(new Date(2026, 3, 30))
+assertInvariant(service.hasQuestionResult(todayQuestionId), `Daily consensus question ${todayQuestionId || 'none'} should have a result`)
+assertInvariant(Boolean(service.getTodayQuestionResult(new Date(2026, 3, 30))), 'Today consensus result should be available')
 
 for (const category of data.categories) {
   for (const question of service.getQuestionsByCategory(category.id)) {

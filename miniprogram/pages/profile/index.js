@@ -5,7 +5,8 @@ Page({
     profile: service.profile,
     favoriteCount: 0,
     historyCount: 0,
-    actionIconPaths: service.actionIconPaths
+    actionIconPaths: service.actionIconPaths,
+    profileIconPaths: service.profileIconPaths
   },
 
   onShow() {

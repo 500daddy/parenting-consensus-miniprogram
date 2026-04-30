@@ -122,16 +122,10 @@
   position: absolute;
   left: 18rpx;
   top: 18rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38rpx;
-  height: 38rpx;
+  width: 42rpx;
+  height: 42rpx;
   border-radius: 9rpx;
   background: #eef6ea;
-  color: #6f985a;
-  font-size: 18rpx;
-  font-weight: 700;
 }
 
 .cell-label {

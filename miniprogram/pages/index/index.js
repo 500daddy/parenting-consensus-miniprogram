@@ -4,14 +4,14 @@ Page({
   data: {
     categories: [],
     hotQuestions: [],
-    authoritySources: [],
     todayResult: null,
+    safetyWarnings: [],
     heroPaddingTop: 112,
     actionIconPaths: service.actionIconPaths
   },
 
   onLoad() {
-    const todayResult = service.getQuestionResult({ id: 'q_004' }) || service.getQuestionResult({ id: 'q_001' })
+    const todayResult = service.getTodayQuestionResult() || service.getQuestionResult({ id: 'q_001' })
     const heroPaddingTop = this.getHeroPaddingTop()
     this.setData({
       heroPaddingTop,
@@ -19,8 +19,8 @@ Page({
       hotQuestions: service.getAvailableQuestions().slice(0, 3).map((item) => Object.assign({}, item, {
         heatText: service.formatHeat(item.heat)
       })),
-      authoritySources: service.getAuthoritySources('all').slice(0, 4),
-      todayResult
+      todayResult,
+      safetyWarnings: todayResult ? todayResult.warnings.slice(0, 4) : []
     })
   },
 
