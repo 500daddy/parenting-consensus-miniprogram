@@ -8,11 +8,16 @@ const categoryIconPaths = {
   feeding: `${ICON_ROOT}/category/feeding.png`,
   sleep: `${ICON_ROOT}/category/sleep.png`,
   fever_care: `${ICON_ROOT}/category/fever-care.png`,
+  common_illness: `${ICON_ROOT}/category/common-illness.png`,
   solid_food: `${ICON_ROOT}/category/solid-food.png`,
   early_education: `${ICON_ROOT}/category/early-education.png`,
+  early_development: `${ICON_ROOT}/category/early-education.png`,
   vaccine: `${ICON_ROOT}/category/vaccine.png`,
+  vaccine_check: `${ICON_ROOT}/category/vaccine.png`,
+  skin_allergy: `${ICON_ROOT}/category/common-illness.png`,
   emotion: `${ICON_ROOT}/category/emotion.png`,
-  toilet: `${ICON_ROOT}/category/toilet.png`
+  toilet: `${ICON_ROOT}/category/toilet.png`,
+  safety_first: `${ICON_ROOT}/category/travel-safety.png`
 }
 const sourceIconPaths = {
   doctor: `${ICON_ROOT}/source/doctor.png`,
@@ -46,15 +51,47 @@ const reasonIconPaths = {
   red: actionIconPaths.warning,
   purple: actionIconPaths.question
 }
-const keywordRules = [
-  { pattern: /夜醒|睡眠|入睡|哄睡/, questionId: 'q_002' },
-  { pattern: /辅食|米粉|吃什么|第一口/, questionId: 'q_003' },
-  { pattern: /咳嗽|咳痰|有痰|呼吸/, questionId: 'q_004' },
-  { pattern: /挑食|蔬菜|不爱吃|吃菜|喂养/, questionId: 'q_005' },
-  { pattern: /疫苗|接种|低烧|退烧药|发热反应/, questionId: 'q_006' },
-  { pattern: /发烧|发热|高烧|高热|洗澡|退烧|体温/, questionId: 'q_001' }
-]
 
+function sortQuestions(left, right) {
+  const leftRank = typeof left.priorityRank === 'number' ? left.priorityRank : 99
+  const rightRank = typeof right.priorityRank === 'number' ? right.priorityRank : 99
+  if (leftRank !== rightRank) return leftRank - rightRank
+  if (left.heat !== right.heat) return right.heat - left.heat
+  return left.id.localeCompare(right.id)
+}
+
+function getQuestionSearchText(question) {
+  return [
+    question.title,
+    question.shortTitle,
+    question.categoryName,
+    question.scene,
+    question.tag,
+    (question.tags || []).join(' '),
+    (question.searchTerms || []).join(' '),
+    question.summary
+  ].filter(Boolean).join(' ').toLowerCase()
+}
+
+function getQuestionSearchScore(question, keyword) {
+  const text = (keyword || '').trim().toLowerCase()
+  if (!text) return 0
+  const haystack = getQuestionSearchText(question)
+  let score = 0
+  if (question.title && question.title.toLowerCase().indexOf(text) > -1) score += 80
+  if (question.shortTitle && question.shortTitle.toLowerCase().indexOf(text) > -1) score += 70
+  if (haystack.indexOf(text) > -1) score += 50
+  if (text.indexOf((question.shortTitle || '').toLowerCase()) > -1) score += 35
+  ;(question.searchTerms || []).forEach((term) => {
+    const lowerTerm = term.toLowerCase()
+    if (lowerTerm.indexOf(text) > -1 || text.indexOf(lowerTerm) > -1) score += 45
+  })
+  ;(question.tags || []).forEach((tag) => {
+    const lowerTag = tag.toLowerCase()
+    if (text.indexOf(lowerTag) > -1) score += 12
+  })
+  return score
+}
 function getCategory(id) {
   const category = data.categories.find((item) => item.id === id)
   return category ? enrichCategory(category) : category
@@ -97,30 +134,35 @@ function hasQuestionResult(id) {
 }
 
 function getAvailableQuestions() {
-  return data.questions.filter((item) => hasQuestionResult(item.id)).map(enrichQuestion)
+  return data.questions.filter((item) => hasQuestionResult(item.id)).slice().sort(sortQuestions).map(enrichQuestion)
+}
+
+function getPriorityQuestions(priority) {
+  const target = priority || 'P0'
+  return getAvailableQuestions().filter((item) => item.priority === target)
 }
 
 function getDefaultQuestionId(keyword) {
   const text = (keyword || '').trim()
-  if (!text) return 'q_001'
-  const rule = keywordRules.find((item) => item.pattern.test(text))
-  if (rule) return rule.questionId
-  const matched = data.questions.find((item) => item.title.indexOf(text) > -1 || text.indexOf(item.shortTitle) > -1)
-  return matched ? matched.id : ''
+  const availableQuestions = getAvailableQuestions()
+  if (!text) return availableQuestions.length ? availableQuestions[0].id : ''
+  const scored = availableQuestions.map((item) => ({
+    id: item.id,
+    score: getQuestionSearchScore(item, text),
+    heat: item.heat
+  })).filter((item) => item.score > 0)
+    .sort((left, right) => right.score - left.score || right.heat - left.heat)
+  return scored.length ? scored[0].id : ''
 }
 
 function searchQuestions(keyword) {
   const text = (keyword || '').trim()
   const availableQuestions = getAvailableQuestions()
   if (!text) return availableQuestions
-  const lower = text.toLowerCase()
-  const direct = availableQuestions.filter((item) => {
-    const category = getCategory(item.categoryId)
-    return item.title.toLowerCase().indexOf(lower) > -1 ||
-      item.shortTitle.toLowerCase().indexOf(lower) > -1 ||
-      item.tag.toLowerCase().indexOf(lower) > -1 ||
-      (category && category.name.toLowerCase().indexOf(lower) > -1)
-  })
+  const direct = availableQuestions.map((item) => Object.assign({}, item, {
+    searchScore: getQuestionSearchScore(item, text)
+  })).filter((item) => item.searchScore > 0)
+    .sort((left, right) => right.searchScore - left.searchScore || sortQuestions(left, right))
   if (direct.length) return direct
   const fallbackId = getDefaultQuestionId(text)
   return hasQuestionResult(fallbackId) ? [getQuestionById(fallbackId)] : []
@@ -295,6 +337,7 @@ module.exports = {
   getTodayQuestionResult,
   searchQuestions,
   getQuestionResult,
+  getPriorityQuestions,
   getAuthoritySources,
   getQuestionsByCategory,
   addHistory,

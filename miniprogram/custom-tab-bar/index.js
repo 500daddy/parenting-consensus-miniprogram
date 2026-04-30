@@ -1,6 +1,7 @@
 Component({
   data: {
     selected: 0,
+    pressedIndex: -1,
     list: [
       {
         pagePath: '/pages/index/index',
@@ -10,15 +11,15 @@ Component({
       },
       {
         pagePath: '/pages/search/index',
-        text: '问答',
+        text: '问问',
         iconPath: '/assets/tab/qa.png',
         selectedIconPath: '/assets/tab/qa-active.png'
       },
       {
-        pagePath: '/pages/category/index',
-        text: '分类',
-        iconPath: '/assets/tab/category.png',
-        selectedIconPath: '/assets/tab/category-active.png'
+        pagePath: '/pages/favorites/index',
+        text: '收藏',
+        iconPath: '/assets/icons/pixel-v2/action/favorite.png',
+        selectedIconPath: '/assets/icons/pixel-v2/action/star.png'
       },
       {
         pagePath: '/pages/profile/index',
@@ -33,7 +34,10 @@ Component({
     switchTab(event) {
       const path = event.currentTarget.dataset.path
       const index = event.currentTarget.dataset.index
-      this.setData({ selected: index })
+      this.setData({ selected: index, pressedIndex: index })
+      setTimeout(() => {
+        this.setData({ pressedIndex: -1 })
+      }, 180)
       wx.switchTab({ url: path })
     }
   }

@@ -2,9 +2,14 @@
   <view class="hero" style="padding-top: {{heroPaddingTop}}rpx;">
     <image class="hero-photo" src="/assets/hero/village-hero.png" mode="aspectFill" />
     <view class="hero-scrim"></view>
-    <view class="hero-copy">
-      <view class="hero-title">养娃新手村</view>
-      <view class="hero-subtitle">养娃路上，先来村里问问</view>
+    <view class="hero-copy hero-sign">
+      <view class="sign-roof"></view>
+      <view class="sign-board">
+        <view class="hero-title">养娃新手村</view>
+      </view>
+      <view class="sign-tag">
+        <view class="hero-subtitle">养娃路上，先来村里问问</view>
+      </view>
     </view>
   </view>
 

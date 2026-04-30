@@ -7,6 +7,9 @@ Page({
   },
 
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 2 })
+    }
     this.setData({
       favorites: service.getFavorites().map((item) => Object.assign({}, item, {
         heatText: service.formatHeat(item.heat)

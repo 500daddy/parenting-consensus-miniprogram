@@ -3,11 +3,12 @@
     <cover-view
       wx:for="{{list}}"
       wx:key="pagePath"
-      class="tab-item {{selected == index ? 'active' : ''}}"
+      class="tab-item {{selected == index ? 'active' : ''}} {{pressedIndex == index ? 'pressed' : ''}}"
       data-path="{{item.pagePath}}"
       data-index="{{index}}"
       bindtap="switchTab"
     >
+      <cover-view class="tab-ground"></cover-view>
       <cover-view class="tab-icon-wrap">
         <cover-image class="tab-icon" src="{{selected == index ? item.selectedIconPath : item.iconPath}}" />
       </cover-view>

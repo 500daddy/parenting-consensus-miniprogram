@@ -16,7 +16,7 @@ Page({
     this.setData({
       heroPaddingTop,
       categories: service.categories,
-      hotQuestions: service.getAvailableQuestions().slice(0, 3).map((item) => Object.assign({}, item, {
+      hotQuestions: service.getPriorityQuestions('P0').slice(0, 3).map((item) => Object.assign({}, item, {
         heatText: service.formatHeat(item.heat)
       })),
       todayResult,
@@ -56,7 +56,7 @@ Page({
     const id = event.currentTarget.dataset.id
     if (!id) return
     service.setPendingCategory(id)
-    wx.switchTab({ url: '/pages/category/index' })
+    wx.navigateTo({ url: '/pages/category/index' })
   },
 
   goAuthority(event) {

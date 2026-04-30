@@ -43,7 +43,7 @@ Page({
     if (!this.data.result) return
     const isFavorite = service.toggleFavorite(this.data.result.questionId)
     this.setData({ isFavorite })
-    wx.showToast({ title: isFavorite ? '已收藏' : '已取消', icon: 'none' })
+    wx.showToast({ title: isFavorite ? '已收藏，可在底部查看' : '已取消收藏', icon: 'none' })
   },
 
   goAuthority(event) {

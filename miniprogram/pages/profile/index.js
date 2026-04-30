@@ -20,7 +20,7 @@ Page({
   },
 
   goFavorites() {
-    wx.navigateTo({ url: '/pages/favorites/index' })
+    wx.switchTab({ url: '/pages/favorites/index' })
   },
 
   goHistory() {

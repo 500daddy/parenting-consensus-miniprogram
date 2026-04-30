@@ -88,13 +88,15 @@ assertInvariant(projectConfig.projectname === brandName, 'project.config.json pr
 assertInvariant(app.window.navigationBarTitleText === brandName, 'app.json window title should use the current brand name')
 assertInvariant(app.tabBar.custom === true, 'app.json should keep the custom tabBar enabled')
 assertInvariant(app.tabBar.list.length === 4, 'app.json tabBar should expose exactly 4 MVP tabs')
+assertInvariant(app.tabBar.list.some((item) => item.pagePath === 'pages/favorites/index' && item.text === '收藏'), 'Favorites should be promoted to a top-level tab')
+assertInvariant(app.tabBar.list.every((item) => item.pagePath !== 'pages/category/index'), 'Category should not duplicate Q&A as a top-level tab')
 assertInvariant(app.tabBar.list.every((item) => item.pagePath.indexOf('community') === -1 && item.text !== '社区'), 'Community tab should remain hidden in MVP')
 assertInvariant(app.pages.every((page) => page.indexOf('community') === -1), 'Community page should not be registered in MVP')
 assertExists('assets/hero/village-hero.png')
 const heroSize = readPngSize('assets/hero/village-hero.png')
 assertInvariant(heroSize.width === 690 && heroSize.height === 300, 'village hero image should be 690x300')
 
-for (const page of ['pages/search/index', 'pages/category/index', 'pages/profile/index']) {
+for (const page of ['pages/search/index', 'pages/favorites/index', 'pages/profile/index']) {
   const pageConfig = readJson(path.join(miniprogramRoot, `${page}.json`))
   assertInvariant(pageConfig.navigationBarTitleText === '', `${page}.json should keep tab page title hidden`)
 }
@@ -221,14 +223,14 @@ for (const source of data.authoritySources) {
 }
 
 const keywordExpectations = [
-  ['宝宝发烧能洗澡吗', 'q_001'],
-  ['宝宝夜醒频繁怎么办', 'q_002'],
-  ['第一口辅食吃什么', 'q_003'],
-  ['宝宝咳嗽有痰', 'q_004'],
-  ['挑食不爱吃蔬菜', 'q_005'],
-  ['疫苗后低烧', 'q_006'],
-  ['高热能洗澡吗', 'q_001'],
-  ['退烧药什么时候吃', 'q_006']
+  ['宝宝发烧到多少度', 'q_001'],
+  ['宝宝发烧能洗澡吗', 'q_002'],
+  ['宝宝夜醒频繁怎么办', 'q_027'],
+  ['第一口辅食吃什么', 'q_020'],
+  ['宝宝咳嗽有痰', 'q_008'],
+  ['疫苗后发烧', 'q_039'],
+  ['高热能洗澡吗', 'q_002'],
+  ['退烧药什么时候吃', 'q_004']
 ]
 
 for (const [keyword, expectedId] of keywordExpectations) {

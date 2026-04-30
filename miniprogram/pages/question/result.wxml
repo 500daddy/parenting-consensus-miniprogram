@@ -34,6 +34,7 @@
         <view class="summary-title">主流共识</view>
         <button class="btn-plain favorite-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite" aria-label="{{isFavorite ? '取消收藏' : '收藏'}}">
           <image class="favorite-icon pixel-img" src="{{isFavorite ? actionIconPaths.star : actionIconPaths.favorite}}" mode="aspectFit" />
+          <text>{{isFavorite ? '已收藏' : '收藏'}}</text>
         </button>
       </view>
       <view class="conclusion-box">
@@ -84,6 +85,10 @@
         <view class="section-title"><image class="shield-small pixel-img" src="{{actionIconPaths.authority}}" mode="aspectFit" /><text>权威内容推荐</text></view>
         <button class="btn-plain section-more" bindtap="goAuthority">更多内容 ›</button>
       </view>
+      <view wx:if="{{result.authorityView}}" class="authority-view card">
+        <view class="authority-view-label">权威观点</view>
+        <view class="authority-view-text">{{result.authorityView}}</view>
+      </view>
       <view class="authority-list">
         <view wx:for="{{result.authoritySources}}" wx:key="id" class="tap-card authority-row card" bindtap="goAuthority" data-type="{{item.type}}">
           <image class="authority-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
@@ -109,6 +114,7 @@
 
     <view class="section">
       <view class="section-title"><image class="warn-mark pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" /><text>安全提醒</text></view>
+      <view wx:if="{{result.safetyNotice}}" class="safety-notice card">{{result.safetyNotice}}</view>
       <view class="warning-grid">
         <view wx:for="{{result.warnings}}" wx:key="*this" class="warning-tile warning-{{index}}">
           <view class="warning-icon">!</view>
