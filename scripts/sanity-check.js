@@ -3,6 +3,7 @@ const path = require('path')
 
 const capturedComponents = []
 const capturedPages = []
+const mockStorage = {}
 
 global.App = (config) => config
 global.Page = (config) => {
@@ -19,11 +20,20 @@ global.wx = {
   redirectTo() {},
   showToast() {},
   showModal() {},
-  getStorageSync() {
-    return []
+  getStorageSync(key) {
+    return mockStorage[key]
   },
-  setStorageSync() {},
-  removeStorageSync() {}
+  setStorageSync(key, value) {
+    mockStorage[key] = value
+  },
+  removeStorageSync(key) {
+    delete mockStorage[key]
+  },
+  getUserProfile(options) {
+    if (options && typeof options.success === 'function') {
+      options.success({ userInfo: { nickName: '测试家长', avatarUrl: '' } })
+    }
+  }
 }
 
 const root = path.resolve(__dirname, '..')
@@ -80,11 +90,19 @@ function walk(dir) {
 
 const app = readJson(path.join(miniprogramRoot, 'app.json'))
 const projectConfig = readJson(path.join(root, 'project.config.json'))
+const privateProjectConfigPath = path.join(root, 'project.private.config.json')
+const privateProjectConfig = fs.existsSync(privateProjectConfigPath) ? readJson(privateProjectConfigPath) : null
 const brandName = '养娃新手村'
 
 assertInvariant(projectConfig.miniprogramRoot === 'miniprogram/', 'project.config.json miniprogramRoot should be miniprogram/')
 assertInvariant(projectConfig.description.indexOf(brandName) > -1, 'project.config.json description should use the current brand name')
 assertInvariant(projectConfig.projectname === brandName, 'project.config.json projectname should use the current brand name')
+assertInvariant(projectConfig.setting.urlCheck === true, 'project.config.json urlCheck should be enabled before upload')
+assertInvariant(projectConfig.setting.minified === true, 'project.config.json minified should be enabled before upload')
+assertInvariant(projectConfig.setting.uploadWithSourceMap === true, 'project.config.json should keep source maps during seed-user MVP debugging')
+if (privateProjectConfig && privateProjectConfig.setting) {
+  assertInvariant(privateProjectConfig.setting.urlCheck === true, 'project.private.config.json urlCheck should match upload readiness')
+}
 assertInvariant(app.window.navigationBarTitleText === brandName, 'app.json window title should use the current brand name')
 assertInvariant(app.tabBar.custom === true, 'app.json should keep the custom tabBar enabled')
 assertInvariant(app.tabBar.list.length === 4, 'app.json tabBar should expose exactly 4 MVP tabs')
@@ -152,6 +170,9 @@ if (customTabBar) {
 
 const data = require(path.join(miniprogramRoot, 'mock/data.js'))
 const service = require(path.join(miniprogramRoot, 'utils/mockService.js'))
+const resultPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/question/result.wxml'), 'utf8')
+const profilePageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/index.wxml'), 'utf8')
+const profileLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/index.js'), 'utf8')
 const categoryIds = new Set(data.categories.map((item) => item.id))
 const questionIds = new Set(data.questions.map((item) => item.id))
 const authorityIds = new Set(data.authoritySources.map((item) => item.id))
@@ -160,6 +181,13 @@ const trustLevels = new Set(['high', 'medium'])
 const reasonTones = new Set(['green', 'orange', 'red', 'purple'])
 
 assertInvariant(Array.isArray(data.communityPosts), 'communityPosts should remain as a reserved array boundary')
+assertInvariant(resultPageSource.indexOf('先看边界') > -1, 'Result page should front-load the content boundary notice')
+assertInvariant(resultPageSource.indexOf('高风险提醒') > -1, 'Result page should front-load high-risk reminders')
+assertInvariant(profilePageSource.indexOf('隐私说明') > -1, 'Profile page should expose the MVP privacy explanation')
+assertInvariant(profilePageSource.indexOf('审核备注') > -1, 'Profile page should expose review-note guidance')
+assertInvariant(profilePageSource.indexOf('内测反馈') > -1, 'Profile page should provide a seed-user feedback path')
+assertInvariant(profileLogicSource.indexOf('不上传宝宝档案') > -1, 'Privacy modal should state local-only profile storage')
+assertInvariant(profileLogicSource.indexOf('无后台请求、无支付、无客服系统') > -1, 'Review-note modal should state MVP backend/payment/support boundaries')
 
 for (const iconPath of Object.values(service.actionIconPaths)) {
   assertMiniProgramAsset(iconPath)
@@ -171,10 +199,12 @@ for (const iconPath of Object.values(service.profileIconPaths)) {
 
 for (const category of service.categories) {
   assertMiniProgramAsset(category.iconPath)
+  assertInvariant(category.iconPath !== service.actionIconPaths.question, `Category ${category.id} should use a matched category icon`)
 }
 
 for (const question of service.getAvailableQuestions()) {
   assertMiniProgramAsset(question.tagIconPath)
+  assertInvariant(question.tagIconPath !== service.actionIconPaths.question, `Question ${question.id} should use a matched question icon`)
 }
 
 for (const source of service.getAuthoritySources('all')) {
@@ -242,6 +272,13 @@ for (const [keyword, expectedId] of keywordExpectations) {
 const todayQuestionId = service.getDailyQuestionId(new Date(2026, 3, 30))
 assertInvariant(service.hasQuestionResult(todayQuestionId), `Daily consensus question ${todayQuestionId || 'none'} should have a result`)
 assertInvariant(Boolean(service.getTodayQuestionResult(new Date(2026, 3, 30))), 'Today consensus result should be available')
+
+const loggedInProfile = service.loginProfile({ nickName: '测试家长' })
+assertInvariant(loggedInProfile.isLoggedIn === true, 'Profile login should mark user as logged in')
+const savedProfile = service.saveBabyProfile({ name: '小豆', age: '9个月', gender: '女宝', allergy: '蛋白过敏' })
+assertInvariant(savedProfile.baby.name === '小豆' && savedProfile.baby.age === '9个月', 'Baby profile should save editable fields')
+const storedProfile = service.getProfile()
+assertInvariant(storedProfile.isLoggedIn === true && storedProfile.baby.allergy === '蛋白过敏', 'Baby profile should persist in local storage')
 
 for (const category of data.categories) {
   for (const question of service.getQuestionsByCategory(category.id)) {

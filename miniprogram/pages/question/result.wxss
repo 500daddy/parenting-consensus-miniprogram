@@ -193,6 +193,66 @@
   font-weight: 600;
 }
 
+.boundary-notice,
+.risk-notice {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 16rpx;
+  padding: 20rpx;
+  text-align: left;
+}
+
+.boundary-notice {
+  background: #fffaf3;
+  border-color: #ead8b8;
+}
+
+.risk-notice {
+  background: #fff1ea;
+  border-color: #f1b59c;
+}
+
+.boundary-icon,
+.risk-icon {
+  width: 42rpx;
+  height: 42rpx;
+  border-radius: 10rpx;
+  flex: none;
+}
+
+.boundary-icon {
+  background: #f4a340;
+}
+
+.risk-icon {
+  background: #f36f5b;
+}
+
+.boundary-copy,
+.risk-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.boundary-title,
+.risk-title {
+  color: #2f2a25;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.boundary-text,
+.risk-text {
+  margin-top: 6rpx;
+  color: #756d66;
+  font-size: 23rpx;
+  line-height: 1.45;
+}
+
+.risk-text {
+  color: #9f422f;
+}
+
 .summary-meta,
 .sample-note {
   margin-top: 18rpx;

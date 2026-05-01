@@ -3,21 +3,27 @@ const data = require('../mock/data.js')
 const HISTORY_KEY = 'parenting_consensus_history'
 const FAVORITES_KEY = 'parenting_consensus_favorites'
 const PENDING_CATEGORY_KEY = 'pending_category_id'
+const PROFILE_KEY = 'parenting_consensus_profile'
 const ICON_ROOT = '/assets/icons/pixel-v2'
 const categoryIconPaths = {
-  feeding: `${ICON_ROOT}/category/feeding.png`,
-  sleep: `${ICON_ROOT}/category/sleep.png`,
   fever_care: `${ICON_ROOT}/category/fever-care.png`,
   common_illness: `${ICON_ROOT}/category/common-illness.png`,
+  feeding: `${ICON_ROOT}/category/feeding.png`,
   solid_food: `${ICON_ROOT}/category/solid-food.png`,
-  early_education: `${ICON_ROOT}/category/early-education.png`,
-  early_development: `${ICON_ROOT}/category/early-education.png`,
+  sleep: `${ICON_ROOT}/category/sleep.png`,
+  skin_allergy: `${ICON_ROOT}/category/skin-allergy.png`,
   vaccine: `${ICON_ROOT}/category/vaccine.png`,
   vaccine_check: `${ICON_ROOT}/category/vaccine.png`,
-  skin_allergy: `${ICON_ROOT}/category/common-illness.png`,
+  early_education: `${ICON_ROOT}/category/early-education.png`,
+  early_development: `${ICON_ROOT}/category/growth.png`,
   emotion: `${ICON_ROOT}/category/emotion.png`,
   toilet: `${ICON_ROOT}/category/toilet.png`,
-  safety_first: `${ICON_ROOT}/category/travel-safety.png`
+  safety_first: `${ICON_ROOT}/category/safety-first.png`
+}
+const questionIconOverrides = {
+  q_041: `${ICON_ROOT}/category/growth.png`,
+  q_043: `${ICON_ROOT}/category/growth.png`,
+  q_050: `${ICON_ROOT}/category/safety-first.png`
 }
 const sourceIconPaths = {
   doctor: `${ICON_ROOT}/source/doctor.png`,
@@ -97,9 +103,18 @@ function getCategory(id) {
   return category ? enrichCategory(category) : category
 }
 
+function getCategoryIconPath(categoryId) {
+  return categoryIconPaths[categoryId] || actionIconPaths.question
+}
+
+function getQuestionIconPath(question) {
+  if (!question) return actionIconPaths.question
+  return questionIconOverrides[question.id] || getCategoryIconPath(question.categoryId)
+}
+
 function enrichCategory(category) {
   return Object.assign({}, category, {
-    iconPath: categoryIconPaths[category.id] || actionIconPaths.question
+    iconPath: getCategoryIconPath(category.id)
   })
 }
 
@@ -107,7 +122,7 @@ function enrichQuestion(question) {
   if (!question) return question
   return Object.assign({}, question, {
     category: getCategory(question.categoryId),
-    tagIconPath: categoryIconPaths[question.categoryId] || actionIconPaths.question
+    tagIconPath: getQuestionIconPath(question)
   })
 }
 
@@ -240,6 +255,23 @@ function setStorageList(key, value) {
   }
 }
 
+function getStorageObject(key) {
+  try {
+    const value = wx.getStorageSync(key)
+    return value && typeof value === 'object' && !Array.isArray(value) ? value : null
+  } catch (error) {
+    return null
+  }
+}
+
+function setStorageObject(key, value) {
+  try {
+    wx.setStorageSync(key, value)
+  } catch (error) {
+    // Storage may be unavailable in some preview runtimes.
+  }
+}
+
 function sanitizeHistory(items) {
   const seen = {}
   return items.filter((item) => typeof item === 'string')
@@ -318,15 +350,71 @@ function toggleFavorite(questionId) {
   return index === -1
 }
 
+function normalizeProfile(profile) {
+  const saved = profile || {}
+  const savedBaby = saved.baby || {}
+  return {
+    isLoggedIn: Boolean(saved.isLoggedIn),
+    nickName: saved.nickName || data.profile.nickName,
+    avatarUrl: saved.avatarUrl || '',
+    avatarText: saved.avatarText || data.profile.avatarText,
+    baby: {
+      name: savedBaby.name || data.profile.baby.name,
+      age: savedBaby.age || data.profile.baby.age,
+      gender: savedBaby.gender || data.profile.baby.gender,
+      allergy: savedBaby.allergy || data.profile.baby.allergy
+    }
+  }
+}
+
+function getProfile() {
+  return normalizeProfile(getStorageObject(PROFILE_KEY))
+}
+
+function saveProfile(profile) {
+  const normalized = normalizeProfile(profile)
+  setStorageObject(PROFILE_KEY, normalized)
+  return normalized
+}
+
+function loginProfile(userInfo) {
+  const current = getProfile()
+  return saveProfile(Object.assign({}, current, {
+    isLoggedIn: true,
+    nickName: userInfo && userInfo.nickName ? userInfo.nickName : current.nickName,
+    avatarUrl: userInfo && userInfo.avatarUrl ? userInfo.avatarUrl : current.avatarUrl,
+    avatarText: userInfo && userInfo.nickName ? userInfo.nickName.slice(0, 1) : current.avatarText
+  }))
+}
+
+function saveBabyProfile(baby) {
+  const current = getProfile()
+  return saveProfile(Object.assign({}, current, {
+    baby: Object.assign({}, current.baby, baby || {})
+  }))
+}
+
+function logoutProfile() {
+  try {
+    wx.removeStorageSync(PROFILE_KEY)
+  } catch (error) {
+    // Storage may be unavailable in some preview runtimes.
+  }
+  return getProfile()
+}
+
 module.exports = {
   HISTORY_KEY,
   FAVORITES_KEY,
   PENDING_CATEGORY_KEY,
+  PROFILE_KEY,
   categories: data.categories.map(enrichCategory),
   questions: data.questions.map(enrichQuestion),
-  profile: data.profile,
+  profile: normalizeProfile(data.profile),
   actionIconPaths,
   profileIconPaths,
+  getCategoryIconPath,
+  getQuestionIconPath,
   formatHeat,
   getCategory,
   getQuestionById,
@@ -347,5 +435,10 @@ module.exports = {
   consumePendingCategory,
   getFavorites,
   isFavorite,
-  toggleFavorite
+  toggleFavorite,
+  getProfile,
+  saveProfile,
+  loginProfile,
+  saveBabyProfile,
+  logoutProfile
 }

@@ -41,6 +41,20 @@
         <view class="check-dot">✓</view>
         <view class="conclusion-text">{{result.conclusion}}</view>
       </view>
+      <view class="boundary-notice card">
+        <image class="boundary-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
+        <view class="boundary-copy">
+          <view class="boundary-title">先看边界</view>
+          <view class="boundary-text">{{result.contentBoundaryNotice}}</view>
+        </view>
+      </view>
+      <view wx:if="{{result.riskNotice}}" class="risk-notice card">
+        <image class="risk-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
+        <view class="risk-copy">
+          <view class="risk-title">{{result.isHighRisk || result.riskLevel === '高' ? '高风险提醒' : '健康内容提醒'}}</view>
+          <view class="risk-text">{{result.riskNotice}}</view>
+        </view>
+      </view>
       <view class="summary-meta">基于 {{result.sourceCount}} 篇内容 · {{result.expertCount}} 位专家/达人观点整理 · 可信度{{result.confidenceLevel}}</view>
 
       <view class="chart-title">观点比例分布</view>

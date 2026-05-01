@@ -1,18 +1,23 @@
 <view class="page with-tab profile-page">
   <view class="profile-card card">
-    <image class="avatar pixel-img" src="{{profileIconPaths.family}}" mode="aspectFit" />
-    <view class="profile-main">
-      <view class="profile-name">{{profile.nickName}}</view>
-      <view class="profile-sub">把常查问题沉淀成安心知识库</view>
-      <view class="profile-stats">
-        <view class="profile-stat">
-          <text class="stat-num">{{favoriteCount}}</text>
-          <text class="stat-label">收藏</text>
-        </view>
-        <view class="profile-stat">
-          <text class="stat-num">{{historyCount}}</text>
-          <text class="stat-label">历史</text>
-        </view>
+    <view class="profile-top">
+      <image wx:if="{{profile.avatarUrl}}" class="avatar user-avatar" src="{{profile.avatarUrl}}" mode="aspectFill" />
+      <image wx:else class="avatar pixel-img" src="{{profileIconPaths.family}}" mode="aspectFit" />
+      <view class="profile-main">
+        <view class="profile-name">{{profile.isLoggedIn ? profile.nickName : '登录后保存宝宝档案'}}</view>
+        <view class="profile-sub">{{profile.isLoggedIn ? '把常查问题和宝宝信息沉淀下来' : '登录后可记录月龄、过敏史和常用公告'}}</view>
+      </view>
+      <button wx:if="{{!profile.isLoggedIn}}" class="btn-plain login-button" bindtap="login">登录</button>
+      <button wx:else class="btn-plain logout-button" bindtap="logout">退出</button>
+    </view>
+    <view class="profile-stats">
+      <view class="profile-stat">
+        <text class="stat-num">{{favoriteCount}}</text>
+        <text class="stat-label">收藏</text>
+      </view>
+      <view class="profile-stat">
+        <text class="stat-num">{{historyCount}}</text>
+        <text class="stat-label">历史</text>
       </view>
     </view>
   </view>
@@ -20,32 +25,76 @@
   <view class="section">
     <view class="baby-card card">
       <view class="baby-head">
-        <view>
+        <view class="baby-heading">
           <view class="baby-title">宝宝档案</view>
-          <view class="baby-sub">后续可用于月龄推荐和风险提醒</view>
+          <view class="baby-sub">{{profile.isLoggedIn ? '用于后续月龄推荐和风险提醒' : '登录后可以记录宝宝信息'}}</view>
         </view>
-        <view class="tag">本地档案</view>
+        <button wx:if="{{profile.isLoggedIn && !isEditingBaby}}" class="btn-plain edit-button" bindtap="startEditBaby">编辑</button>
+        <view wx:elif="{{!profile.isLoggedIn}}" class="tag">待登录</view>
       </view>
-      <view class="baby-grid">
+
+      <view wx:if="{{!profile.isLoggedIn}}" class="baby-login-card">
+        <image class="baby-login-icon pixel-img" src="{{profileIconPaths.family}}" mode="aspectFit" />
+        <view class="baby-login-main">
+          <view class="baby-login-title">还没有宝宝档案</view>
+          <view class="baby-login-desc">登录后记录月龄、性别和过敏史，后续可用于更贴近宝宝情况的提醒。</view>
+        </view>
+        <button class="btn-plain login-inline" bindtap="login">去登录</button>
+      </view>
+
+      <view wx:elif="{{!isEditingBaby}}" class="baby-grid">
         <view class="baby-cell">
           <image class="cell-icon pixel-img" src="{{profileIconPaths.name}}" mode="aspectFit" />
-          <view class="cell-label">昵称</view>
-          <view class="cell-value">{{profile.baby.name}}</view>
+          <view class="cell-text">
+            <view class="cell-label">昵称</view>
+            <view class="cell-value">{{profile.baby.name}}</view>
+          </view>
         </view>
         <view class="baby-cell">
           <image class="cell-icon pixel-img" src="{{profileIconPaths.month}}" mode="aspectFit" />
-          <view class="cell-label">月龄</view>
-          <view class="cell-value">{{profile.baby.age}}</view>
+          <view class="cell-text">
+            <view class="cell-label">月龄</view>
+            <view class="cell-value">{{profile.baby.age}}</view>
+          </view>
         </view>
         <view class="baby-cell">
           <image class="cell-icon pixel-img" src="{{profileIconPaths.gender}}" mode="aspectFit" />
-          <view class="cell-label">性别</view>
-          <view class="cell-value">{{profile.baby.gender}}</view>
+          <view class="cell-text">
+            <view class="cell-label">性别</view>
+            <view class="cell-value">{{profile.baby.gender}}</view>
+          </view>
         </view>
         <view class="baby-cell">
           <image class="cell-icon pixel-img" src="{{profileIconPaths.allergy}}" mode="aspectFit" />
-          <view class="cell-label">过敏史</view>
-          <view class="cell-value">{{profile.baby.allergy}}</view>
+          <view class="cell-text">
+            <view class="cell-label">过敏史</view>
+            <view class="cell-value">{{profile.baby.allergy}}</view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:else class="baby-form">
+        <view class="form-row">
+          <view class="form-label">宝宝昵称</view>
+          <input class="form-input" value="{{draftBaby.name}}" data-field="name" bindinput="onBabyInput" placeholder="例如：小满" />
+        </view>
+        <view class="form-row">
+          <view class="form-label">月龄</view>
+          <input class="form-input" value="{{draftBaby.age}}" data-field="age" bindinput="onBabyInput" placeholder="例如：7个月" />
+        </view>
+        <view class="form-row">
+          <view class="form-label">性别</view>
+          <picker class="form-picker" mode="selector" range="{{genderOptions}}" value="{{genderIndex}}" bindchange="onGenderChange">
+            <view>{{draftBaby.gender || '未设置'}}</view>
+          </picker>
+        </view>
+        <view class="form-row">
+          <view class="form-label">过敏史</view>
+          <input class="form-input" value="{{draftBaby.allergy}}" data-field="allergy" bindinput="onBabyInput" placeholder="例如：蛋白过敏 / 暂无记录" />
+        </view>
+        <view class="form-actions">
+          <button class="btn-plain ghost-action" bindtap="cancelEditBaby">取消</button>
+          <button class="btn-plain save-action" bindtap="saveBaby">保存档案</button>
         </view>
       </view>
     </view>
@@ -66,7 +115,17 @@
     </view>
     <view class="tap-card menu-row" bindtap="showFeedback">
       <image class="menu-icon pixel-img" src="{{actionIconPaths.question}}" mode="aspectFit" />
-      <view class="menu-main">意见反馈</view>
+      <view class="menu-main">内测反馈</view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <view class="tap-card menu-row" bindtap="showPrivacy">
+      <image class="menu-icon pixel-img" src="{{profileIconPaths.family}}" mode="aspectFit" />
+      <view class="menu-main">隐私说明</view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <view class="tap-card menu-row" bindtap="showReviewNote">
+      <image class="menu-icon pixel-img" src="{{actionIconPaths.authority}}" mode="aspectFit" />
+      <view class="menu-main">审核备注</view>
       <view class="menu-arrow">›</view>
     </view>
     <view class="tap-card menu-row last" bindtap="showDisclaimer">

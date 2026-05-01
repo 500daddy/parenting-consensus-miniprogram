@@ -2,7 +2,7 @@
   <view class="hero" style="padding-top: {{heroPaddingTop}}rpx;">
     <image class="hero-photo" src="/assets/hero/village-hero.png" mode="aspectFill" />
     <view class="hero-scrim"></view>
-    <view class="hero-copy hero-sign">
+    <view class="hero-copy hero-sign" style="top: {{heroSignTop}}rpx;">
       <view class="sign-roof"></view>
       <view class="sign-board">
         <view class="hero-title">养娃新手村</view>
@@ -21,50 +21,38 @@
     </view>
   </view>
 
-  <scroll-view class="category-scroll section" scroll-x>
-    <view class="category-track">
+  <view class="quick-section">
+    <view class="quick-title">常问场景</view>
+    <view class="quick-grid">
       <view wx:for="{{categories}}" wx:key="id" class="tap-card chip home-chip cat-{{index}}" bindtap="goCategory" data-id="{{item.id}}">
         <image class="chip-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
         <text>{{item.name}}</text>
       </view>
     </view>
-  </scroll-view>
-
-  <view class="section">
-    <view class="section-head">
-      <view class="section-title"><image class="section-mark pixel-img" src="{{actionIconPaths.hot}}" mode="aspectFit" /><text>村里大家都在问</text></view>
-      <button class="btn-plain section-more" bindtap="goSearch">查看更多 ›</button>
-    </view>
-    <scroll-view class="hot-scroll" scroll-x>
-      <view class="hot-track">
-        <view wx:for="{{hotQuestions}}" wx:key="id" class="tap-card hot-card hot-{{index}} card" bindtap="goQuestion" data-id="{{item.id}}">
-          <view class="hot-title">{{item.title}}</view>
-          <view class="hot-meta">{{item.heatText}}热度</view>
-          <view class="tag">{{item.tag}}</view>
-          <image class="hot-watermark pixel-img" src="{{item.tagIconPath}}" mode="aspectFit" />
-        </view>
-      </view>
-    </scroll-view>
   </view>
 
   <view class="section">
     <view class="section-head">
-      <view class="section-title"><image class="section-mark pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" /><text>今日村里共识</text></view>
-      <button class="btn-plain section-more" bindtap="goToday">查看详情 ›</button>
+      <view class="section-title"><image class="section-mark pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" /><text>今日村内公告</text></view>
+      <button class="btn-plain section-more icon-more" bindtap="goToday">›</button>
     </view>
     <view class="tap-card consensus-card card" bindtap="goToday">
       <image class="consensus-icon pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" />
       <view class="consensus-main">
         <view class="consensus-title">{{todayResult.title}}</view>
-        <view class="consensus-sub">基于 {{todayResult.sourceCount}} 篇内容 · {{todayResult.expertCount}} 位专家/达人观点达成共识</view>
+        <view class="consensus-conclusion">{{todayResult.conclusion}}</view>
         <view class="stack-bar">
           <view wx:for="{{todayResult.viewpoints}}" wx:key="id" class="stack-seg" style="width: {{item.percentage}}%; background: {{item.color}};"></view>
         </view>
-        <view class="legend-row">
+        <view class="legend-row compact">
           <view wx:for="{{todayResult.viewpoints}}" wx:key="id" class="legend-item">
             <view class="dot" style="background: {{item.color}};"></view>
-            <text>{{item.title}} {{item.percentage}}%</text>
+            <text>{{item.percentage}}%</text>
           </view>
+        </view>
+        <view wx:if="{{primaryWarning}}" class="safety-inline">
+          <image class="safety-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
+          <text>{{primaryWarning}}</text>
         </view>
       </view>
       <view class="arrow-pill">›</view>
@@ -73,19 +61,18 @@
 
   <view class="section">
     <view class="section-head">
-      <view class="section-title"><image class="section-mark pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" /><text>安全红线</text></view>
-      <button class="btn-plain section-more" bindtap="goToday">按今日问题判断 ›</button>
+      <view class="section-title"><image class="section-mark pixel-img" src="{{actionIconPaths.hot}}" mode="aspectFit" /><text>大家在问</text></view>
+      <button class="btn-plain section-more icon-more" bindtap="goSearch">›</button>
     </view>
-    <view class="safety-card card">
-      <view class="safety-copy">
-        <view class="safety-title">出现这些情况，先别只等共识</view>
-        <view class="safety-sub">结合今天的共识问题，优先关注这些风险信号。</view>
-      </view>
-      <view class="safety-grid">
-        <view wx:for="{{safetyWarnings}}" wx:key="*this" class="safety-item">
-          <image class="safety-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
-          <text>{{item}}</text>
+    <view class="hot-list">
+      <view wx:for="{{hotQuestions}}" wx:key="id" class="tap-card hot-card hot-{{index}} card" bindtap="goQuestion" data-id="{{item.id}}">
+        <image class="hot-icon pixel-img" src="{{item.tagIconPath}}" mode="aspectFit" />
+        <view class="hot-main">
+          <view class="hot-title">{{item.shortTitle}}</view>
+          <view class="hot-summary">{{item.summary}}</view>
+          <view class="hot-meta"><text class="tag">{{item.tag}}</text><text>{{item.heatText}}热度</text></view>
         </view>
+        <view class="row-arrow">›</view>
       </view>
     </view>
   </view>

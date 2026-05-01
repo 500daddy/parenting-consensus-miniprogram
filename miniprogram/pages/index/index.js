@@ -6,33 +6,59 @@ Page({
     hotQuestions: [],
     todayResult: null,
     safetyWarnings: [],
+    primaryWarning: '',
     heroPaddingTop: 112,
+    heroSignTop: 132,
     actionIconPaths: service.actionIconPaths
   },
 
   onLoad() {
     const todayResult = service.getTodayQuestionResult() || service.getQuestionResult({ id: 'q_001' })
-    const heroPaddingTop = this.getHeroPaddingTop()
+    const heroLayout = this.getHeroLayout()
     this.setData({
-      heroPaddingTop,
-      categories: service.categories,
-      hotQuestions: service.getPriorityQuestions('P0').slice(0, 3).map((item) => Object.assign({}, item, {
+      heroPaddingTop: heroLayout.paddingTop,
+      heroSignTop: heroLayout.signTop,
+      categories: service.categories.slice(0, 4),
+      hotQuestions: this.getDiverseHotQuestions().map((item) => Object.assign({}, item, {
         heatText: service.formatHeat(item.heat)
       })),
       todayResult,
-      safetyWarnings: todayResult ? todayResult.warnings.slice(0, 4) : []
+      safetyWarnings: todayResult ? todayResult.warnings.slice(0, 1) : [],
+      primaryWarning: todayResult && todayResult.warnings.length ? todayResult.warnings[0] : ''
     })
   },
 
-  getHeroPaddingTop() {
+  getDiverseHotQuestions() {
+    const picked = []
+    const usedCategories = {}
+    const questions = service.getPriorityQuestions('P0')
+    questions.forEach((item) => {
+      if (picked.length >= 4 || usedCategories[item.categoryId]) return
+      picked.push(item)
+      usedCategories[item.categoryId] = true
+    })
+    if (picked.length < 4) {
+      questions.forEach((item) => {
+        if (picked.length >= 4 || picked.some((pickedItem) => pickedItem.id === item.id)) return
+        picked.push(item)
+      })
+    }
+    return picked
+  },
+
+  getHeroLayout() {
     try {
       const menu = wx.getMenuButtonBoundingClientRect && wx.getMenuButtonBoundingClientRect()
       const system = wx.getSystemInfoSync && wx.getSystemInfoSync()
-      if (!menu || !system || !system.windowWidth) return 112
+      if (!menu || !system || !system.windowWidth) {
+        return { paddingTop: 112, signTop: 132 }
+      }
       const safeBottomPx = menu.bottom + 10
-      return Math.max(112, Math.round((safeBottomPx * 750) / system.windowWidth))
+      const paddingTop = Math.max(112, Math.round((safeBottomPx * 750) / system.windowWidth))
+      const signTop = Math.max(118, Math.round(((menu.bottom + 8) * 750) / system.windowWidth))
+      return { paddingTop, signTop }
     } catch (error) {
-      return 112
+      return { paddingTop: 112, signTop: 132 }
     }
   },
 
