@@ -2,7 +2,7 @@
   <view class="result-search card">
     <view class="search-icon"></view>
     <view class="result-keyword">{{keyword || '搜索育儿问题'}}</view>
-    <button class="btn-plain change-btn" bindtap="goSearch">换一个</button>
+    <view class="change-btn" bindtap="goSearch">换一个</view>
   </view>
 
   <view wx:if="{{noResult}}" class="empty-card card">
@@ -28,59 +28,67 @@
   </view>
 
   <block wx:if="{{result}}">
+    <view class="current-question-card card">
+      <view class="current-question-label">当前问题</view>
+      <view class="current-question-title">{{result.question.title}}</view>
+      <view class="current-question-meta">
+        <text>{{result.question.categoryName}}</text>
+        <text>{{result.question.scene}}</text>
+        <text>{{result.question.riskLevel}}风险</text>
+      </view>
+    </view>
+
     <view class="summary-card card">
       <view class="summary-head">
-        <image class="badge pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" />
-        <view class="summary-title">主流共识</view>
-        <button class="btn-plain favorite-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite" aria-label="{{isFavorite ? '取消收藏' : '收藏'}}">
-          <image class="favorite-icon pixel-img" src="{{isFavorite ? actionIconPaths.star : actionIconPaths.favorite}}" mode="aspectFit" />
-          <text>{{isFavorite ? '已收藏' : '收藏'}}</text>
-        </button>
+        <view class="summary-title-wrap">
+          <image class="badge pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" />
+          <view class="summary-title">先给结论</view>
+        </view>
+        <view class="summary-actions">
+          <button class="btn-plain summary-action-btn share-action-btn" open-type="share" aria-label="分享当前问题">
+            <view class="summary-action-icon share-action-icon">
+              <view class="share-arrow-head"></view>
+            </view>
+            <text>分享</text>
+          </button>
+          <button class="btn-plain summary-action-btn favorite-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite" aria-label="{{isFavorite ? '取消收藏' : '收藏'}}">
+            <image class="summary-action-icon favorite-icon pixel-img" src="{{isFavorite ? actionIconPaths.star : actionIconPaths.favorite}}" mode="aspectFit" />
+            <text>{{isFavorite ? '已收藏' : '收藏'}}</text>
+          </button>
+        </view>
       </view>
       <view class="conclusion-box">
         <view class="check-dot">✓</view>
-        <view class="conclusion-text">{{result.conclusion}}</view>
-      </view>
-      <view class="boundary-notice card">
-        <image class="boundary-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
-        <view class="boundary-copy">
-          <view class="boundary-title">先看边界</view>
-          <view class="boundary-text">{{result.contentBoundaryNotice}}</view>
+        <view class="conclusion-main">
+          <view class="conclusion-label">本地样例答案</view>
+          <view class="conclusion-text">{{result.displayConclusion}}</view>
         </view>
       </view>
       <view wx:if="{{result.riskNotice}}" class="risk-notice card">
         <image class="risk-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
         <view class="risk-copy">
-          <view class="risk-title">{{result.isHighRisk || result.riskLevel === '高' ? '高风险提醒' : '健康内容提醒'}}</view>
+          <view class="risk-title">{{result.isHighRisk || result.riskLevel === '高' ? '优先看风险' : '健康提醒'}}</view>
           <view class="risk-text">{{result.riskNotice}}</view>
         </view>
       </view>
-      <view class="summary-meta">基于 {{result.sourceCount}} 篇内容 · {{result.expertCount}} 位专家/达人观点整理 · 可信度{{result.confidenceLevel}}</view>
+      <view class="summary-meta">{{result.dataSourceNote}}</view>
 
-      <view class="chart-title">观点比例分布</view>
-      <view class="chart-card">
-        <view class="donut-wrap">
-          <view class="donut" style="{{result.donutStyle}}">
-            <view class="donut-inner">
-              <view>共识</view>
-              <view>分布</view>
-            </view>
-          </view>
-        </view>
-        <view class="bars">
-          <view wx:for="{{result.viewpoints}}" wx:key="id" class="bar-row">
-            <view class="bar-label">
+      <view class="viewpoint-title">不同观点在说什么</view>
+      <view class="viewpoint-list">
+        <view wx:for="{{result.viewpoints}}" wx:key="id" class="viewpoint-card card">
+          <view class="viewpoint-head">
+            <view class="viewpoint-name">
               <view class="dot" style="background: {{item.color}};"></view>
-              <text>{{item.title}}</text>
+              <text>{{item.displayTitle}}</text>
             </view>
-            <view class="bar-track">
-              <view class="bar-fill" style="width: {{item.percentage}}%; background: {{item.color}};"></view>
-            </view>
-            <view class="bar-percent" style="color: {{item.color}};">{{item.percentage}}%</view>
+            <view class="viewpoint-percent" style="color: {{item.color}};">{{item.percentage}}%</view>
+          </view>
+          <view class="viewpoint-text">{{item.summary}}</view>
+          <view class="viewpoint-track">
+            <view class="viewpoint-fill" style="width: {{item.percentage}}%; background: {{item.color}};"></view>
           </view>
         </view>
       </view>
-      <view class="sample-note">{{result.sampleNote}}</view>
     </view>
 
     <view class="section">
@@ -116,14 +124,9 @@
               <text wx:for="{{item.tags}}" wx:key="*this" class="authority-tag">{{item}}</text>
             </view>
           </view>
-          <view class="row-arrow">›</view>
+          <view class="row-arrow"></view>
         </view>
       </view>
-    </view>
-
-    <view class="section minority-card card">
-      <view class="minority-title">少数不同观点</view>
-      <view class="minority-text">{{result.minorityView}}</view>
     </view>
 
     <view class="section">
@@ -136,6 +139,10 @@
         </view>
       </view>
       <view class="disclaimer card">{{result.disclaimer}}</view>
+      <view class="content-note card">
+        <view class="content-note-title">内容说明</view>
+        <view class="content-note-text">{{result.contentBoundaryNotice}}</view>
+      </view>
     </view>
 
     <view wx:if="{{result.relatedQuestionItems.length}}" class="section">

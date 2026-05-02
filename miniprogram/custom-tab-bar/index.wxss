@@ -44,21 +44,6 @@
   box-shadow: 0 1rpx 0 rgba(65, 122, 54, 0.18);
 }
 
-.tab-ground {
-  position: absolute;
-  left: 42rpx;
-  right: 42rpx;
-  bottom: 30rpx;
-  height: 6rpx;
-  background: #d8c39f;
-  opacity: 0;
-}
-
-.tab-item.active .tab-ground {
-  opacity: 1;
-  background: #77a85f;
-}
-
 .tab-icon-wrap {
   position: relative;
   z-index: 1;
@@ -89,7 +74,7 @@
   position: relative;
   z-index: 1;
   margin-top: 4rpx;
-  font-size: 22rpx;
+  font-size: 24rpx;
   line-height: 1;
   font-weight: 500;
 }

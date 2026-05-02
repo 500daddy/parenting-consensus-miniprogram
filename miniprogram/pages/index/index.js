@@ -7,6 +7,7 @@ Page({
     todayResult: null,
     safetyWarnings: [],
     primaryWarning: '',
+    homeKeyword: '',
     heroPaddingTop: 112,
     heroSignTop: 132,
     actionIconPaths: service.actionIconPaths
@@ -70,6 +71,20 @@ Page({
 
   goSearch() {
     wx.switchTab({ url: '/pages/search/index' })
+  },
+
+  onHomeInput(event) {
+    this.setData({ homeKeyword: event.detail.value })
+  },
+
+  searchHome() {
+    const keyword = (this.data.homeKeyword || '').trim()
+    if (!keyword) {
+      wx.showToast({ title: '先输入问题', icon: 'none' })
+      return
+    }
+    service.addHistory(keyword)
+    wx.navigateTo({ url: `/pages/question/result?keyword=${encodeURIComponent(keyword)}` })
   },
 
   goQuestion(event) {

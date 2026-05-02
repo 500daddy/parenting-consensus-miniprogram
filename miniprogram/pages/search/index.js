@@ -3,6 +3,8 @@ const service = require('../../utils/mockService.js')
 Page({
   data: {
     keyword: '',
+    categories: [],
+    activeCategory: 'all',
     suggestions: [],
     history: [],
     sectionTitle: '推荐问题',
@@ -13,7 +15,10 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1 })
     }
-    this.setData({ history: service.getHistory() })
+    this.setData({
+      history: service.getHistory(),
+      categories: [{ id: 'all', name: '全部', iconPath: service.actionIconPaths.question }].concat(service.categories)
+    })
     this.updateSuggestions(this.data.keyword)
   },
 
@@ -53,6 +58,12 @@ Page({
     this.updateSuggestions('')
   },
 
+  changeCategory(event) {
+    const id = event.currentTarget.dataset.id || 'all'
+    this.setData({ activeCategory: id })
+    this.updateSuggestions(this.data.keyword)
+  },
+
   clearHistory() {
     if (!this.data.history.length) return
     wx.showModal({
@@ -71,13 +82,18 @@ Page({
 
   updateSuggestions(keyword) {
     const text = (keyword || '').trim()
-    const questions = text ? service.searchQuestions(text) : service.getAvailableQuestions()
+    const source = text ? service.searchQuestions(text) : service.getAvailableQuestions()
+    const questions = this.data.activeCategory === 'all'
+      ? source
+      : source.filter((item) => item.categoryId === this.data.activeCategory)
     this.setData({
       suggestions: questions.map((item) => Object.assign({}, item, {
         heatText: service.formatHeat(item.heat)
       })),
       sectionTitle: text ? '相关问题' : '推荐问题',
-      sectionHint: text ? `${questions.length} 个匹配` : '按热度排序'
+      sectionHint: this.data.activeCategory === 'all'
+        ? (text ? `${questions.length} 个匹配` : '按热度排序')
+        : `${questions.length} 个问题`
     })
   }
 })

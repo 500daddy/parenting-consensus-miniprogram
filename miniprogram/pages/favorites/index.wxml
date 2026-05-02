@@ -14,14 +14,23 @@
   </view>
 
   <view wx:else class="question-list">
-    <view wx:for="{{favorites}}" wx:key="id" class="tap-card question-row card" bindtap="goQuestion" data-id="{{item.id}}">
-      <image class="question-badge pixel-img" src="{{item.tagIconPath}}" mode="aspectFit" />
-      <view class="question-main">
-        <view class="question-title">{{item.title}}</view>
-        <view class="question-summary">{{item.summary}}</view>
-        <view class="question-meta"><text class="tag">{{item.tag}}</text><text>{{item.heatText}}热度</text></view>
+    <view wx:for="{{favorites}}" wx:key="id" class="favorite-swipe">
+      <view class="delete-action" bindtap="removeFavorite" data-id="{{item.id}}">取消收藏</view>
+      <view
+        class="tap-card question-row card {{swipedId === item.id ? 'swiped' : ''}}"
+        bindtap="goQuestion"
+        bindtouchstart="onTouchStart"
+        bindtouchend="onTouchEnd"
+        data-id="{{item.id}}"
+      >
+        <image class="question-badge pixel-img" src="{{item.tagIconPath}}" mode="aspectFit" />
+        <view class="question-main">
+          <view class="question-title">{{item.title}}</view>
+          <view class="question-summary">{{item.summary}}</view>
+          <view class="question-meta"><text class="tag">{{item.tag}}</text><text>{{item.heatText}}热度</text></view>
+        </view>
+        <view class="row-arrow"></view>
       </view>
-      <view class="row-arrow">›</view>
     </view>
   </view>
 </view>

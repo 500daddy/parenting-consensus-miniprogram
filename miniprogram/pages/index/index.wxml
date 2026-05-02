@@ -14,10 +14,10 @@
   </view>
 
   <view class="search-panel card">
-    <view class="tap-card search-card" bindtap="goSearch">
+    <view class="search-card">
       <view class="search-icon"></view>
-      <view class="search-placeholder">来村里问问，例如：宝宝发烧能洗澡吗？</view>
-      <view class="home-search-action">搜索</view>
+      <input class="search-input home-search-input" value="{{homeKeyword}}" placeholder="来村里问问，例如：宝宝发烧能洗澡吗？" confirm-type="search" bindinput="onHomeInput" bindconfirm="searchHome" />
+      <view class="home-search-action" bindtap="searchHome">搜索</view>
     </view>
   </view>
 
@@ -34,7 +34,6 @@
   <view class="section">
     <view class="section-head">
       <view class="section-title"><image class="section-mark pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" /><text>今日村内公告</text></view>
-      <button class="btn-plain section-more icon-more" bindtap="goToday">›</button>
     </view>
     <view class="tap-card consensus-card card" bindtap="goToday">
       <image class="consensus-icon pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" />
@@ -55,14 +54,14 @@
           <text>{{primaryWarning}}</text>
         </view>
       </view>
-      <view class="arrow-pill">›</view>
+      <view class="arrow-pill"></view>
     </view>
   </view>
 
   <view class="section">
     <view class="section-head">
       <view class="section-title"><image class="section-mark pixel-img" src="{{actionIconPaths.hot}}" mode="aspectFit" /><text>大家在问</text></view>
-      <button class="btn-plain section-more icon-more" bindtap="goSearch">›</button>
+      <button class="btn-plain section-more icon-more" aria-label="查看更多大家在问" bindtap="goSearch"></button>
     </view>
     <view class="hot-list">
       <view wx:for="{{hotQuestions}}" wx:key="id" class="tap-card hot-card hot-{{index}} card" bindtap="goQuestion" data-id="{{item.id}}">
@@ -72,7 +71,7 @@
           <view class="hot-summary">{{item.summary}}</view>
           <view class="hot-meta"><text class="tag">{{item.tag}}</text><text>{{item.heatText}}热度</text></view>
         </view>
-        <view class="row-arrow">›</view>
+        <view class="row-arrow"></view>
       </view>
     </view>
   </view>

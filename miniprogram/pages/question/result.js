@@ -18,8 +18,14 @@ function getRiskNotice(result) {
 
 function prepareResult(result) {
   if (!result) return result
+  const conclusion = (result.conclusion || '').replace(/^主流共识认为[：:]\s*/, '')
   return Object.assign({}, result, {
+    displayConclusion: conclusion,
+    viewpoints: result.viewpoints.map((item) => Object.assign({}, item, {
+      displayTitle: (item.title || '').split('：')[0] || item.title
+    })),
     riskNotice: getRiskNotice(result),
+    dataSourceNote: '当前答案来自本地种子题库和 mock 数据，不是实时联网搜索结果。上线后可替换为真实内容样本和后台统计。',
     contentBoundaryNotice: '养娃新手村当前为本地数据 MVP，内容用于问前梳理和家长沟通参考，不提供诊断、处方或急救替代方案。'
   })
 }
@@ -35,6 +41,9 @@ Page({
   },
 
   onLoad(options) {
+    if (wx.showShareMenu) {
+      wx.showShareMenu({ withShareTicket: false })
+    }
     const id = options.id
     const keyword = options.keyword ? decodeURIComponent(options.keyword) : ''
     if (keyword) {
@@ -85,5 +94,19 @@ Page({
 
   goSearch() {
     wx.switchTab({ url: '/pages/search/index' })
+  },
+
+  onShareAppMessage() {
+    const result = this.data.result
+    if (!result) {
+      return {
+        title: '养娃新手村：先来村里问问',
+        path: '/pages/index/index'
+      }
+    }
+    return {
+      title: `育儿问题：${result.question.title}`,
+      path: `/pages/question/result?id=${result.questionId}`
+    }
   }
 })

@@ -18,7 +18,7 @@
           <view class="question-summary">{{item.summary}}</view>
           <view class="question-meta"><text class="tag">{{item.tag}}</text><text>{{item.heatText}}热度</text></view>
         </view>
-        <view class="row-arrow">›</view>
+        <view class="row-arrow"></view>
       </view>
     </view>
     <view wx:else class="category-empty card">

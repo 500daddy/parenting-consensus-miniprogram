@@ -35,7 +35,7 @@
           <text wx:for="{{item.tags}}" wx:key="*this" class="tag">{{item}}</text>
         </view>
       </view>
-      <view class="row-arrow">›</view>
+      <view class="row-arrow"></view>
     </view>
   </view>
   <view wx:else class="tap-card source-empty card" bindtap="showAllSources">

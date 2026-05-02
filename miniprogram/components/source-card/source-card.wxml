@@ -7,5 +7,5 @@
     </view>
     <view class="source-summary">{{source.summary}}</view>
   </view>
-  <view class="row-arrow">›</view>
+  <view class="row-arrow"></view>
 </view>

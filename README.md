@@ -8,7 +8,7 @@
 
 1. 打开微信开发者工具。
 2. 选择“导入项目”。
-3. 项目目录选择 `C:\Users\admin\Documents\New project`。
+3. 项目目录选择 `C:\Users\zc\Documents\New project\parenting-consensus-miniprogram`。
 4. 当前 `project.config.json` 已配置 AppID；如需在其他账号调试，可在微信开发者工具里切换为自己的测试号。
 
 ## 已完成
@@ -43,6 +43,7 @@
 ## 验证建议
 
 - 运行 `node scripts/sanity-check.js`，检查页面文件、JSON、JS 模块、tab 图标、mock 数据关联、观点比例和常见关键词路由是否完整。
+- 发布前按 `docs/release-checklist.md` 做微信开发者工具预览、核心路径验收和小程序后台资料检查。
 - GitHub Actions 已配置同一条 sanity check，推送到 `main` 或创建 PR 时会自动执行。
 - 搜索“宝宝发烧能洗澡吗”，检查结果页内容是否完整。
 - 分别搜索“宝宝咳嗽有痰”“挑食不爱吃蔬菜”“疫苗后低烧”，检查是否进入对应结果页。

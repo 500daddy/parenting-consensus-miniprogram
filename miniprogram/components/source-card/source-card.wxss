@@ -49,7 +49,7 @@
 .source-summary {
   margin-top: 8rpx;
   color: #756d66;
-  font-size: 24rpx;
+  font-size: 26rpx;
   line-height: 1.4;
 }
 

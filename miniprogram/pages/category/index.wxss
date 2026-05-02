@@ -20,7 +20,7 @@
   padding: 0 10rpx;
   border-color: #ead8b8;
   background: #fffdf6;
-  font-size: 23rpx;
+  font-size: 25rpx;
 }
 
 .chip-icon {
@@ -71,7 +71,7 @@
 .category-empty-desc {
   margin-top: 8rpx;
   color: #8b8178;
-  font-size: 23rpx;
+  font-size: 25rpx;
   line-height: 1.42;
 }
 
@@ -115,7 +115,7 @@
 
 .question-title {
   color: #2f2a25;
-  font-size: 28rpx;
+  font-size: 31rpx;
   line-height: 1.35;
   font-weight: 700;
 }
@@ -123,7 +123,7 @@
 .question-summary {
   margin-top: 8rpx;
   color: #756d66;
-  font-size: 23rpx;
+  font-size: 26rpx;
   line-height: 1.45;
 }
 
@@ -133,7 +133,7 @@
   gap: 16rpx;
   margin-top: 14rpx;
   color: #8b8178;
-  font-size: 22rpx;
+  font-size: 24rpx;
 }
 
 .row-arrow {
@@ -183,5 +183,5 @@
 .mini-desc {
   margin-top: 6rpx;
   color: #8b8178;
-  font-size: 22rpx;
+  font-size: 24rpx;
 }

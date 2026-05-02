@@ -264,7 +264,7 @@
 .related-sub {
   margin-top: 8rpx;
   color: #8b8178;
-  font-size: 21rpx;
+  font-size: 23rpx;
   line-height: 1.35;
 }
 

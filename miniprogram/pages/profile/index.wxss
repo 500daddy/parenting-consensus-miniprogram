@@ -9,17 +9,17 @@
 .profile-card {
   display: flex;
   flex-direction: column;
-  gap: 20rpx;
+  gap: 18rpx;
   margin-top: 0;
-  padding: 26rpx;
+  padding: 24rpx;
   border-color: #ead8b8;
   background: linear-gradient(135deg, #fffdf6 0%, #f5fbf1 56%, #fff7eb 100%);
 }
 
 .profile-top {
   display: flex;
-  align-items: center;
-  gap: 20rpx;
+  align-items: flex-start;
+  gap: 18rpx;
   width: 100%;
 }
 
@@ -50,21 +50,34 @@
 
 .profile-name {
   color: #2f2a25;
-  font-size: 32rpx;
+  font-size: 31rpx;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 .profile-sub {
   margin-top: 8rpx;
   color: #8b8178;
   font-size: 24rpx;
+  line-height: 1.42;
+}
+
+.profile-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  width: 100%;
+  padding-left: 110rpx;
 }
 
 .profile-stats {
   display: flex;
   gap: 12rpx;
   margin-top: 0;
-  padding-left: 112rpx;
+  padding-left: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .profile-stat {
@@ -85,13 +98,13 @@
   align-items: center;
   justify-content: center;
   flex: none;
-  min-width: 96rpx;
-  height: 50rpx;
-  padding: 0 18rpx;
+  min-width: 92rpx;
+  height: 48rpx;
+  padding: 0 20rpx;
   border-radius: 999rpx;
-  font-size: 23rpx;
+  font-size: 24rpx;
   font-weight: 800;
-  line-height: 50rpx;
+  line-height: 48rpx;
 }
 
 .login-button,
@@ -117,7 +130,7 @@
 
 .stat-label {
   color: #8b8178;
-  font-size: 22rpx;
+  font-size: 24rpx;
 }
 
 .baby-card {
@@ -130,7 +143,120 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18rpx;
+  gap: 14rpx;
+}
+
+.baby-head-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54rpx;
+  height: 54rpx;
+  border-radius: 14rpx;
+  flex: none;
+  overflow: hidden;
+  box-shadow: 0 4rpx 0 rgba(80, 60, 40, 0.08);
+}
+
+.baby-icon-neutral {
+  background: #dcefd2;
+}
+
+.baby-icon-boy {
+  background: #dcecff;
+}
+
+.baby-icon-girl {
+  background: #ffe2ec;
+}
+
+.baby-face {
+  position: relative;
+  width: 34rpx;
+  height: 34rpx;
+  border: 3rpx solid #7b5635;
+  border-radius: 10rpx;
+  background: #ffe7c4;
+  box-shadow: inset 0 -4rpx 0 rgba(183, 124, 74, 0.16);
+}
+
+.baby-face::before {
+  content: "";
+  position: absolute;
+  left: 5rpx;
+  right: 5rpx;
+  top: -8rpx;
+  height: 12rpx;
+  border-radius: 7rpx 7rpx 3rpx 3rpx;
+  background: #7b5635;
+}
+
+.baby-icon-boy .baby-face::before {
+  background: #5b83ba;
+}
+
+.baby-icon-girl .baby-face::before {
+  background: #cc6f8d;
+}
+
+.baby-icon-girl::before,
+.baby-icon-girl::after {
+  content: "";
+  position: absolute;
+  top: 9rpx;
+  width: 12rpx;
+  height: 10rpx;
+  border-radius: 5rpx 5rpx 2rpx 5rpx;
+  background: #cc6f8d;
+}
+
+.baby-icon-girl::before {
+  left: 9rpx;
+  transform: rotate(-25deg);
+}
+
+.baby-icon-girl::after {
+  right: 9rpx;
+  transform: rotate(25deg);
+}
+
+.baby-icon-boy::before {
+  content: "";
+  position: absolute;
+  left: 13rpx;
+  top: 9rpx;
+  width: 28rpx;
+  height: 7rpx;
+  border-radius: 5rpx;
+  background: #5b83ba;
+}
+
+.baby-eye {
+  position: absolute;
+  top: 14rpx;
+  width: 4rpx;
+  height: 4rpx;
+  border-radius: 50%;
+  background: #5c3f2a;
+}
+
+.eye-left {
+  left: 9rpx;
+}
+
+.eye-right {
+  right: 9rpx;
+}
+
+.baby-mouth {
+  position: absolute;
+  left: 13rpx;
+  bottom: 7rpx;
+  width: 8rpx;
+  height: 3rpx;
+  border-radius: 999rpx;
+  background: #c8795d;
 }
 
 .baby-heading {
@@ -159,53 +285,60 @@
 
 .baby-login-card {
   display: flex;
-  align-items: center;
-  gap: 18rpx;
+  align-items: flex-start;
+  gap: 16rpx;
   margin-top: 24rpx;
-  padding: 20rpx;
+  padding: 20rpx 18rpx;
   border: 2rpx dashed #d8e8cf;
   border-radius: 16rpx;
   background: #f7fbf3;
+  position: relative;
 }
 
 .baby-login-icon {
-  width: 68rpx;
-  height: 68rpx;
+  width: 64rpx;
+  height: 64rpx;
   flex: none;
+  margin-top: 2rpx;
 }
 
 .baby-login-main {
   flex: 1;
   min-width: 0;
+  padding-right: 112rpx;
 }
 
 .baby-login-title {
   color: #2f2a25;
-  font-size: 27rpx;
+  font-size: 28rpx;
   font-weight: 800;
+  line-height: 1.28;
+  max-width: 100%;
 }
 
 .baby-login-desc {
-  margin-top: 6rpx;
+  margin-top: 8rpx;
   color: #8b8178;
-  font-size: 22rpx;
-  line-height: 1.4;
+  font-size: 24rpx;
+  line-height: 1.48;
 }
 
 .login-inline {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: none;
-  min-width: 104rpx;
-  height: 58rpx;
-  padding: 0 18rpx;
-  border-radius: 14rpx;
+  position: absolute;
+  right: 16rpx;
+  top: 18rpx;
+  min-width: 82rpx;
+  height: 40rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
   background: #75b86f;
   color: #ffffff;
-  font-size: 23rpx;
+  font-size: 22rpx;
   font-weight: 800;
-  box-shadow: 0 4rpx 0 rgba(58, 111, 54, 0.18);
+  box-shadow: 0 3rpx 0 rgba(58, 111, 54, 0.16);
 }
 
 .baby-cell {
@@ -235,7 +368,7 @@
   display: flex;
   align-items: center;
   gap: 18rpx;
-  min-height: 84rpx;
+  min-height: 78rpx;
   padding: 0 18rpx;
   border: 2rpx solid #f1e8dc;
   border-radius: 14rpx;
@@ -250,7 +383,7 @@
 }
 
 .form-input,
-.form-picker {
+.picker-value {
   flex: 1;
   min-width: 0;
   color: #2f2a25;
@@ -259,20 +392,41 @@
 }
 
 .form-input {
-  height: 80rpx;
+  height: 74rpx;
 }
 
-.form-picker {
-  display: flex;
-  align-items: center;
-  min-height: 80rpx;
+.form-picker-row {
+  display: block;
+  width: 100%;
+}
+
+.picker-row {
+  padding-right: 16rpx;
+}
+
+.picker-value {
+  padding-right: 30rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.picker-arrow {
+  width: 14rpx;
+  height: 14rpx;
+  margin-right: 2rpx;
+  border-right: 3rpx solid #9d8c7c;
+  border-bottom: 3rpx solid #9d8c7c;
+  transform: rotate(45deg);
+  flex: none;
 }
 
 .form-actions {
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 16rpx;
-  margin-top: 4rpx;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12rpx;
+  width: 100%;
+  margin-top: 2rpx;
 }
 
 .ghost-action,
@@ -280,10 +434,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 76rpx;
-  border-radius: 14rpx;
+  width: 100%;
+  min-width: 0;
+  height: 68rpx;
+  border-radius: 12rpx;
   font-size: 25rpx;
   font-weight: 800;
+  box-sizing: border-box;
 }
 
 .ghost-action {
@@ -308,7 +465,7 @@
 
 .cell-label {
   color: #8b8178;
-  font-size: 22rpx;
+  font-size: 24rpx;
 }
 
 .cell-value {

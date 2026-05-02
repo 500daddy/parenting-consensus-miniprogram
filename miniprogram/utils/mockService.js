@@ -41,6 +41,7 @@ const actionIconPaths = {
   question: `${ICON_ROOT}/action/question.png`,
   reminder: `${ICON_ROOT}/action/reminder.png`,
   search: `${ICON_ROOT}/action/search.png`,
+  share: `${ICON_ROOT}/action/share.png`,
   star: `${ICON_ROOT}/action/star.png`,
   warning: `${ICON_ROOT}/action/warning.png`
 }
