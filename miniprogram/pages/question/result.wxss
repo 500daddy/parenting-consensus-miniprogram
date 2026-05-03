@@ -319,6 +319,82 @@
   font-weight: 600;
 }
 
+.glossary-term {
+  color: #4f7f45;
+  font-weight: 800;
+  border-bottom: 2rpx solid #7ea66a;
+  padding-bottom: 1rpx;
+}
+
+.glossary-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48rpx;
+  background: rgba(47, 42, 37, 0.36);
+}
+
+.glossary-pop {
+  width: 100%;
+  max-height: 72vh;
+  padding: 26rpx;
+  border-radius: 18rpx;
+  background: #fffdf6;
+  border-color: #ead8b8;
+  overflow: auto;
+}
+
+.glossary-head {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.glossary-title {
+  flex: 1;
+  min-width: 0;
+  color: #2f2a25;
+  font-size: 32rpx;
+  font-weight: 800;
+}
+
+.glossary-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54rpx;
+  height: 54rpx;
+  border-radius: 50%;
+  color: #8b8178;
+  font-size: 30rpx;
+  font-weight: 800;
+  flex: none;
+}
+
+.glossary-summary {
+  margin-top: 18rpx;
+  color: #4f453c;
+  font-size: 27rpx;
+  line-height: 1.55;
+}
+
+.glossary-reminder {
+  margin-top: 18rpx;
+  padding: 18rpx;
+  border-radius: 14rpx;
+  background: #f5fbf1;
+  color: #5f8c4a;
+  font-size: 24rpx;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
 .conclusion-main {
   flex: 1;
   min-width: 0;
@@ -389,6 +465,59 @@
 
 .risk-text {
   color: #9f422f;
+}
+
+.profile-hint {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 16rpx;
+  padding: 20rpx;
+  background: #f7fbf2;
+  border-color: #cfe3c4;
+  text-align: left;
+}
+
+.profile-hint-icon {
+  width: 42rpx;
+  height: 42rpx;
+  border-radius: 10rpx;
+  background: #eaf6df;
+  flex: none;
+}
+
+.profile-hint-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-hint-head {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.profile-hint-title {
+  color: #2f2a25;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.profile-hint-meta {
+  flex: 1;
+  min-width: 0;
+  color: #6f985a;
+  font-size: 22rpx;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-hint-text {
+  margin-top: 6rpx;
+  color: #5f6e52;
+  font-size: 23rpx;
+  line-height: 1.45;
 }
 
 .summary-meta,

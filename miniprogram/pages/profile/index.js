@@ -34,7 +34,7 @@ Page({
 
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 3 })
+      this.getTabBar().setData({ selected: 3, hidden: false })
     }
     const profile = service.getProfile()
     const icon = getBabyIcon(profile.baby.gender)
@@ -58,6 +58,21 @@ Page({
   getAgeIndex(age) {
     const index = this.data.ageOptions.indexOf(age)
     return index > -1 ? index : 0
+  },
+
+  setCustomTabBarHidden(hidden) {
+    if (typeof this.getTabBar !== 'function') return
+    const tabBar = this.getTabBar()
+    if (!tabBar) return
+    tabBar.setData({ hidden: Boolean(hidden) })
+  },
+
+  onProfilePickerOpen() {
+    this.setCustomTabBarHidden(true)
+  },
+
+  onProfilePickerClose() {
+    this.setCustomTabBarHidden(false)
   },
 
   login() {
@@ -132,6 +147,7 @@ Page({
   },
 
   onAgeChange(event) {
+    this.onProfilePickerClose()
     const index = Number(event.detail.value || 0)
     this.setData({
       ageIndex: index,
@@ -140,6 +156,7 @@ Page({
   },
 
   onGenderChange(event) {
+    this.onProfilePickerClose()
     const index = Number(event.detail.value || 0)
     const gender = this.data.genderOptions[index] || '未设置'
     const icon = getBabyIcon(gender)
@@ -213,7 +230,7 @@ Page({
   showPrivacy() {
     wx.showModal({
       title: '隐私说明',
-      content: '当前版本不接后端，不上传宝宝档案。微信头像和昵称仅用于本机展示；宝宝月龄、性别、过敏史、收藏和搜索历史仅保存在本机微信小程序缓存中，删除小程序或清理缓存后会丢失。',
+      content: '当前版本不接后端，不上传宝宝档案。微信头像和昵称仅用于本机展示；宝宝昵称、月龄、性别、过敏史、收藏和搜索历史仅保存在本机微信小程序缓存中，删除小程序或清理缓存后会丢失。',
       confirmText: '知道了',
       showCancel: false
     })
@@ -222,7 +239,7 @@ Page({
   showReviewNote() {
     wx.showModal({
       title: '审核备注建议',
-      content: '当前版本为本地数据 MVP，无后台请求、无支付、无客服系统。数据为固定育儿科普样例，仅供信息参考，不能替代医生诊断或处方。',
+      content: '当前版本为本地数据 MVP，无后台请求、无支付、无客服系统。页面内容为固定育儿科普样例，仅供家长信息参考和就医沟通前梳理，不能替代医生诊断、个体化处方或急救处理。涉及疾病、用药、疫苗反应或紧急情况时，请及时咨询医生、接种门诊或线下就医。',
       confirmText: '知道了',
       showCancel: false
     })

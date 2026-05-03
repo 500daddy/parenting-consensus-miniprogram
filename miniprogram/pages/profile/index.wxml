@@ -87,14 +87,14 @@
           <view class="form-label">宝宝昵称</view>
           <input class="form-input" value="{{draftBaby.name}}" data-field="name" bindinput="onBabyInput" placeholder="例如：小满" />
         </view>
-        <picker class="form-picker-row" mode="selector" range="{{ageOptions}}" value="{{ageIndex}}" bindchange="onAgeChange">
+        <picker class="form-picker-row" mode="selector" range="{{ageOptions}}" value="{{ageIndex}}" bindtap="onProfilePickerOpen" bindchange="onAgeChange" bindcancel="onProfilePickerClose">
           <view class="form-row picker-row">
             <view class="form-label">月龄</view>
             <view class="picker-value">{{draftBaby.age || '未设置'}}</view>
             <view class="picker-arrow"></view>
           </view>
         </picker>
-        <picker class="form-picker-row" mode="selector" range="{{genderOptions}}" value="{{genderIndex}}" bindchange="onGenderChange">
+        <picker class="form-picker-row" mode="selector" range="{{genderOptions}}" value="{{genderIndex}}" bindtap="onProfilePickerOpen" bindchange="onGenderChange" bindcancel="onProfilePickerClose">
           <view class="form-row picker-row">
             <view class="form-label">性别</view>
             <view class="picker-value">{{draftBaby.gender || '未设置'}}</view>

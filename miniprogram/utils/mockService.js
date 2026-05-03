@@ -58,6 +58,58 @@ const reasonIconPaths = {
   red: actionIconPaths.warning,
   purple: actionIconPaths.question
 }
+const glossaryTerms = {
+  '生理性溢奶': {
+    title: '生理性溢奶',
+    summary: '宝宝喝奶后少量奶液从嘴角流出，常见于小月龄宝宝胃容量小、食管括约肌还没发育成熟。',
+    reminder: '通常量少、宝宝精神和吃奶正常；如果频繁喷射、体重增长差或精神差，要咨询医生。'
+  },
+  '喷射状呕吐': {
+    title: '喷射状呕吐',
+    summary: '呕吐力量很大，奶液或食物像被冲出来一样喷出，不是普通吐奶或嘴角流奶。',
+    reminder: '如果反复出现，或伴随精神差、尿少、发热、体重增长差，应及时就医。'
+  },
+  '脱水': {
+    title: '脱水',
+    summary: '身体水分不足，宝宝可能表现为尿量明显变少、哭时眼泪少、口唇干、精神差。',
+    reminder: '小宝宝脱水进展可能较快，持续呕吐、腹泻或高热时要特别留意。'
+  },
+  '红旗信号': {
+    title: '红旗信号',
+    summary: '提示可能有风险、需要优先就医或咨询医生的表现，比如呼吸费力、精神明显变差、抽搐、尿量明显减少。',
+    reminder: '看到红旗信号时，不要只等平台答案，应优先线下处理。'
+  },
+  '精神状态': {
+    title: '精神状态',
+    summary: '观察宝宝是否和平时一样有反应、能安抚、能吃奶/玩耍，而不只看一个体温或症状数字。',
+    reminder: '精神明显差、嗜睡、反应弱，通常比单个症状更值得重视。'
+  },
+  '低月龄': {
+    title: '低月龄',
+    summary: '一般指月龄较小的宝宝，尤其 3 个月以内。这个阶段症状变化更需要谨慎看待。',
+    reminder: '低月龄宝宝发热、吃奶差、精神差时，建议更早咨询医生。'
+  },
+  '退烧药': {
+    title: '退烧药',
+    summary: '用于缓解发热不适的药物，儿童用药需要看月龄、体重、药品成分和医生/说明书建议。',
+    reminder: '不要自行叠加多种退烧药，也不要只为追求降温数字而用药。'
+  },
+  '过敏反应': {
+    title: '过敏反应',
+    summary: '接触食物、药物或环境刺激后出现皮疹、呕吐、腹泻、咳喘、面部肿胀等表现。',
+    reminder: '如果出现呼吸异常、面部肿胀或全身反应，要及时就医。'
+  },
+  '辅食过敏': {
+    title: '辅食过敏',
+    summary: '添加新食物后出现皮疹、呕吐、腹泻、咳喘等疑似过敏表现。',
+    reminder: '添加新食物建议少量、单一、连续观察，严重反应及时就医。'
+  },
+  '卡噎': {
+    title: '卡噎',
+    summary: '食物或异物堵住气道，宝宝可能咳不出声、呼吸困难、脸色发青。',
+    reminder: '这是急救场景，出现呼吸困难或意识异常时应立即急救并联系急救电话。'
+  }
+}
 
 function sortQuestions(left, right) {
   const leftRank = typeof left.priorityRank === 'number' ? left.priorityRank : 99
@@ -98,6 +150,40 @@ function getQuestionSearchScore(question, keyword) {
     if (text.indexOf(lowerTag) > -1) score += 12
   })
   return score
+}
+
+function getGlossaryEntry(term) {
+  return glossaryTerms[term] || null
+}
+
+function buildGlossarySegments(text) {
+  const source = text || ''
+  if (!source) return []
+  const terms = Object.keys(glossaryTerms).sort((left, right) => right.length - left.length)
+  const segments = []
+  let index = 0
+  while (index < source.length) {
+    const term = terms.find((item) => source.indexOf(item, index) === index)
+    if (term) {
+      segments.push({
+        text: term,
+        term,
+        entry: glossaryTerms[term]
+      })
+      index += term.length
+      continue
+    }
+    let nextIndex = source.length
+    terms.forEach((item) => {
+      const foundIndex = source.indexOf(item, index + 1)
+      if (foundIndex > -1 && foundIndex < nextIndex) {
+        nextIndex = foundIndex
+      }
+    })
+    segments.push({ text: source.slice(index, nextIndex) })
+    index = nextIndex
+  }
+  return segments
 }
 function getCategory(id) {
   const category = data.categories.find((item) => item.id === id)
@@ -416,6 +502,8 @@ module.exports = {
   profileIconPaths,
   getCategoryIconPath,
   getQuestionIconPath,
+  getGlossaryEntry,
+  buildGlossarySegments,
   formatHeat,
   getCategory,
   getQuestionById,

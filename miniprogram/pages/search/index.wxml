@@ -1,9 +1,9 @@
-<view class="page with-tab">
+<view class="page with-tab search-page">
   <view class="search-top">
     <view class="search-card card">
       <view class="search-icon"></view>
       <input class="search-input" value="{{keyword}}" placeholder="搜索育儿问题，例如：宝宝发烧能洗澡吗？" confirm-type="search" bindinput="onInput" bindconfirm="search" />
-      <button wx:if="{{keyword}}" class="btn-plain clear-btn" bindtap="clearKeyword">×</button>
+      <view wx:if="{{keyword}}" class="clear-btn" bindtap="clearKeyword" aria-label="清空搜索内容">×</view>
     </view>
     <view class="search-submit" bindtap="search">搜索</view>
   </view>

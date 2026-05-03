@@ -88,8 +88,8 @@ const questionsData = {
         "宝宝37.5算发烧吗",
         "宝宝体温多少正常"
       ],
-      "summary": "解释年龄、测量部位、精神状态比单一温度更重要。",
-      "resultFocus": "解释年龄、测量部位、精神状态比单一温度更重要",
+      "summary": "一般以体温达到 38.0°C 左右作为发热界线，同时结合测量部位和精神状态判断。",
+      "resultFocus": "先回答发热温度界线，再结合测量部位、月龄和精神状态判断",
       "sourceUrl": "https://www.mayoclinic.org/zh-hans/healthy-lifestyle/infant-and-toddler-health/in-depth/healthy-baby/art-20047793",
       "updatedAt": "2026-04-30T00:00:00+08:00"
     },
@@ -1010,8 +1010,8 @@ const questionResultData = {
       "priority": "P0",
       "riskLevel": "中",
       "isHighRisk": false,
-      "mainstreamConsensus": "主流共识认为：解释年龄、测量部位、精神状态比单一温度更重要。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
-      "conclusion": "主流共识认为：解释年龄、测量部位、精神状态比单一温度更重要。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
+      "mainstreamConsensus": "主流共识认为：多数情况下，宝宝体温达到 38.0°C 左右可视为发热；口温约 37.8°C 以上也常被视为发热。低月龄宝宝，尤其 3 个月以内，直肠温度达到 38.0°C 应及时咨询医生。",
+      "conclusion": "主流共识认为：多数情况下，宝宝体温达到 38.0°C 左右可视为发热；口温约 37.8°C 以上也常被视为发热。低月龄宝宝，尤其 3 个月以内，直肠温度达到 38.0°C 应及时咨询医生。",
       "sourceCount": 260,
       "expertCount": 74,
       "confidenceLevel": "较高",
@@ -1019,18 +1019,18 @@ const questionResultData = {
       "viewpoints": [
         {
           "id": "q_001_v1",
-          "title": "主流做法：按条件判断",
+          "title": "主流做法：38.0°C 左右算发热",
           "percentage": 60,
           "type": "majority",
-          "summary": "解释年龄、测量部位、精神状态比单一温度更重要",
+          "summary": "多数儿科口径把 38.0°C 左右作为发热界线，测量部位不同会有细微差异。",
           "color": "#7EA66A"
         },
         {
           "id": "q_001_v2",
-          "title": "补充观点：看月龄和趋势",
+          "title": "补充观点：看测量部位",
           "percentage": 27,
           "type": "neutral",
-          "summary": "同样的表现在不同月龄、持续时间和伴随症状下，处理策略会不同。",
+          "summary": "口温、耳温、额温、腋温和直肠温度不能完全等同，建议固定一种可靠方式复测。",
           "color": "#F4A340"
         },
         {
@@ -1052,8 +1052,8 @@ const questionResultData = {
         },
         {
           "id": "q_001_r2",
-          "title": "匹配当前场景",
-          "description": "解释年龄、测量部位、精神状态比单一温度更重要",
+          "title": "看测量部位",
+          "description": "不同测量方式读数会有差异，同一次判断最好固定方式并复测确认。",
           "icon": "问",
           "tone": "orange"
         },
@@ -1072,7 +1072,7 @@ const questionResultData = {
           "tone": "red"
         }
       ],
-      "authorityView": "儿科指南、医生科普、官方健康科普建议：解释年龄、测量部位、精神状态比单一温度更重要；同时结合月龄、精神状态和症状趋势判断。",
+      "authorityView": "儿科指南、医生科普、官方健康科普通常把 38.0°C 左右作为儿童发热界线；3 个月以内宝宝直肠温度达到 38.0°C 更需要及时咨询医生。",
       "authoritySourceIds": [
         "a_pediatrician",
         "a_medical_guide",

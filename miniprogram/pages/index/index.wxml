@@ -39,7 +39,12 @@
       <image class="consensus-icon pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" />
       <view class="consensus-main">
         <view class="consensus-title">{{todayResult.title}}</view>
-        <view class="consensus-conclusion">{{todayResult.conclusion}}</view>
+        <view class="consensus-conclusion">
+          <block wx:for="{{todayResult.conclusionSegments}}" wx:key="index">
+            <text wx:if="{{item.entry}}" class="glossary-term" data-term="{{item.term}}" catchtap="showGlossary">{{item.text}}</text>
+            <text wx:else>{{item.text}}</text>
+          </block>
+        </view>
         <view class="stack-bar">
           <view wx:for="{{todayResult.viewpoints}}" wx:key="id" class="stack-seg" style="width: {{item.percentage}}%; background: {{item.color}};"></view>
         </view>
@@ -73,6 +78,17 @@
         </view>
         <view class="row-arrow"></view>
       </view>
+    </view>
+  </view>
+
+  <view wx:if="{{glossaryPopup}}" class="glossary-mask" catchtap="hideGlossary">
+    <view class="glossary-pop card" catchtap="noop">
+      <view class="glossary-head">
+        <view class="glossary-title">{{glossaryPopup.title}}</view>
+        <view class="glossary-close" catchtap="hideGlossary">×</view>
+      </view>
+      <view class="glossary-summary">{{glossaryPopup.summary}}</view>
+      <view class="glossary-reminder">{{glossaryPopup.reminder}}</view>
     </view>
   </view>
 </view>

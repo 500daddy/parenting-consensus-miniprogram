@@ -1,5 +1,12 @@
 const service = require('../../utils/mockService.js')
 
+function prepareTodayResult(result) {
+  if (!result) return result
+  return Object.assign({}, result, {
+    conclusionSegments: service.buildGlossarySegments(result.conclusion)
+  })
+}
+
 Page({
   data: {
     categories: [],
@@ -7,6 +14,7 @@ Page({
     todayResult: null,
     safetyWarnings: [],
     primaryWarning: '',
+    glossaryPopup: null,
     homeKeyword: '',
     heroPaddingTop: 112,
     heroSignTop: 132,
@@ -14,7 +22,7 @@ Page({
   },
 
   onLoad() {
-    const todayResult = service.getTodayQuestionResult() || service.getQuestionResult({ id: 'q_001' })
+    const todayResult = prepareTodayResult(service.getTodayQuestionResult() || service.getQuestionResult({ id: 'q_001' }))
     const heroLayout = this.getHeroLayout()
     this.setData({
       heroPaddingTop: heroLayout.paddingTop,
@@ -109,5 +117,18 @@ Page({
     const questionId = this.data.todayResult && this.data.todayResult.questionId
     if (!questionId) return
     wx.navigateTo({ url: `/pages/question/result?id=${questionId}` })
-  }
+  },
+
+  showGlossary(event) {
+    const term = event.currentTarget.dataset.term
+    const entry = service.getGlossaryEntry(term)
+    if (!entry) return
+    this.setData({ glossaryPopup: entry })
+  },
+
+  hideGlossary() {
+    this.setData({ glossaryPopup: null })
+  },
+
+  noop() {}
 })
