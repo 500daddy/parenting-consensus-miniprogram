@@ -99,9 +99,6 @@
   margin-bottom: 20rpx;
   border-radius: 14rpx;
   background: #fff4e4;
-  color: #f4a340;
-  font-size: 30rpx;
-  font-weight: 700;
 }
 
 .empty-copy {

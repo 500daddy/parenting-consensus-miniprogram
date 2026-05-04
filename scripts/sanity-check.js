@@ -296,6 +296,31 @@ assertInvariant(service.hasQuestionResult(todayQuestionId), `Daily consensus que
 assertInvariant(Boolean(service.getTodayQuestionResult(new Date(2026, 3, 30))), 'Today consensus result should be available')
 const feverThresholdResult = service.getQuestionResult({ id: 'q_001' })
 assertInvariant(feverThresholdResult.conclusion.indexOf('38.0°C') > -1, 'Fever threshold answer should directly mention 38.0°C')
+const calibratedAnswerIds = [
+  'q_002', 'q_003', 'q_004', 'q_005', 'q_006', 'q_008',
+  'q_011', 'q_012', 'q_013', 'q_014', 'q_017', 'q_018',
+  'q_019', 'q_020', 'q_021', 'q_024', 'q_027', 'q_028',
+  'q_030', 'q_034', 'q_039', 'q_041', 'q_043', 'q_047', 'q_050'
+]
+const plannerPhrases = ['展示', '解释不同', '按条件判断', '匹配当前场景', '先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医']
+for (const id of calibratedAnswerIds) {
+  const result = service.getQuestionResult({ id })
+  assertInvariant(Boolean(result), `Calibrated answer ${id} should be available`)
+  if (result) {
+    const resultCopy = [
+      result.conclusion,
+      result.mainstreamConsensus,
+      result.authorityView,
+      ...(result.viewpoints || []).map((item) => `${item.title} ${item.summary}`),
+      ...(result.reasons || []).map((item) => `${item.title} ${item.description}`)
+    ].join(' ')
+    plannerPhrases.forEach((phrase) => {
+      assertInvariant(resultCopy.indexOf(phrase) === -1, `Calibrated answer ${id} still contains planner phrase "${phrase}"`)
+    })
+    assertInvariant(/^主流共识认为：/.test(result.conclusion), `Calibrated answer ${id} should keep the consensus prefix`)
+    assertInvariant(result.conclusion.length >= 40, `Calibrated answer ${id} conclusion is too thin`)
+  }
+}
 
 const loggedInProfile = service.loginProfile({ nickName: '测试家长' })
 assertInvariant(loggedInProfile.isLoggedIn === true, 'Profile login should mark user as logged in')

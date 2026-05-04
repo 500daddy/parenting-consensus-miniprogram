@@ -6,7 +6,7 @@
   </view>
 
   <view wx:if="{{noResult}}" class="empty-card card">
-    <view class="empty-icon">问</view>
+    <image class="empty-icon pixel-img" src="{{actionIconPaths.question}}" mode="aspectFit" />
     <view class="empty-copy">
       <view class="empty-title">暂时没有找到精确共识</view>
       <view class="empty-desc">可以换一种问法，或者先查看首页和问答页里已经整理好的热门问题。</view>
