@@ -79,6 +79,17 @@ Page({
     })
   },
 
+  submitMissingQuestion() {
+    const keyword = (this.data.keyword || '').trim()
+    const validation = service.validatePendingQuestion(keyword)
+    if (!validation.valid) {
+      wx.showToast({ title: validation.message, icon: 'none' })
+      return
+    }
+    service.addPendingQuestion(validation.text, 'search_empty')
+    wx.showToast({ title: '已加入待补充问题池', icon: 'none' })
+  },
+
   updateSuggestions(keyword) {
     const text = (keyword || '').trim()
     const source = text ? service.searchQuestions(text) : service.getAvailableQuestions()

@@ -9,20 +9,18 @@
   </view>
 
   <view class="category-strip">
-    <scroll-view class="category-scroll" scroll-x enable-flex>
-      <view class="category-track">
-        <view
-          wx:for="{{categories}}"
-          wx:key="id"
-          class="category-chip {{activeCategory === item.id ? 'active' : ''}}"
-          bindtap="changeCategory"
-          data-id="{{item.id}}"
-        >
-          <image class="category-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
-          <text>{{item.name}}</text>
-        </view>
+    <view class="category-track">
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="category-chip {{activeCategory === item.id ? 'active' : ''}}"
+        bindtap="changeCategory"
+        data-id="{{item.id}}"
+      >
+        <image class="category-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
+        <text>{{item.name}}</text>
       </view>
-    </scroll-view>
+    </view>
   </view>
 
   <view wx:if="{{history.length}}" class="section">
@@ -58,7 +56,8 @@
       <view class="search-empty-icon">问</view>
       <view class="search-empty-main">
         <view class="search-empty-title">暂无相近问题</view>
-        <view class="search-empty-desc">可以直接点“搜索”，查看是否有对应共识结果。</view>
+        <view class="search-empty-desc">可以提交到待补充池。请尽量写成完整问题，例如：宝宝夜里频繁醒怎么办？</view>
+        <view wx:if="{{keyword}}" class="missing-submit" bindtap="submitMissingQuestion">提交这个问题</view>
       </view>
     </view>
   </view>

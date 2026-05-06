@@ -2,6 +2,7 @@ const data = require('../mock/data.js')
 
 const HISTORY_KEY = 'parenting_consensus_history'
 const FAVORITES_KEY = 'parenting_consensus_favorites'
+const PENDING_QUESTIONS_KEY = 'parenting_consensus_pending_questions'
 const PENDING_CATEGORY_KEY = 'pending_category_id'
 const PROFILE_KEY = 'parenting_consensus_profile'
 const ICON_ROOT = '/assets/icons/pixel-v2'
@@ -51,6 +52,19 @@ const profileIconPaths = {
   gender: `${ICON_ROOT}/profile/gender.png`,
   month: `${ICON_ROOT}/profile/month.png`,
   name: `${ICON_ROOT}/profile/name.png`
+}
+const EMPTY_BABY_PROFILE = {
+  name: '未设置',
+  age: '未设置',
+  gender: '未设置',
+  allergy: '暂无记录'
+}
+const EMPTY_PROFILE = {
+  isLoggedIn: false,
+  nickName: '微信用户',
+  avatarUrl: '',
+  avatarText: '微',
+  baby: EMPTY_BABY_PROFILE
 }
 const reasonIconPaths = {
   green: actionIconPaths.consensus,
@@ -870,6 +884,76 @@ function sanitizeFavoriteIds(items) {
     })
 }
 
+function sanitizePendingQuestions(items) {
+  const seen = {}
+  return items.filter((item) => item && typeof item === 'object' && typeof item.keyword === 'string')
+    .map((item) => ({
+      keyword: item.keyword.trim(),
+      source: item.source || 'search',
+      createdAt: item.createdAt || '',
+      hitCount: Number(item.hitCount || 1)
+    }))
+    .filter((item) => {
+      if (!item.keyword) return false
+      const key = item.keyword.toLowerCase()
+      if (seen[key]) {
+        seen[key].hitCount += item.hitCount || 1
+        return false
+      }
+      seen[key] = item
+      return true
+    })
+    .slice(0, 40)
+}
+
+const PENDING_QUESTION_MIN_LENGTH = 6
+const PENDING_QUESTION_MAX_LENGTH = 40
+const PENDING_QUESTION_TERMS = [
+  '宝宝', '宝贝', '孩子', '小孩', '娃', '新生儿', '婴儿', '幼儿',
+  '月', '岁', '发烧', '发热', '退烧', '咳嗽', '鼻塞', '鼻涕', '痰',
+  '吃', '喝', '奶', '母乳', '辅食', '过敏', '湿疹', '红屁股',
+  '睡', '夜醒', '哭', '胀气', '肠绞痛', '便秘', '拉肚子', '腹泻',
+  '呕吐', '吐奶', '疫苗', '体检', '身高', '体重', '翻身', '坐',
+  '爬', '走', '头围', '牙', '出牙', '皮疹', '误食', '噎', '分床'
+]
+const PENDING_QUESTION_INTENTS = [
+  '吗', '么', '怎么办', '怎么', '要不要', '能不能', '可以', '需要',
+  '正常', '多久', '多少', '什么时候', '为啥', '为什么', '该不该', '如何'
+]
+const TOO_BROAD_PENDING_QUESTIONS = [
+  '发烧', '发热', '睡觉', '吃奶', '喝奶', '辅食', '咳嗽', '湿疹',
+  '奶粉', '疫苗', '哭', '便秘', '腹泻', '拉肚子', '过敏', '分床'
+]
+
+function normalizePendingQuestion(keyword) {
+  return (keyword || '')
+    .replace(/\s+/g, '')
+    .replace(/[。！!]+$/g, '？')
+    .trim()
+}
+
+function validatePendingQuestion(keyword) {
+  const text = normalizePendingQuestion(keyword)
+  if (!text) {
+    return { valid: false, text: '', message: '先输入想问的问题' }
+  }
+  if (text.length < PENDING_QUESTION_MIN_LENGTH || TOO_BROAD_PENDING_QUESTIONS.indexOf(text) > -1) {
+    return { valid: false, text, message: '问题写完整一点' }
+  }
+  if (text.length > PENDING_QUESTION_MAX_LENGTH) {
+    return { valid: false, text, message: '问题精简到40字内' }
+  }
+  const hasParentingTerm = PENDING_QUESTION_TERMS.some((term) => text.indexOf(term) > -1)
+  if (!hasParentingTerm) {
+    return { valid: false, text, message: '请写成育儿问题' }
+  }
+  const hasQuestionIntent = /[?？]$/.test(text) || PENDING_QUESTION_INTENTS.some((term) => text.indexOf(term) > -1)
+  if (!hasQuestionIntent) {
+    return { valid: false, text, message: '请写成完整问句' }
+  }
+  return { valid: true, text, message: '可以提交' }
+}
+
 function addHistory(keyword) {
   const text = (keyword || '').trim()
   if (!text) return
@@ -884,6 +968,37 @@ function getHistory() {
 
 function clearHistory() {
   setStorageList(HISTORY_KEY, [])
+}
+
+function addPendingQuestion(keyword, source) {
+  const validation = validatePendingQuestion(keyword)
+  if (!validation.valid) return validation
+  const text = validation.text
+  const pending = sanitizePendingQuestions(getStorageList(PENDING_QUESTIONS_KEY))
+  const lowerText = text.toLowerCase()
+  const existing = pending.find((item) => item.keyword.toLowerCase() === lowerText)
+  if (existing) {
+    existing.hitCount += 1
+    existing.source = source || existing.source
+    existing.createdAt = new Date().toISOString()
+  } else {
+    pending.unshift({
+      keyword: text,
+      source: source || 'search',
+      createdAt: new Date().toISOString(),
+      hitCount: 1
+    })
+  }
+  setStorageList(PENDING_QUESTIONS_KEY, sanitizePendingQuestions(pending))
+  return Object.assign({}, validation, { stored: true })
+}
+
+function getPendingQuestions() {
+  return sanitizePendingQuestions(getStorageList(PENDING_QUESTIONS_KEY))
+}
+
+function clearPendingQuestions() {
+  setStorageList(PENDING_QUESTIONS_KEY, [])
 }
 
 function setPendingCategory(categoryId) {
@@ -929,16 +1044,17 @@ function toggleFavorite(questionId) {
 function normalizeProfile(profile) {
   const saved = profile || {}
   const savedBaby = saved.baby || {}
+  const isLoggedIn = saved.isLoggedIn === true
   return {
-    isLoggedIn: Boolean(saved.isLoggedIn),
-    nickName: saved.nickName || data.profile.nickName,
+    isLoggedIn,
+    nickName: saved.nickName || EMPTY_PROFILE.nickName,
     avatarUrl: saved.avatarUrl || '',
-    avatarText: saved.avatarText || data.profile.avatarText,
+    avatarText: saved.avatarText || EMPTY_PROFILE.avatarText,
     baby: {
-      name: savedBaby.name || data.profile.baby.name,
-      age: savedBaby.age || data.profile.baby.age,
-      gender: savedBaby.gender || data.profile.baby.gender,
-      allergy: savedBaby.allergy || data.profile.baby.allergy
+      name: savedBaby.name || EMPTY_BABY_PROFILE.name,
+      age: savedBaby.age || EMPTY_BABY_PROFILE.age,
+      gender: savedBaby.gender || EMPTY_BABY_PROFILE.gender,
+      allergy: savedBaby.allergy || EMPTY_BABY_PROFILE.allergy
     }
   }
 }
@@ -971,22 +1087,24 @@ function saveBabyProfile(baby) {
 }
 
 function logoutProfile() {
+  const emptyProfile = normalizeProfile(EMPTY_PROFILE)
   try {
-    wx.removeStorageSync(PROFILE_KEY)
+    wx.setStorageSync(PROFILE_KEY, emptyProfile)
   } catch (error) {
     // Storage may be unavailable in some preview runtimes.
   }
-  return getProfile()
+  return emptyProfile
 }
 
 module.exports = {
   HISTORY_KEY,
   FAVORITES_KEY,
+  PENDING_QUESTIONS_KEY,
   PENDING_CATEGORY_KEY,
   PROFILE_KEY,
   categories: data.categories.map(enrichCategory),
   questions: data.questions.map(enrichQuestion),
-  profile: normalizeProfile(data.profile),
+  profile: normalizeProfile(EMPTY_PROFILE),
   actionIconPaths,
   profileIconPaths,
   getCategoryIconPath,
@@ -1009,6 +1127,10 @@ module.exports = {
   addHistory,
   getHistory,
   clearHistory,
+  validatePendingQuestion,
+  addPendingQuestion,
+  getPendingQuestions,
+  clearPendingQuestions,
   setPendingCategory,
   consumePendingCategory,
   getFavorites,

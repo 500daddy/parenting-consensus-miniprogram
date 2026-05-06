@@ -73,6 +73,7 @@
 
 .profile-stats {
   display: flex;
+  flex-wrap: wrap;
   gap: 12rpx;
   margin-top: 0;
   padding-left: 0;
@@ -89,6 +90,12 @@
   border-radius: 12rpx;
   background: rgba(255, 253, 246, 0.78);
   border: 2rpx solid #d8e8cf;
+  flex: none;
+}
+
+.profile-stat:active {
+  opacity: 0.82;
+  transform: translateY(2rpx);
 }
 
 .login-button,

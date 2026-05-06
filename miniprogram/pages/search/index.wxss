@@ -77,29 +77,26 @@
   margin-top: 18rpx;
 }
 
-.category-scroll {
-  width: 100%;
-  white-space: nowrap;
-}
-
 .category-track {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   gap: 12rpx;
-  padding: 2rpx 2rpx 8rpx;
+  width: 100%;
+  padding: 2rpx 0 4rpx;
 }
 
 .category-chip {
   display: inline-flex;
   align-items: center;
   gap: 8rpx;
-  min-width: 128rpx;
-  height: 62rpx;
-  padding: 0 16rpx;
+  min-width: 116rpx;
+  height: 58rpx;
+  padding: 0 14rpx;
   border: 2rpx solid #ead8b8;
   border-radius: 14rpx;
   background: #fffdf6;
   color: #6f6256;
-  font-size: 24rpx;
+  font-size: 23rpx;
   font-weight: 700;
   flex: none;
 }
@@ -131,6 +128,27 @@
   color: #5f8c4a;
   font-size: 25rpx;
   font-weight: 600;
+}
+
+.search-page .section-head {
+  min-height: 44rpx;
+  align-items: center;
+}
+
+.search-page .section-title {
+  line-height: 44rpx;
+}
+
+.search-page .section-more {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 44rpx;
+  line-height: 44rpx;
+}
+
+.search-page button.section-more {
+  height: 44rpx;
 }
 
 .question-list {
@@ -238,4 +256,20 @@
   color: #8b8178;
   font-size: 26rpx;
   line-height: 1.45;
+}
+
+.missing-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 168rpx;
+  height: 50rpx;
+  margin-top: 16rpx;
+  padding: 0 18rpx;
+  border: 2rpx solid #cfe3c4;
+  border-radius: 999rpx;
+  background: #eaf6df;
+  color: #4f8a43;
+  font-size: 23rpx;
+  font-weight: 800;
 }

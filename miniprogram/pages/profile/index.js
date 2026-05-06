@@ -1,4 +1,5 @@
 const service = require('../../utils/mockService.js')
+const toolService = require('../../utils/toolService.js')
 
 function buildAgeOptions() {
   const monthOptions = Array.from({ length: 25 }, (_, index) => `${index}个月`)
@@ -28,6 +29,8 @@ Page({
     babyIconTone: getBabyIcon(initialProfile.baby.gender).babyIconTone,
     favoriteCount: 0,
     historyCount: 0,
+    pendingQuestionCount: 0,
+    toolRecordCount: 0,
     actionIconPaths: service.actionIconPaths,
     profileIconPaths: service.profileIconPaths
   },
@@ -46,7 +49,9 @@ Page({
       babyIconTone: icon.babyIconTone,
       isEditingBaby: false,
       favoriteCount: service.getFavorites().length,
-      historyCount: service.getHistory().length
+      historyCount: service.getHistory().length,
+      pendingQuestionCount: service.getPendingQuestions().length,
+      toolRecordCount: toolService.getDoctorVisitRecords().length
     })
   },
 
@@ -190,12 +195,13 @@ Page({
   logout() {
     wx.showModal({
       title: '退出登录',
-      content: '退出后，本地宝宝档案会回到默认展示。收藏和搜索历史仍会保留。',
+      content: '退出后会清空本机宝宝档案和就医记录。收藏、搜索历史和问题建议仍会保留。',
       confirmText: '退出',
       confirmColor: '#d96f45',
       success: (res) => {
         if (!res.confirm) return
         const profile = service.logoutProfile()
+        toolService.clearDoctorVisitRecords()
         const icon = getBabyIcon(profile.baby.gender)
         this.setData({
           profile,
@@ -203,9 +209,10 @@ Page({
           ageIndex: this.getAgeIndex(profile.baby.age),
           genderIndex: this.getGenderIndex(profile.baby.gender),
           babyIconTone: icon.babyIconTone,
-          isEditingBaby: false
+          isEditingBaby: false,
+          toolRecordCount: 0
         })
-        wx.showToast({ title: '已退出', icon: 'none' })
+        wx.showToast({ title: '已退出并清空档案', icon: 'none' })
       }
     })
   },
@@ -218,10 +225,34 @@ Page({
     wx.navigateTo({ url: '/pages/history/index' })
   },
 
+  goToolRecords() {
+    wx.navigateTo({ url: '/pages/tools/records/index' })
+  },
+
   showFeedback() {
     wx.showModal({
       title: '内测反馈',
       content: '当前版本面向小范围种子用户。遇到内容不准确、搜索不到问题或页面异常时，请在内测群反馈问题截图、宝宝月龄和搜索词，方便我们优先修正。',
+      confirmText: '知道了',
+      showCancel: false
+    })
+  },
+
+  showPendingQuestions() {
+    const pendingQuestions = service.getPendingQuestions()
+    if (!pendingQuestions.length) {
+      wx.showModal({
+        title: '问题建议',
+        content: '当前本机还没有收集到未命中问题。朋友测试时可以让大家直接搜索，没搜到就点“提交这个问题”，并尽量写成完整育儿问题。',
+        confirmText: '知道了',
+        showCancel: false
+      })
+      return
+    }
+    const recent = pendingQuestions.slice(0, 8).map((item, index) => `${index + 1}. ${item.keyword}${item.hitCount > 1 ? ` ×${item.hitCount}` : ''}`)
+    wx.showModal({
+      title: `问题建议（${pendingQuestions.length}）`,
+      content: `当前为本机收集，正式上线后会接后台。\n${recent.join('\n')}`,
       confirmText: '知道了',
       showCancel: false
     })

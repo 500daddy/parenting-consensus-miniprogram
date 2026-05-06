@@ -3,6 +3,8 @@
     "pages/index/index",
     "pages/search/index",
     "pages/question/result",
+    "pages/tools/doctor-visit/index",
+    "pages/tools/records/index",
     "pages/authority/index",
     "pages/category/index",
     "pages/profile/index",

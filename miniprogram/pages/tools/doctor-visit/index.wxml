@@ -1,0 +1,94 @@
+<view class="page doctor-tool-page">
+  <view class="tool-page-head">
+    <view class="tool-page-copy">
+      <view class="simple-title">问医生清单</view>
+      <view class="simple-sub">把症状和想问的问题先整理好</view>
+    </view>
+    <button class="btn-plain records-link" bindtap="goRecords" aria-label="查看我的记录">
+      <image class="records-link-icon pixel-img" src="{{actionIconPaths.history}}" mode="aspectFit" />
+      <text>我的记录</text>
+    </button>
+  </view>
+
+  <view class="notice-card card">
+    <image class="notice-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
+    <view class="notice-copy">
+      <view class="notice-title">只做记录和沟通辅助</view>
+      <view class="notice-text">如果宝宝精神明显变差、呼吸异常、抽搐、尿量明显减少或家长无法判断，请优先线下就医或急诊。</view>
+    </view>
+  </view>
+
+  <view class="form-card card">
+    <view class="form-title">宝宝和当前问题</view>
+    <view class="info-grid">
+      <view class="info-cell">
+        <view class="info-label">宝宝</view>
+        <view class="info-value">{{draft.babyName || '未填写'}}</view>
+      </view>
+      <view class="info-cell">
+        <view class="info-label">月龄</view>
+        <view class="info-value">{{draft.babyAge || '未设置'}}</view>
+      </view>
+    </view>
+    <view class="field-group">
+      <view class="field-row">
+        <view class="field-label">体温</view>
+        <input class="field-input" value="{{draft.temperature}}" data-field="temperature" bindinput="onInput" placeholder="例如 38.6℃" />
+      </view>
+      <view class="field-row">
+        <view class="field-label">开始时间</view>
+        <input class="field-input" value="{{draft.startedAt}}" data-field="startedAt" bindinput="onInput" placeholder="例如 今天凌晨 / 昨晚 8 点" />
+      </view>
+      <picker mode="selector" range="{{spiritOptions}}" value="{{spiritIndex}}" bindchange="onSpiritChange">
+        <view class="field-row picker-row">
+          <view class="field-label">精神状态</view>
+          <view class="picker-value">{{draft.spirit || '请选择'}}</view>
+          <view class="picker-arrow"></view>
+        </view>
+      </picker>
+      <view class="field-row">
+        <view class="field-label">吃奶/进食</view>
+        <input class="field-input" value="{{draft.feeding}}" data-field="feeding" bindinput="onInput" placeholder="例如 比平时少一半" />
+      </view>
+      <view class="field-row">
+        <view class="field-label">尿量</view>
+        <input class="field-input" value="{{draft.urine}}" data-field="urine" bindinput="onInput" placeholder="例如 6 小时 1 次尿" />
+      </view>
+    </view>
+  </view>
+
+  <view class="form-card card">
+    <view class="form-title">补充症状</view>
+    <textarea class="text-area" value="{{draft.symptoms}}" data-field="symptoms" bindinput="onInput" placeholder="例如 咳嗽、有痰、呕吐、腹泻、皮疹、哭闹、睡眠变化等" maxlength="300" />
+    <view class="form-title small-title">已经用过什么</view>
+    <textarea class="text-area compact" value="{{draft.medicine}}" data-field="medicine" bindinput="onInput" placeholder="药名、剂量、时间；不确定就写包装上的名字" maxlength="240" />
+    <view class="form-title small-title">其他备注</view>
+    <textarea class="text-area compact" value="{{draft.notes}}" data-field="notes" bindinput="onInput" placeholder="家长担心的点、既往病史、过敏史等" maxlength="240" />
+  </view>
+
+  <view class="checklist-card card">
+    <view class="form-title">到医院可以这样问</view>
+    <view class="question-list">
+      <view wx:for="{{templateQuestions}}" wx:key="*this" class="question-item">
+        <view class="question-dot">{{index + 1}}</view>
+        <view class="question-text">{{item}}</view>
+        <view class="template-question-remove" data-index="{{index}}" bindtap="removeTemplateQuestion">移除</view>
+      </view>
+    </view>
+    <view class="custom-question-list">
+      <view wx:for="{{customQuestionRows}}" wx:key="index" class="custom-question-row">
+        <view class="custom-question-index">{{templateQuestions.length + index + 1}}</view>
+        <input class="custom-question-input" value="{{item}}" data-index="{{index}}" bindinput="onCustomQuestionInput" placeholder="还想问医生什么？" maxlength="80" />
+        <view class="custom-question-remove" data-index="{{index}}" bindtap="removeCustomQuestion">{{item || customQuestionRows.length > 1 ? '清除' : ''}}</view>
+      </view>
+    </view>
+    <button class="btn-plain add-question-button" bindtap="addCustomQuestion">继续添加问题</button>
+  </view>
+
+  <view class="bottom-actions">
+    <view class="bottom-actions-inner">
+      <view class="secondary-action" bindtap="resetDraft">清空</view>
+      <view class="primary-action" bindtap="saveRecord">保存清单</view>
+    </view>
+  </view>
+</view>

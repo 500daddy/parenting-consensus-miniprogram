@@ -1,4 +1,5 @@
 const service = require('../../utils/mockService.js')
+const toolService = require('../../utils/toolService.js')
 
 const RISK_CATEGORY_NOTICES = {
   fever_care: '这类问题涉及发热、退烧护理或用药判断。页面内容只帮你整理常见共识，不能代替医生诊断或个体化用药建议。',
@@ -37,9 +38,19 @@ function buildProfileHint(result) {
   if (!result || !profile || !profile.isLoggedIn) return null
 
   const baby = profile.baby || {}
-  const name = baby.name || '宝宝'
+  const name = baby.name && baby.name !== '未设置' ? baby.name : '宝宝'
   const age = baby.age && baby.age !== '未设置' ? baby.age : ''
   const allergy = baby.allergy && baby.allergy !== '暂无记录' ? baby.allergy : ''
+  const gender = baby.gender && baby.gender !== '未设置' ? baby.gender : ''
+  const hasBabyProfile = Boolean(age || gender || allergy || (baby.name && baby.name !== '未设置'))
+  if (!hasBabyProfile) {
+    return {
+      title: '完善宝宝档案',
+      meta: '月龄、性别和过敏史未设置',
+      text: '补充宝宝月龄、性别和过敏史后，这里会结合宝宝情况给你更贴近的观察提醒。',
+      actionText: '去完善'
+    }
+  }
   const subject = age ? `${name} ${age}` : name
   const allergyNote = allergy ? `已记录过敏史：${allergy}。` : ''
   const categoryTips = {
@@ -57,7 +68,7 @@ function buildProfileHint(result) {
 
   return {
     title: '按宝宝档案提醒',
-    meta: [name, age, baby.gender && baby.gender !== '未设置' ? baby.gender : '', allergy].filter(Boolean).join(' · '),
+    meta: [name, age, gender, allergy].filter(Boolean).join(' · '),
     text: categoryTips[result.categoryId] || `${subject}的具体情况会影响判断，建议结合月龄、精神状态和症状变化一起看。`
   }
 }
@@ -76,6 +87,7 @@ function prepareResult(result) {
     })),
     riskNotice: getRiskNotice(result),
     profileHint: buildProfileHint(result),
+    tools: toolService.getToolsByCategory(result.categoryId),
     dataSourceNote: '当前内容基于已整理题库和参考资料，不是实时联网搜索结果。上线后可由后台持续更新。',
     contentBoundaryNotice: '养娃新手村当前为本地数据 MVP，内容用于问前梳理和家长沟通参考，不提供诊断、处方或急救替代方案。'
   })
@@ -113,7 +125,7 @@ Page({
         keyword,
         noResult: true,
         result: null,
-        fallbackQuestions: service.getAvailableQuestions().slice(0, 3)
+        fallbackQuestions: service.getAvailableQuestions().slice(0, 4)
       })
       return
     }
@@ -160,6 +172,20 @@ Page({
     wx.switchTab({ url: '/pages/search/index' })
   },
 
+  goProfile() {
+    wx.switchTab({ url: '/pages/profile/index' })
+  },
+
+  openTool(event) {
+    if (!this.data.result) return
+    const toolId = event.currentTarget.dataset.id
+    const tool = (this.data.result.tools || []).find((item) => item.id === toolId)
+    if (!tool) return
+    wx.navigateTo({
+      url: `${tool.path}?questionId=${this.data.result.questionId}&categoryId=${this.data.result.categoryId}`
+    })
+  },
+
   changeQuestion() {
     const questions = service.getAvailableQuestions()
     if (!questions.length) return
@@ -171,6 +197,17 @@ Page({
     if (wx.pageScrollTo) {
       wx.pageScrollTo({ scrollTop: 0, duration: 160 })
     }
+  },
+
+  submitMissingQuestion() {
+    const keyword = (this.data.keyword || '').trim()
+    const validation = service.validatePendingQuestion(keyword)
+    if (!validation.valid) {
+      wx.showToast({ title: validation.message, icon: 'none' })
+      return
+    }
+    service.addPendingQuestion(validation.text, 'result_empty')
+    wx.showToast({ title: '已加入待补充问题池', icon: 'none' })
   },
 
   showGlossary(event) {

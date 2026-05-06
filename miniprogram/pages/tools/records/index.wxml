@@ -1,0 +1,63 @@
+<view class="page records-page">
+  <view class="records-head">
+    <image class="records-head-icon pixel-img" src="/assets/icons/pixel-v2/action/doctor-note.png" mode="aspectFit" />
+    <view class="records-head-copy">
+      <view class="records-title">我的记录</view>
+      <view class="records-sub">本机保存的就医前记录单</view>
+    </view>
+    <button wx:if="{{records.length}}" class="btn-plain head-new-button" bindtap="goNewRecord">新建</button>
+  </view>
+
+  <view wx:if="{{!records.length}}" class="records-empty card">
+    <image class="records-empty-icon pixel-img" src="/assets/icons/pixel-v2/action/doctor-note.png" mode="aspectFit" />
+    <view class="records-empty-copy">
+      <view class="records-empty-title">还没有就医记录</view>
+      <view class="records-empty-desc">可以先新建一张记录单，把体温、状态、用药和想问医生的问题整理好。</view>
+    </view>
+    <view class="empty-actions">
+      <button class="btn-plain empty-primary" bindtap="goNewRecord">新建记录</button>
+    </view>
+  </view>
+
+  <view wx:else class="record-list">
+    <view wx:for="{{records}}" wx:key="id" class="record-card card">
+      <view class="record-head">
+        <image class="record-icon pixel-img" src="/assets/icons/pixel-v2/action/doctor-note.png" mode="aspectFit" />
+        <view class="record-head-main">
+          <view class="record-title">{{item.questionTitle || '就医前记录单'}}</view>
+          <view class="record-time">{{item.displayTime}}</view>
+        </view>
+      </view>
+      <view class="record-meta">
+        <text>{{item.babyName || '宝宝'}}</text>
+        <text wx:if="{{item.babyAge}}">{{item.babyAge}}</text>
+        <text wx:if="{{item.temperature}}">{{item.temperature}}</text>
+      </view>
+      <view class="record-summary">
+        <text wx:if="{{item.startedAt}}">开始：{{item.startedAt}}</text>
+        <text wx:if="{{item.spirit}}">精神：{{item.spirit}}</text>
+        <text wx:if="{{item.feeding}}">进食：{{item.feeding}}</text>
+        <text wx:if="{{item.urine}}">尿量：{{item.urine}}</text>
+      </view>
+      <view wx:if="{{item.symptoms}}" class="record-detail">
+        <view class="record-detail-label">症状</view>
+        <view class="record-detail-text">{{item.symptoms}}</view>
+      </view>
+      <view wx:if="{{item.medicine}}" class="record-detail">
+        <view class="record-detail-label">已用过</view>
+        <view class="record-detail-text">{{item.medicine}}</view>
+      </view>
+      <view wx:if="{{item.notes}}" class="record-detail">
+        <view class="record-detail-label">备注</view>
+        <view class="record-detail-text">{{item.notes}}</view>
+      </view>
+      <view wx:if="{{item.questions.length}}" class="record-questions">
+        <view wx:for="{{item.questions}}" wx:key="*this" class="record-question">{{index + 1}}. {{item}}</view>
+      </view>
+      <view class="record-actions">
+        <button class="btn-plain edit-button" bindtap="editRecord" data-id="{{item.id}}">编辑</button>
+        <button class="btn-plain delete-button" bindtap="deleteRecord" data-id="{{item.id}}">删除</button>
+      </view>
+    </view>
+  </view>
+</view>

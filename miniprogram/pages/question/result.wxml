@@ -4,16 +4,19 @@
       <view class="search-icon"></view>
       <view class="result-keyword">{{keyword || '搜索育儿问题'}}</view>
     </view>
-    <view class="change-btn" bindtap="changeQuestion">换一个</view>
+    <view wx:if="{{!noResult}}" class="change-btn" bindtap="changeQuestion">换一个</view>
   </view>
 
   <view wx:if="{{noResult}}" class="empty-card card">
     <image class="empty-icon pixel-img" src="{{actionIconPaths.question}}" mode="aspectFit" />
     <view class="empty-copy">
       <view class="empty-title">暂时没有找到精确共识</view>
-      <view class="empty-desc">可以换一种问法，或者先查看首页和问答页里已经整理好的热门问题。</view>
+      <view class="empty-desc">可以把这个问题加入待补充池。请尽量写成完整问题，例如：宝宝夜里频繁醒怎么办？</view>
     </view>
-    <button class="btn-plain primary-button" bindtap="goSearch">重新搜索</button>
+    <view class="empty-actions">
+      <button class="btn-plain primary-button" bindtap="submitMissingQuestion">提交这个问题</button>
+      <button class="btn-plain secondary-button" bindtap="goSearch">重新搜索</button>
+    </view>
   </view>
 
   <view wx:if="{{noResult && fallbackQuestions.length}}" class="section">
@@ -71,9 +74,24 @@
         <view class="profile-hint-main">
           <view class="profile-hint-head">
             <view class="profile-hint-title">{{result.profileHint.title}}</view>
-            <view class="profile-hint-meta">{{result.profileHint.meta}}</view>
+            <view wx:if="{{result.profileHint.meta}}" class="profile-hint-meta">{{result.profileHint.meta}}</view>
           </view>
           <view class="profile-hint-text">{{result.profileHint.text}}</view>
+          <view wx:if="{{result.profileHint.actionText}}" class="profile-hint-action" bindtap="goProfile">{{result.profileHint.actionText}}</view>
+        </view>
+      </view>
+
+      <view wx:if="{{result.tools && result.tools.length}}" class="tool-hint">
+        <view wx:for="{{result.tools}}" wx:key="id" class="tap-card tool-card" bindtap="openTool" data-id="{{item.id}}">
+          <image class="tool-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
+          <view class="tool-main">
+            <view class="tool-head">
+              <view class="tool-label">{{item.label}}</view>
+              <view class="tool-title">{{item.title}}</view>
+            </view>
+            <view class="tool-desc">{{item.desc}}</view>
+          </view>
+          <view class="tool-action">{{item.actionText}}</view>
         </view>
       </view>
 
