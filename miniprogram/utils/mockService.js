@@ -137,20 +137,20 @@ const questionCopyOverrides = {
     resultFocus: '先观察呼吸和精神，儿童慎用复方止咳感冒药'
   },
   q_011: {
-    summary: '新生儿多以按需喂养为主，常见是少量多次；重点看吃奶状态、尿量、体重和医生建议。',
-    resultFocus: '按需少量多次，看尿量、体重和吃奶状态'
+    summary: '新生儿常见约每 2-3 小时吃一次，也可能更频繁；最终看饥饿信号、尿量、体重和医嘱。',
+    resultFocus: '先给 2-3 小时参考，再强调按需、尿量、体重和特殊情况医嘱'
   },
   q_012: {
-    summary: '奶量够不够不只看单次数字，更要看体重增长、尿量、精神和全天总摄入。',
-    resultFocus: '看生长曲线、尿量和全天总量，不只看一顿'
+    summary: '奶量没有一个适合所有宝宝的固定数；先看全天摄入、尿量、体重曲线和吃奶后是否满足。',
+    resultFocus: '说明不按统一毫升数判断，优先看尿量、满足感、全天总量和生长曲线'
   },
   q_013: {
     summary: '小月龄少量吐奶常见；喷射状呕吐、体重不增、精神差或吐绿色/带血要就医。',
     resultFocus: '少量溢奶常见，喷射呕吐和体重问题要警惕'
   },
   q_014: {
-    summary: '胀气肠绞痛可先拍嗝、排气、安抚和规律喂养；发热、呕吐、便血或精神差要就医。',
-    resultFocus: '先排气安抚，红旗信号及时就医'
+    summary: '先按拍嗝、竖抱、排气操、轻柔安抚、调整喂养节奏处理；有红旗信号及时就医。',
+    resultFocus: '给出居家处理顺序，再说明发热、呕吐、便血、精神差等红旗信号'
   },
   q_017: {
     summary: '几天不拉不一定就是便秘，关键看便便是否干硬、排便是否痛苦、肚子胀不胀。',
@@ -181,8 +181,8 @@ const questionCopyOverrides = {
     resultFocus: '先排查原因，再逐步调整作息和安抚方式'
   },
   q_028: {
-    summary: '抱睡奶睡不一定立刻戒；如果安全且家里能承受，可以慢慢过渡，频繁夜醒再逐步调整。',
-    resultFocus: '不必一刀切，按安全和家庭承受度逐步调整'
+    summary: '抱睡奶睡不必一刀切；安全且家里能承受可暂不急戒，影响睡眠或照护精力时再逐步调整。',
+    resultFocus: '直接回答要不要戒，再按安全、夜醒影响和照护者承受度分层处理'
   },
   q_030: {
     summary: '1 岁内睡觉不建议趴睡，入睡时应仰卧，并保持床面平整、少软物，降低窒息风险。',
@@ -197,16 +197,16 @@ const questionCopyOverrides = {
     resultFocus: '短时间低热多观察，异常反应及时联系接种门诊或医生'
   },
   q_041: {
-    summary: '身高体重不达标先看生长曲线趋势，不要只盯一次测量；连续偏离或增长停滞要评估。',
-    resultFocus: '看连续趋势和生长曲线，不只看单点'
+    summary: '先复核测量并记录生长曲线，再看喂养、睡眠和疾病史；连续下滑或增长停滞要儿保评估。',
+    resultFocus: '按复测记录、看曲线、查喂养疾病、儿保评估四步处理'
   },
   q_043: {
-    summary: '翻身、坐、爬、走都有正常范围；明显落后、倒退、两侧不对称或家长担心时应评估。',
-    resultFocus: '看里程碑范围和趋势，明显落后要评估'
+    summary: '大致可看 6 月会翻、9 月能坐、12 月扶站/扶走、18 月独走；明显落后、倒退或不对称要评估。',
+    resultFocus: '给出常见里程碑参考月龄，再提醒看趋势、动作质量和异常信号'
   },
   q_047: {
-    summary: '一直哭先排查饿、困、尿布、冷热、胀气和疼痛；哭闹难安抚或伴随异常要就医。',
-    resultFocus: '先排查基础需求和不适，红旗信号及时处理'
+    summary: '先按饿、困、尿布、冷热、胀气、疼痛、环境刺激逐项排查；哭闹加重或伴随异常要就医。',
+    resultFocus: '给出排查顺序和安抚动作，再说明难安抚、发热、呕吐、呼吸异常等就医边界'
   },
   q_050: {
     summary: '能咳能哭先鼓励咳出；不能出声、呼吸困难、脸色发青或意识异常，应立即急救并拨打急救电话。',
@@ -215,6 +215,13 @@ const questionCopyOverrides = {
 }
 
 function makeDirectResultOverride(id, options) {
+  const reasonUpdates = Object.assign({}, options.reasonUpdates || {})
+  if (options.reasonTitle || options.reasonDescription) {
+    reasonUpdates[`${id}_r2`] = {
+      title: options.reasonTitle,
+      description: options.reasonDescription
+    }
+  }
   return {
     conclusion: options.conclusion,
     mainstreamConsensus: options.conclusion,
@@ -223,12 +230,7 @@ function makeDirectResultOverride(id, options) {
       { id: `${id}_v2`, title: `补充观点：${options.neutralTitle}`, percentage: options.neutralPercentage || 27, type: 'neutral', summary: options.neutralSummary, color: '#F4A340' },
       { id: `${id}_v3`, title: `少数观点：${options.minorityTitle}`, percentage: options.minorityPercentage || 13, type: 'minority', summary: options.minoritySummary, color: '#F36F5B' }
     ],
-    reasonUpdates: {
-      [`${id}_r2`]: {
-        title: options.reasonTitle,
-        description: options.reasonDescription
-      }
-    },
+    reasonUpdates,
     authorityView: options.authorityView
   }
 }
@@ -244,31 +246,41 @@ const resultCopyOverrides = {
     minoritySummary: '寒战、精神差、呼吸异常或持续高热时，不要只靠穿盖调整。',
     reasonTitle: '避免过热',
     reasonDescription: '发热护理的目标是舒服和安全，不是把汗捂出来。',
-    authorityView: '儿科科普通常建议发热时保持舒适穿盖和适宜室温，不建议通过捂汗来退烧。'
+    authorityView: '儿科医生和健康科普通常建议发热时保持舒适穿盖和适宜室温，不建议通过捂汗来退烧。'
   }),
   q_011: makeDirectResultOverride('q_011', {
-    conclusion: '主流共识认为：新生儿多以按需喂养为主，常见是少量多次。不要只卡固定时间，更要看宝宝吃奶是否有力、尿量、体重增长和医生/儿保建议；早产、低体重或黄疸等情况需按医嘱。',
-    mainTitle: '按需少量多次',
-    mainSummary: '新生儿胃容量小，频繁吃奶很常见，重点看有效吸吮和尿量体重。',
+    conclusion: '主流共识认为：多数新生儿常见约每 2-3 小时吃一次，一天可能 8-12 次，也可能因为猛长期或安抚需求更频繁。不要只卡钟点，宝宝有寻乳、吸吮、醒来找奶等饥饿信号时可按需喂；早产、低体重、黄疸、吃奶弱或体重增长不理想时按医生建议。',
+    mainTitle: '约 2-3 小时一次作参考',
+    mainSummary: '新生儿胃容量小，常见少量多次，2-3 小时只是参考，不是必须卡点。',
     neutralTitle: '特殊宝宝听医嘱',
     neutralSummary: '早产、低体重、黄疸或吃奶弱时，喂养间隔和补充方式需医生指导。',
     minorityTitle: '吃奶差要及时问',
     minoritySummary: '明显嗜睡、吸吮弱、尿少或体重增长差，不建议只等下一顿。',
     reasonTitle: '看有效喂养',
-    reasonDescription: '喂养够不够，要结合尿布、体重和精神状态，不只看时间间隔。',
-    authorityView: '婴儿喂养建议通常强调按需喂养和生长监测；特殊医学情况应遵循医生或儿保指导。'
+    reasonDescription: '真正要判断的是有没有吃进去、尿量和体重是否跟上，而不是只看间隔时间。',
+    authorityView: '婴儿喂养建议通常强调按需喂养、每天多次喂奶和生长监测；特殊医学情况应遵循医生或儿保指导。',
+    reasonUpdates: {
+      q_011_r1: { title: '先看饥饿信号', description: '寻乳、张嘴、吸吮、醒来找奶比闹钟更能提示宝宝是否想吃。' },
+      q_011_r3: { title: '尿量和体重作校验', description: '尿布变少、体重增长不理想或吃奶明显没力，需要及时咨询儿保或医生。' },
+      q_011_r4: { title: '特殊情况别硬等', description: '早产、低体重、黄疸或嗜睡宝宝，喂养频率和方式要按医生建议。' }
+    }
   }),
   q_012: makeDirectResultOverride('q_012', {
-    conclusion: '主流共识认为：宝宝一天喝多少奶才够，不能只看某一顿或一个固定数字。更可靠的是看体重增长曲线、尿量、精神状态和全天总摄入；如果增长停滞、尿少或吃奶明显变差，应咨询医生。',
-    mainTitle: '看生长和尿量',
-    mainSummary: '体重趋势、尿量和精神状态，比单次奶量更能说明是否够。',
+    conclusion: '主流共识认为：宝宝一天喝多少奶才够，不适合用一个固定毫升数套所有月龄。先看宝宝吃奶后是否满足、每天尿量是否够、体重曲线是否稳定，再结合全天总量判断；如果尿明显少、体重增长停滞、吃奶费力或精神变差，应咨询儿保医生。',
+    mainTitle: '不按统一毫升数判断',
+    mainSummary: '不同月龄、体重和喂养方式差异很大，固定奶量数字容易误导。',
     neutralTitle: '全天总量比单顿重要',
-    neutralSummary: '有些宝宝一顿多一顿少，只要全天和生长趋势稳定，通常不用过度焦虑。',
+    neutralSummary: '有些宝宝一顿多一顿少，只要全天摄入、尿量和生长趋势稳定，通常不用过度焦虑。',
     minorityTitle: '增长停滞要评估',
     minoritySummary: '尿少、精神差、吃奶弱或体重曲线明显下滑，需要儿保或医生评估。',
-    reasonTitle: '不盯单次数字',
-    reasonDescription: '宝宝吃奶有波动，判断是否够要看连续趋势。',
-    authorityView: '儿保评估通常会结合生长曲线、尿量、喂养表现和精神状态，而不是只看一次奶量。'
+    reasonTitle: '用尿量和曲线校验',
+    reasonDescription: '奶量是否够，最终要回到尿量、满足感、体重曲线和宝宝状态。',
+    authorityView: '儿保评估通常会结合生长曲线、尿量、喂养表现和精神状态，而不是只看一次奶量或一个固定毫升数。',
+    reasonUpdates: {
+      q_012_r1: { title: '先看宝宝是否满足', description: '吃完能放松、睡醒有精神、尿量正常，比单顿数字更有参考价值。' },
+      q_012_r3: { title: '记录全天而非一顿', description: '偶尔一顿少不一定有问题，连续几天的全天总量和体重趋势更重要。' },
+      q_012_r4: { title: '尿少或增长停滞要问', description: '尿明显减少、吃奶费力、体重曲线下滑时，应找儿保医生评估。' }
+    }
   }),
   q_013: makeDirectResultOverride('q_013', {
     conclusion: '主流共识认为：小月龄宝宝少量吐奶或溢奶较常见，若宝宝精神好、吃奶正常、体重增长可以，多数先观察和调整喂养姿势。若喷射状呕吐、吐绿色/带血、体重不增、精神差或反复呛咳，应及时就医。',
@@ -280,19 +292,24 @@ const resultCopyOverrides = {
     minoritySummary: '喷射状、绿色、带血、体重不增或精神差，不按普通吐奶处理。',
     reasonTitle: '区分溢奶和呕吐',
     reasonDescription: '少量溢奶和喷射状呕吐风险不同，不能只看“吐了”。',
-    authorityView: '儿科科普通常区分生理性溢奶和异常呕吐；喷射状呕吐、体重不增或精神差应就医。'
+    authorityView: '儿科医生和健康科普通常区分生理性溢奶和异常呕吐；喷射状呕吐、体重不增或精神差应就医。'
   }),
   q_014: makeDirectResultOverride('q_014', {
-    conclusion: '主流共识认为：宝宝胀气或肠绞痛可先尝试拍嗝、排气操、抱哄安抚、规律喂养和减少过度刺激。若伴随发热、反复呕吐、便血、肚子明显胀硬、吃奶差或精神差，应及时就医。',
-    mainTitle: '先排气和安抚',
-    mainSummary: '拍嗝、排气操、轻柔安抚和规律喂养，是家庭可先尝试的低风险做法。',
+    conclusion: '主流共识认为：宝宝胀气或肠绞痛，可以先按顺序做几件低风险护理：喂后拍嗝、竖抱一会儿、轻柔排气操或腹部按摩、抱哄安抚、减少过度刺激，并观察喂养节奏。若伴随发热、反复呕吐、便血、肚子明显胀硬、吃奶差或精神差，应及时就医。',
+    mainTitle: '先做低风险护理',
+    mainSummary: '拍嗝、竖抱、排气操、轻柔按摩和安抚，是家庭可先尝试的步骤。',
     neutralTitle: '减少过度刺激',
     neutralSummary: '过度喂养、频繁换奶或环境刺激，可能让不适更明显。',
     minorityTitle: '红旗信号先就医',
     minoritySummary: '发热、呕吐、便血、肚子胀硬、精神差，不适合只按胀气处理。',
-    reasonTitle: '先做低风险护理',
-    reasonDescription: '多数胀气护理先从安抚和喂养节奏入手，同时盯住红旗信号。',
-    authorityView: '儿科科普通常建议用拍嗝、安抚、排气等方式缓解胀气；若伴随异常症状应线下评估。'
+    reasonTitle: '按步骤试，不反复折腾',
+    reasonDescription: '每次选一两个低风险动作观察反应，不需要频繁换奶或反复大幅调整。',
+    authorityView: '儿科医生和健康科普通常建议用拍嗝、安抚、排气等方式缓解胀气；若伴随异常症状应线下评估。',
+    reasonUpdates: {
+      q_014_r1: { title: '先从喂后处理开始', description: '拍嗝、竖抱和观察吃奶节奏，通常比立刻换奶或用药更稳妥。' },
+      q_014_r3: { title: '环境和节奏也会影响', description: '过度刺激、太饿再喂、吃太急或频繁换奶，都可能让胀气更明显。' },
+      q_014_r4: { title: '红旗信号不当胀气拖', description: '发热、便血、反复呕吐、腹胀硬或精神差，需要及时就医。' }
+    }
   }),
   q_017: makeDirectResultOverride('q_017', {
     conclusion: '主流共识认为：宝宝几天不拉不一定就是便秘，尤其母乳宝宝可能出现攒肚。判断重点是便便是否干硬、排便是否痛苦、肚子是否胀、吃奶和精神是否正常；便血、呕吐、明显腹胀或精神差要就医。',
@@ -304,7 +321,7 @@ const resultCopyOverrides = {
     minoritySummary: '明显腹胀、呕吐、便血或精神差，不建议只在家等排便。',
     reasonTitle: '看便便性状',
     reasonDescription: '攒肚和便秘处理不同，不能只按“几天”判断。',
-    authorityView: '儿科科普通常建议结合便便性状、排便痛苦程度、腹胀和精神吃奶情况判断便秘。'
+    authorityView: '儿科医生和健康科普通常建议结合便便性状、排便痛苦程度、腹胀和精神吃奶情况判断便秘。'
   }),
   q_019: makeDirectResultOverride('q_019', {
     conclusion: '主流共识认为：多数宝宝约 6 个月可以开始辅食，但还要看准备信号：能较好控制头颈、能坐稳或扶坐、对食物有兴趣、挺舌反射减少。不要过早添加，也不要因为焦虑强喂。',
@@ -331,16 +348,21 @@ const resultCopyOverrides = {
     authorityView: '婴幼儿喂养建议通常强调 1 岁前避免额外盐、糖和蜂蜜，减少重口味形成。'
   }),
   q_028: makeDirectResultOverride('q_028', {
-    conclusion: '主流共识认为：抱睡、奶睡不一定必须立刻戒。如果宝宝睡眠安全、家长能承受，可以慢慢过渡；如果夜醒频繁、照护者很疲惫或入睡强依赖影响家庭，可以用固定流程逐步调整。',
-    mainTitle: '不必一刀切',
-    mainSummary: '抱睡奶睡是否调整，要看安全性、家庭承受度和夜醒影响。',
+    conclusion: '主流共识认为：抱睡、奶睡不一定必须立刻戒。若睡眠环境安全、宝宝状态好、家里也能承受，可以先不急着戒；如果夜醒频繁、照护者长期疲惫，或宝宝越来越依赖单一入睡方式，可以用固定睡前流程、逐步减少抱哄或奶睡来过渡。',
+    mainTitle: '安全且能承受可暂不急戒',
+    mainSummary: '是否要戒，先看安全、夜醒影响和照护者是否还能长期承受。',
     neutralTitle: '可以逐步过渡',
     neutralSummary: '先固定睡前流程，再逐步减少抱哄或奶睡依赖，通常比突然戒更温和。',
     minorityTitle: '安全睡眠不能让步',
     minoritySummary: '无论是否抱睡奶睡，睡眠环境和入睡安全都应优先保证。',
     reasonTitle: '看家庭是否承受',
     reasonDescription: '睡眠调整不是比赛，目标是宝宝安全、家长可持续。',
-    authorityView: '睡眠建议通常强调安全睡眠环境和规律流程；是否调整抱睡奶睡，可结合家庭承受度逐步处理。'
+    authorityView: '睡眠建议通常强调安全睡眠环境和规律流程；是否调整抱睡奶睡，可结合家庭承受度逐步处理。',
+    reasonUpdates: {
+      q_028_r1: { title: '先守住睡眠安全', description: '不管抱睡还是奶睡，放下睡眠时都要避免趴睡、软枕厚被和无人看护风险。' },
+      q_028_r3: { title: '用流程替代突然戒断', description: '固定睡前流程、逐步缩短抱哄或奶睡时间，通常比突然改变更容易坚持。' },
+      q_028_r4: { title: '照护者状态也重要', description: '如果夜醒让家人长期崩溃，调整本身就是合理需求。' }
+    }
   }),
   q_034: makeDirectResultOverride('q_034', {
     conclusion: '主流共识认为：宝宝湿疹护理基础是足量保湿、减少刺激、短时间温水洗澡和避免抓挠。若渗液、破溃、明显感染、反复加重或影响睡眠，应咨询医生，不建议长期自行乱用药膏。',
@@ -352,43 +374,58 @@ const resultCopyOverrides = {
     minoritySummary: '渗液、结痂、破溃、明显红肿或睡眠受影响时，应让医生评估。',
     reasonTitle: '减少刺激',
     reasonDescription: '湿疹容易反复，护理重点是修护皮肤屏障和避开刺激。',
-    authorityView: '皮肤和儿科科普通常建议湿疹护理以保湿和避刺激为基础；严重、感染或反复加重需就医。'
+    authorityView: '皮肤科、儿科医生和健康科普通常建议湿疹护理以保湿和避刺激为基础；严重、感染或反复加重需就医。'
   }),
   q_041: makeDirectResultOverride('q_041', {
-    conclusion: '主流共识认为：宝宝身高体重不达标先看生长曲线趋势，不要只盯一次测量或单个百分位。若连续增长变慢、跨越多条曲线下滑、吃奶差或伴随疾病表现，应找儿保医生评估。',
-    mainTitle: '看曲线趋势',
-    mainSummary: '一次测量偏低不一定代表问题，连续趋势更重要。',
-    neutralTitle: '结合喂养和健康状况',
-    neutralSummary: '奶量、辅食、睡眠、疾病和测量误差都可能影响判断。',
+    conclusion: '主流共识认为：宝宝身高体重“不达标”先别只盯一次数字。建议先复核测量是否准确，把身高体重记录到生长曲线里，看连续几次是否下滑；同时回看奶量/辅食、睡眠、近期疾病和排便。若连续增长变慢、跨越多条曲线下滑、吃奶差或伴随疾病表现，应找儿保医生评估。',
+    mainTitle: '先复测，再看曲线趋势',
+    mainSummary: '一次测量偏低可能有误差，连续趋势和曲线变化更重要。',
+    neutralTitle: '同步查喂养和健康状况',
+    neutralSummary: '奶量、辅食、睡眠、近期疾病、排便和测量误差都可能影响判断。',
     minorityTitle: '增长停滞要评估',
     minoritySummary: '连续下滑、明显偏离或伴随精神吃奶差，应及时儿保评估。',
-    reasonTitle: '不看单点',
-    reasonDescription: '生长评估需要连续记录，单次数字容易误导。',
-    authorityView: '儿保评估通常使用标准生长曲线，并结合喂养、疾病史和连续测量趋势。'
+    reasonTitle: '用连续记录说话',
+    reasonDescription: '同一把尺、同一时间段、连续记录，才更能看出生长趋势。',
+    authorityView: '儿保评估通常使用标准生长曲线，并结合喂养、疾病史和连续测量趋势。',
+    reasonUpdates: {
+      q_041_r1: { title: '先排除测量误差', description: '身高、体重、衣物和测量姿势都会影响结果，复测后再判断更稳。' },
+      q_041_r3: { title: '带记录去儿保', description: '带上连续测量、奶量辅食、睡眠和近期生病记录，医生更容易判断。' },
+      q_041_r4: { title: '连续下滑别只等', description: '跨曲线下滑、增长停滞、吃奶差或精神差，应尽快儿保评估。' }
+    }
   }),
   q_043: makeDirectResultOverride('q_043', {
-    conclusion: '主流共识认为：翻身、坐、爬、走都有正常时间范围，不是每个宝宝都按同一天完成。若明显落后、出现能力倒退、两侧动作不对称，或家长明显担心，应咨询儿保医生做发育评估。',
-    mainTitle: '里程碑有范围',
-    mainSummary: '大运动发展存在个体差异，不能用单一天数卡宝宝。',
-    neutralTitle: '看连续进步',
-    neutralSummary: '是否持续有新动作和更稳定的控制能力，比某一天会不会更重要。',
+    conclusion: '主流共识认为：大运动里程碑有范围，可粗略参考：约 6 个月会从俯卧翻到仰卧，约 9 个月能独坐，约 12 个月能扶着站或扶走，约 18 个月能独走。每个宝宝节奏不同，更重要的是持续进步、动作左右对称；若能力倒退、明显不对称、长期没有新进展或家长担心，应咨询儿保医生。',
+    mainTitle: '看参考月龄，也看趋势',
+    mainSummary: '6 月翻、9 月坐、12 月扶站/扶走、18 月独走可作粗略参考。',
+    neutralTitle: '动作质量比某一天更重要',
+    neutralSummary: '是否持续有新动作、控制更稳定、左右更对称，比卡某一天更重要。',
     minorityTitle: '倒退或不对称要评估',
     minoritySummary: '能力倒退、明显不对称、很晚仍无进展，需要专业评估。',
     reasonTitle: '看趋势和质量',
-    reasonDescription: '发育判断既看时间，也看动作质量、对称性和持续进步。',
-    authorityView: '发育评估通常参考里程碑范围和连续观察；明显落后、倒退或动作不对称需儿保评估。'
+    reasonDescription: '发育判断既看参考月龄，也看动作质量、对称性和持续进步。',
+    authorityView: '发育评估通常参考里程碑范围和连续观察；明显落后、倒退或动作不对称需儿保评估。',
+    reasonUpdates: {
+      q_043_r1: { title: '参考月龄不是考试日期', description: '6、9、12、18 个月是粗略观察点，不是每个宝宝必须同一天完成。' },
+      q_043_r3: { title: '每天一点进步更有价值', description: '抬头更稳、翻身更顺、坐得更久、扶站更有力，都是趋势信号。' },
+      q_043_r4: { title: '倒退和不对称要重视', description: '会了又不会、明显只用一侧、很久没有进展，应请儿保医生评估。' }
+    }
   }),
   q_047: makeDirectResultOverride('q_047', {
-    conclusion: '主流共识认为：宝宝一直哭，先按顺序排查饿、困、尿布、冷热、胀气、疼痛和环境刺激。若哭闹难以安抚，或伴随发热、呕吐、呼吸异常、外伤、吃奶差、精神差，应及时就医。',
-    mainTitle: '先排查基础需求',
-    mainSummary: '饿、困、尿布、冷热、胀气和过度刺激，是可先快速排查的原因。',
-    neutralTitle: '观察是否能安抚',
-    neutralSummary: '能被安抚且状态正常，多数可以继续观察；完全哄不好要更谨慎。',
+    conclusion: '主流共识认为：宝宝一直哭，先按顺序排查：饿不饿、困不困、尿布是否不舒服、冷热是否合适、是否胀气、是否疼痛或环境刺激太多。可以先喂奶/安抚、换尿布、调整衣被、拍嗝排气、抱起走动或换安静环境。若哭闹突然加重、完全难以安抚，或伴随发热、呕吐、呼吸异常、外伤、吃奶差、精神差，应及时就医。',
+    mainTitle: '先按顺序排查',
+    mainSummary: '饿、困、尿布、冷热、胀气、疼痛和刺激，是可先快速检查的原因。',
+    neutralTitle: '先做低风险安抚',
+    neutralSummary: '喂奶、换尿布、调整衣被、拍嗝排气、抱走或换安静环境，都是可先尝试的动作。',
     minorityTitle: '伴随异常先就医',
     minoritySummary: '发热、呕吐、外伤、呼吸异常、吃奶差或精神差，不适合只按闹觉处理。',
     reasonTitle: '按顺序排查',
     reasonDescription: '哭闹是信号，不是诊断；先排除常见需求，再看红旗信号。',
-    authorityView: '儿科科普通常建议对哭闹先排查基础需求和身体不适；难以安抚或伴随异常表现需就医。'
+    authorityView: '儿科医生和健康科普通常建议对哭闹先排查基础需求和身体不适；难以安抚或伴随异常表现需就医。',
+    reasonUpdates: {
+      q_047_r1: { title: '先查最常见原因', description: '饿、困、尿布、冷热和胀气最容易处理，先排查能最快减少无效焦虑。' },
+      q_047_r3: { title: '看能否被安抚', description: '能逐渐安抚、精神和吃奶正常，多数可继续观察；完全哄不好要谨慎。' },
+      q_047_r4: { title: '异常伴随症状先就医', description: '发热、呕吐、外伤、呼吸异常、吃奶差或精神差，不建议只在家猜原因。' }
+    }
   }),
   q_002: {
     conclusion: '主流共识认为：宝宝精神尚可、没有寒战，且水温温和、时间短时，可以洗温水澡或温水擦浴；洗后及时擦干保暖。若精神差、寒战、高热明显不适或洗后更难受，先不洗，优先休息和观察。',
@@ -492,7 +529,7 @@ const resultCopyOverrides = {
     reasonUpdates: {
       q_021_r2: { title: '先停食并记录', description: '疑似过敏时先停止该新食物，记录时间、吃了什么和出现了什么反应。' }
     },
-    authorityView: '儿科和过敏科普通常建议：添加新食物时少量单一引入，出现呼吸异常、面部肿胀或全身反应要及时就医。'
+    authorityView: '儿科、过敏科医生和健康科普通常建议：添加新食物时少量单一引入，出现呼吸异常、面部肿胀或全身反应要及时就医。'
   },
   q_027: {
     conclusion: '主流共识认为：宝宝夜醒频繁先不必急着“训练”。先排查饥饿、出牙或身体不适、睡眠联想、白天小睡和作息变化；如果没有红旗信号，再用固定睡前流程、逐步减少强依赖安抚来调整。',
@@ -531,7 +568,7 @@ const resultCopyOverrides = {
     reasonUpdates: {
       q_039_r2: { title: '看持续时间和状态', description: '接种后反应是否需要处理，重点看体温趋势、精神、呼吸和过敏表现。' }
     },
-    authorityView: '疫苗科普通常提醒：接种后低热、局部红肿可先观察；严重过敏、高热不退或精神差应联系医生或接种门诊。'
+    authorityView: '接种门诊和健康科普通常提醒：接种后低热、局部红肿可先观察；严重过敏、高热不退或精神差应联系医生或接种门诊。'
   },
   q_050: {
     conclusion: '主流共识认为：先判断宝宝还能不能咳、哭和呼吸。能咳能哭时鼓励继续咳出并观察；如果不能出声、呼吸困难、脸色发青或意识异常，应立即按急救流程处理并拨打当地急救电话。',

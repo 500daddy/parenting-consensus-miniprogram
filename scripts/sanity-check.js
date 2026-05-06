@@ -174,6 +174,7 @@ const resultPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/quest
 const resultLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/question/result.js'), 'utf8')
 const homePageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/index/index.wxml'), 'utf8')
 const homeLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/index/index.js'), 'utf8')
+const searchLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/search/index.js'), 'utf8')
 const profilePageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/index.wxml'), 'utf8')
 const profileLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/index.js'), 'utf8')
 const customTabBarSource = fs.readFileSync(path.join(miniprogramRoot, 'custom-tab-bar/index.wxml'), 'utf8')
@@ -191,12 +192,17 @@ assertInvariant(typeof service.getGlossaryEntry('喷射状呕吐') === 'object',
 assertInvariant(service.buildGlossarySegments('区分生理性溢奶与喷射状呕吐').some((item) => item.term === '生理性溢奶'), 'Glossary segmentation should mark physiological spit-up')
 assertInvariant(homePageSource.indexOf('glossary-term') > -1, 'Home announcement should underline glossary terms')
 assertInvariant(homeLogicSource.indexOf('conclusionSegments') > -1, 'Home page should pre-split glossary terms')
+assertInvariant(!/goQuestion\s*\([^)]*\)\s*\{[\s\S]*?addHistory/.test(searchLogicSource), 'Browsing recommended questions should not be recorded as search history')
 assertInvariant(resultPageSource.indexOf('glossary-term') > -1, 'Result conclusion should underline glossary terms')
 assertInvariant(resultLogicSource.indexOf('conclusionSegments') > -1, 'Result page should pre-split glossary terms')
 assertInvariant(homePageSource.indexOf('glossaryPopup') > -1 && resultPageSource.indexOf('glossaryPopup') > -1, 'Glossary popups should be available on home and result pages')
-assertInvariant(resultPageSource.indexOf('本地样例答案') > -1, 'Result page should label answers as local MVP examples')
+assertInvariant(resultPageSource.indexOf('多数观点') > -1, 'Result page should avoid presenting the consensus copy as an absolute answer')
+assertInvariant(resultPageSource.indexOf('judgement-pill') > -1, 'Result page should show a primary judgement label near the current question')
+assertInvariant(resultPageSource.indexOf('bindtap="changeQuestion"') > -1, 'Result page change button should switch to another question in place')
+assertInvariant(resultLogicSource.indexOf('changeQuestion()') > -1 && resultLogicSource.indexOf('loadResult({ id: nextQuestion.id })') > -1, 'Result page should load the next question without leaving the page')
 assertInvariant(resultLogicSource.indexOf('不是实时联网搜索结果') > -1, 'Result page should disclose that answers are not live web search results')
 assertInvariant(resultPageSource.indexOf('不同观点在说什么') > -1, 'Result page should explain viewpoint groups, not only show percentages')
+assertInvariant(resultPageSource.indexOf('作为补充参考') > -1, 'Result page should demote viewpoint groups below the primary answer')
 assertInvariant(resultPageSource.indexOf('健康提醒') > -1, 'Result page should keep health/risk reminders near the answer')
 assertInvariant(resultLogicSource.indexOf('按宝宝档案提醒') > -1, 'Result page should expose local baby-profile reminders after login')
 assertInvariant(resultPageSource.indexOf('内容说明') > -1, 'Result page should keep the MVP content boundary as a lower-priority note')
@@ -296,6 +302,12 @@ assertInvariant(service.hasQuestionResult(todayQuestionId), `Daily consensus que
 assertInvariant(Boolean(service.getTodayQuestionResult(new Date(2026, 3, 30))), 'Today consensus result should be available')
 const feverThresholdResult = service.getQuestionResult({ id: 'q_001' })
 assertInvariant(feverThresholdResult.conclusion.indexOf('38.0°C') > -1, 'Fever threshold answer should directly mention 38.0°C')
+assertInvariant(service.getQuestionResult({ id: 'q_011' }).conclusion.indexOf('2-3 小时') > -1, 'Newborn feeding interval should give a practical 2-3 hour reference')
+assertInvariant(service.getQuestionResult({ id: 'q_012' }).conclusion.indexOf('固定毫升数') > -1, 'Daily milk intake answer should explain why fixed ml numbers are not enough')
+assertInvariant(service.getQuestionResult({ id: 'q_014' }).conclusion.indexOf('喂后拍嗝') > -1, 'Gas and colic answer should provide ordered home-care actions')
+assertInvariant(service.getQuestionResult({ id: 'q_041' }).conclusion.indexOf('复核测量') > -1, 'Growth concern answer should start with re-measuring and growth-curve records')
+assertInvariant(service.getQuestionResult({ id: 'q_043' }).conclusion.indexOf('6 个月') > -1 && service.getQuestionResult({ id: 'q_043' }).conclusion.indexOf('18 个月') > -1, 'Development milestone answer should include practical month anchors')
+assertInvariant(service.getQuestionResult({ id: 'q_047' }).conclusion.indexOf('饿不饿') > -1, 'Crying answer should provide an ordered cause checklist')
 const calibratedAnswerIds = [
   'q_002', 'q_003', 'q_004', 'q_005', 'q_006', 'q_008',
   'q_011', 'q_012', 'q_013', 'q_014', 'q_017', 'q_018',
@@ -319,6 +331,7 @@ for (const id of calibratedAnswerIds) {
     })
     assertInvariant(/^主流共识认为：/.test(result.conclusion), `Calibrated answer ${id} should keep the consensus prefix`)
     assertInvariant(result.conclusion.length >= 40, `Calibrated answer ${id} conclusion is too thin`)
+    assertInvariant(result.authorityView.indexOf('儿科科普通常') === -1, `Calibrated answer ${id} has awkward authority copy`)
   }
 }
 

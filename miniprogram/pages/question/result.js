@@ -16,6 +16,22 @@ function getRiskNotice(result) {
   return RISK_CATEGORY_NOTICES[result.categoryId] || ''
 }
 
+function getPrimaryJudgement(result) {
+  if (!result) {
+    return { text: '先看答案', tone: 'neutral' }
+  }
+  if (result.isHighRisk || result.riskLevel === '高' || result.categoryId === 'safety_first') {
+    return { text: '需要警惕', tone: 'red' }
+  }
+  if (['fever_care', 'common_illness', 'vaccine_check', 'skin_allergy'].indexOf(result.categoryId) > -1) {
+    return { text: '建议观察', tone: 'orange' }
+  }
+  if (['feeding', 'solid_food', 'sleep', 'early_development', 'emotion'].indexOf(result.categoryId) > -1) {
+    return { text: '多数情况可调整', tone: 'green' }
+  }
+  return { text: '先看答案', tone: 'neutral' }
+}
+
 function buildProfileHint(result) {
   const profile = service.getProfile()
   if (!result || !profile || !profile.isLoggedIn) return null
@@ -49,15 +65,18 @@ function buildProfileHint(result) {
 function prepareResult(result) {
   if (!result) return result
   const conclusion = (result.conclusion || '').replace(/^主流共识认为[：:]\s*/, '')
+  const primaryJudgement = getPrimaryJudgement(result)
   return Object.assign({}, result, {
     displayConclusion: conclusion,
+    primaryJudgement: primaryJudgement.text,
+    judgementTone: primaryJudgement.tone,
     conclusionSegments: service.buildGlossarySegments(conclusion),
     viewpoints: result.viewpoints.map((item) => Object.assign({}, item, {
       displayTitle: (item.title || '').split('：')[0] || item.title
     })),
     riskNotice: getRiskNotice(result),
     profileHint: buildProfileHint(result),
-    dataSourceNote: '当前答案来自本地种子题库和 mock 数据，不是实时联网搜索结果。上线后可替换为真实内容样本和后台统计。',
+    dataSourceNote: '当前内容基于已整理题库和参考资料，不是实时联网搜索结果。上线后可由后台持续更新。',
     contentBoundaryNotice: '养娃新手村当前为本地数据 MVP，内容用于问前梳理和家长沟通参考，不提供诊断、处方或急救替代方案。'
   })
 }
@@ -82,17 +101,24 @@ Page({
     if (keyword) {
       service.addHistory(keyword)
     }
+    this.loadResult({ id, keyword })
+  },
+
+  loadResult(options) {
+    const id = options && options.id
+    const keyword = options && options.keyword ? options.keyword : ''
     const result = prepareResult(service.getQuestionResult({ id, keyword }))
     if (!result) {
       this.setData({
         keyword,
         noResult: true,
+        result: null,
         fallbackQuestions: service.getAvailableQuestions().slice(0, 3)
       })
       return
     }
     this.setData({
-      keyword: keyword || result.title,
+      keyword: keyword || result.question.title,
       result,
       isFavorite: service.isFavorite(result.questionId),
       noResult: false
@@ -132,6 +158,19 @@ Page({
 
   goSearch() {
     wx.switchTab({ url: '/pages/search/index' })
+  },
+
+  changeQuestion() {
+    const questions = service.getAvailableQuestions()
+    if (!questions.length) return
+    const currentId = this.data.result && this.data.result.questionId
+    const currentIndex = questions.findIndex((item) => item.id === currentId)
+    const nextIndex = currentIndex > -1 ? (currentIndex + 1) % questions.length : 0
+    const nextQuestion = questions[nextIndex]
+    this.loadResult({ id: nextQuestion.id })
+    if (wx.pageScrollTo) {
+      wx.pageScrollTo({ scrollTop: 0, duration: 160 })
+    }
   },
 
   showGlossary(event) {

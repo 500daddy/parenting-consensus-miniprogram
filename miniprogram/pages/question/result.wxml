@@ -1,8 +1,10 @@
 <view class="page with-tab result-page">
   <view class="result-search card">
-    <view class="search-icon"></view>
-    <view class="result-keyword">{{keyword || '搜索育儿问题'}}</view>
-    <view class="change-btn" bindtap="goSearch">换一个</view>
+    <view class="result-search-main" bindtap="goSearch" aria-label="重新搜索育儿问题">
+      <view class="search-icon"></view>
+      <view class="result-keyword">{{keyword || '搜索育儿问题'}}</view>
+    </view>
+    <view class="change-btn" bindtap="changeQuestion">换一个</view>
   </view>
 
   <view wx:if="{{noResult}}" class="empty-card card">
@@ -28,55 +30,43 @@
   </view>
 
   <block wx:if="{{result}}">
-    <view class="current-question-card card">
-      <view class="current-question-label">当前问题</view>
-      <view class="current-question-title">{{result.question.title}}</view>
+    <view class="answer-hero card">
+      <view class="answer-topline">
+        <view class="current-question-label">当前问题</view>
+        <view class="judgement-pill tone-{{result.judgementTone}}">{{result.primaryJudgement}}</view>
+      </view>
+      <view class="answer-question-title">{{result.question.title}}</view>
       <view class="current-question-meta">
         <text>{{result.question.categoryName}}</text>
         <text>{{result.question.scene}}</text>
         <text>{{result.question.riskLevel}}风险</text>
       </view>
-    </view>
 
-    <view class="summary-card card">
-      <view class="summary-head">
-        <view class="summary-title-wrap">
+      <view class="answer-box">
+        <view class="answer-box-head">
           <image class="badge pixel-img" src="{{actionIconPaths.consensus}}" mode="aspectFit" />
-          <view class="summary-title">先给结论</view>
-        </view>
-        <view class="summary-actions">
-          <button class="btn-plain summary-action-btn share-action-btn" open-type="share" aria-label="分享当前问题">
-            <view class="summary-action-icon share-action-icon">
-              <view class="share-arrow-head"></view>
-            </view>
-            <text>分享</text>
-          </button>
-          <button class="btn-plain summary-action-btn favorite-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite" aria-label="{{isFavorite ? '取消收藏' : '收藏'}}">
-            <image class="summary-action-icon favorite-icon pixel-img" src="{{isFavorite ? actionIconPaths.star : actionIconPaths.favorite}}" mode="aspectFit" />
-            <text>{{isFavorite ? '已收藏' : '收藏'}}</text>
-          </button>
-        </view>
-      </view>
-      <view class="conclusion-box">
-        <view class="check-dot">✓</view>
-        <view class="conclusion-main">
-          <view class="conclusion-label">本地样例答案</view>
-          <view class="conclusion-text">
-            <block wx:for="{{result.conclusionSegments}}" wx:key="index">
-              <text wx:if="{{item.entry}}" class="glossary-term" data-term="{{item.term}}" catchtap="showGlossary">{{item.text}}</text>
-              <text wx:else>{{item.text}}</text>
-            </block>
+          <view class="answer-head-copy">
+            <view class="answer-box-title">多数观点</view>
+            <view class="answer-box-label">综合整理，仍需结合宝宝情况</view>
           </view>
         </view>
+        <view class="conclusion-text answer-text">
+          <block wx:for="{{result.conclusionSegments}}" wx:key="index">
+            <text wx:if="{{item.entry}}" class="glossary-term" data-term="{{item.term}}" catchtap="showGlossary">{{item.text}}</text>
+            <text wx:else>{{item.text}}</text>
+          </block>
+        </view>
       </view>
-      <view wx:if="{{result.riskNotice}}" class="risk-notice card">
+
+      <view wx:if="{{result.riskNotice}}" class="risk-notice hero-risk">
         <image class="risk-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
         <view class="risk-copy">
           <view class="risk-title">{{result.isHighRisk || result.riskLevel === '高' ? '优先看风险' : '健康提醒'}}</view>
           <view class="risk-text">{{result.riskNotice}}</view>
         </view>
       </view>
-      <view wx:if="{{result.profileHint}}" class="profile-hint card">
+
+      <view wx:if="{{result.profileHint}}" class="profile-hint">
         <image class="profile-hint-icon pixel-img" src="{{actionIconPaths.reminder}}" mode="aspectFit" />
         <view class="profile-hint-main">
           <view class="profile-hint-head">
@@ -86,9 +76,27 @@
           <view class="profile-hint-text">{{result.profileHint.text}}</view>
         </view>
       </view>
-      <view class="summary-meta">{{result.dataSourceNote}}</view>
 
-      <view class="viewpoint-title">不同观点在说什么</view>
+      <view class="answer-footer">
+        <view class="summary-meta">{{result.dataSourceNote}}</view>
+        <view class="summary-actions weak-actions">
+          <button class="btn-plain summary-action-btn share-action-btn" open-type="share" aria-label="分享当前问题">
+            <image class="summary-action-icon pixel-img" src="{{actionIconPaths.share}}" mode="aspectFit" />
+            <text>分享</text>
+          </button>
+          <button class="btn-plain summary-action-btn favorite-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite" aria-label="{{isFavorite ? '取消收藏' : '收藏'}}">
+            <image class="summary-action-icon favorite-icon pixel-img" src="{{isFavorite ? actionIconPaths.star : actionIconPaths.favorite}}" mode="aspectFit" />
+            <text>{{isFavorite ? '已收藏' : '收藏'}}</text>
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <view class="section explanation-section">
+      <view class="section-head">
+        <view class="section-title">不同观点在说什么</view>
+        <view class="section-hint">作为补充参考</view>
+      </view>
       <view class="viewpoint-list">
         <view wx:for="{{result.viewpoints}}" wx:key="id" class="viewpoint-card card">
           <view class="viewpoint-head">
