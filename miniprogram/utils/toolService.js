@@ -1,4 +1,6 @@
 const DOCTOR_VISIT_RECORDS_KEY = 'parenting_tool_doctor_visit_records'
+const FEEDING_RECORDS_KEY = 'parenting_tool_feeding_records'
+const VACCINE_RECORDS_KEY = 'parenting_tool_vaccine_records'
 
 const doctorToolCategoryIds = [
   'fever_care',
@@ -12,8 +14,9 @@ const toolRegistry = {
   fever_care: ['doctor_visit'],
   common_illness: ['doctor_visit'],
   skin_allergy: ['doctor_visit'],
-  vaccine_check: ['doctor_visit'],
-  safety_first: ['doctor_visit']
+  vaccine_check: ['doctor_visit', 'vaccine_log'],
+  safety_first: ['doctor_visit'],
+  feeding: ['feeding_log']
 }
 
 const toolMeta = {
@@ -25,6 +28,24 @@ const toolMeta = {
     desc: '体温、状态、用药和想问的问题，一页整理好带去问医生。',
     actionText: '打开',
     path: '/pages/tools/doctor-visit/index'
+  },
+  feeding_log: {
+    id: 'feeding_log',
+    iconPath: '/assets/icons/pixel-v2/category/feeding.png',
+    label: '小工具',
+    title: '奶量记录',
+    desc: '记录单次奶量、喂养方式和吐奶情况，方便回看今天总量。',
+    actionText: '打开',
+    path: '/pages/tools/feeding-log/index'
+  },
+  vaccine_log: {
+    id: 'vaccine_log',
+    iconPath: '/assets/icons/pixel-v2/category/vaccine.png',
+    label: '小工具',
+    title: '疫苗记录',
+    desc: '记录接种日期、疫苗名称和接种后反应，回看时以接种本为准。',
+    actionText: '打开',
+    path: '/pages/tools/vaccine-log/index'
   }
 }
 
@@ -82,6 +103,14 @@ function makeRecordId() {
   return `doctor_${Date.now()}_${Math.floor(Math.random() * 10000)}`
 }
 
+function makeFeedingRecordId() {
+  return `feeding_${Date.now()}_${Math.floor(Math.random() * 10000)}`
+}
+
+function makeVaccineRecordId() {
+  return `vaccine_${Date.now()}_${Math.floor(Math.random() * 10000)}`
+}
+
 function normalizeRecord(record) {
   const source = record || {}
   return {
@@ -120,6 +149,78 @@ function sanitizeDoctorVisitRecords(records) {
     .slice(0, 30)
 }
 
+function normalizeFeedingRecord(record) {
+  const source = record || {}
+  return {
+    id: source.id || makeFeedingRecordId(),
+    createdAt: source.createdAt || new Date().toISOString(),
+    updatedAt: source.updatedAt || source.createdAt || new Date().toISOString(),
+    questionId: source.questionId || '',
+    questionTitle: source.questionTitle || '',
+    categoryId: source.categoryId || 'feeding',
+    babyName: source.babyName || '',
+    babyAge: source.babyAge || '',
+    fedAt: source.fedAt || '',
+    feedType: source.feedType || '',
+    amount: source.amount || '',
+    duration: source.duration || '',
+    spitUp: source.spitUp || '',
+    diaper: source.diaper || '',
+    notes: source.notes || ''
+  }
+}
+
+function sanitizeFeedingRecords(records) {
+  const seen = {}
+  return records.filter((item) => item && typeof item === 'object')
+    .map(normalizeFeedingRecord)
+    .filter((item) => {
+      if (seen[item.id]) return false
+      seen[item.id] = true
+      return true
+    })
+    .sort((left, right) => String(right.updatedAt).localeCompare(String(left.updatedAt)))
+    .slice(0, 80)
+}
+
+function normalizeVaccineRecord(record) {
+  const source = record || {}
+  return {
+    id: source.id || makeVaccineRecordId(),
+    createdAt: source.createdAt || new Date().toISOString(),
+    updatedAt: source.updatedAt || source.createdAt || new Date().toISOString(),
+    questionId: source.questionId || '',
+    questionTitle: source.questionTitle || '',
+    categoryId: source.categoryId || 'vaccine_check',
+    babyName: source.babyName || '',
+    babyAge: source.babyAge || '',
+    vaccinatedAt: source.vaccinatedAt || '',
+    vaccineName: source.vaccineName || '',
+    vaccineNameCustom: source.vaccineNameCustom || '',
+    vaccineManufacturer: source.vaccineManufacturer || '',
+    doseNo: source.doseNo || '',
+    place: source.place || '',
+    reaction: source.reaction || '',
+    reactionCustom: source.reactionCustom || '',
+    reactionStartedAt: source.reactionStartedAt || '',
+    notes: source.notes || '',
+    nextQuestions: Array.isArray(source.nextQuestions) ? source.nextQuestions.filter(Boolean) : []
+  }
+}
+
+function sanitizeVaccineRecords(records) {
+  const seen = {}
+  return records.filter((item) => item && typeof item === 'object')
+    .map(normalizeVaccineRecord)
+    .filter((item) => {
+      if (seen[item.id]) return false
+      seen[item.id] = true
+      return true
+    })
+    .sort((left, right) => String(right.updatedAt).localeCompare(String(left.updatedAt)))
+    .slice(0, 60)
+}
+
 function getToolsByCategory(categoryId) {
   const ids = toolRegistry[categoryId] || []
   return ids.map((id) => toolMeta[id]).filter(Boolean)
@@ -141,6 +242,22 @@ function getDoctorVisitRecord(id) {
   return getDoctorVisitRecords().find((item) => item.id === id) || null
 }
 
+function getFeedingRecords() {
+  return sanitizeFeedingRecords(getStorageList(FEEDING_RECORDS_KEY))
+}
+
+function getFeedingRecord(id) {
+  return getFeedingRecords().find((item) => item.id === id) || null
+}
+
+function getVaccineRecords() {
+  return sanitizeVaccineRecords(getStorageList(VACCINE_RECORDS_KEY))
+}
+
+function getVaccineRecord(id) {
+  return getVaccineRecords().find((item) => item.id === id) || null
+}
+
 function saveDoctorVisitRecord(record) {
   const normalized = normalizeRecord(Object.assign({}, record, {
     id: record && record.id ? record.id : makeRecordId(),
@@ -158,8 +275,50 @@ function deleteDoctorVisitRecord(id) {
   return records
 }
 
+function saveFeedingRecord(record) {
+  const normalized = normalizeFeedingRecord(Object.assign({}, record, {
+    id: record && record.id ? record.id : makeFeedingRecordId(),
+    updatedAt: new Date().toISOString()
+  }))
+  const records = getFeedingRecords().filter((item) => item.id !== normalized.id)
+  records.unshift(normalized)
+  setStorageList(FEEDING_RECORDS_KEY, sanitizeFeedingRecords(records))
+  return normalized
+}
+
+function deleteFeedingRecord(id) {
+  const records = getFeedingRecords().filter((item) => item.id !== id)
+  setStorageList(FEEDING_RECORDS_KEY, records)
+  return records
+}
+
+function saveVaccineRecord(record) {
+  const normalized = normalizeVaccineRecord(Object.assign({}, record, {
+    id: record && record.id ? record.id : makeVaccineRecordId(),
+    updatedAt: new Date().toISOString()
+  }))
+  const records = getVaccineRecords().filter((item) => item.id !== normalized.id)
+  records.unshift(normalized)
+  setStorageList(VACCINE_RECORDS_KEY, sanitizeVaccineRecords(records))
+  return normalized
+}
+
+function deleteVaccineRecord(id) {
+  const records = getVaccineRecords().filter((item) => item.id !== id)
+  setStorageList(VACCINE_RECORDS_KEY, records)
+  return records
+}
+
 function clearDoctorVisitRecords() {
   setStorageList(DOCTOR_VISIT_RECORDS_KEY, [])
+}
+
+function clearFeedingRecords() {
+  setStorageList(FEEDING_RECORDS_KEY, [])
+}
+
+function clearVaccineRecords() {
+  setStorageList(VACCINE_RECORDS_KEY, [])
 }
 
 function formatRecordTime(value) {
@@ -173,15 +332,54 @@ function formatRecordTime(value) {
   return `${month}月${day}日 ${hour}:${minute}`
 }
 
+function getDateKey(value) {
+  const date = value ? new Date(value) : new Date()
+  if (Number.isNaN(date.getTime())) return ''
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${month}-${day}`
+}
+
+function getRecordDateKey(record) {
+  return getDateKey(record && record.fedAt) || getDateKey(record && record.createdAt)
+}
+
+function getTodayFeedingSummary(date) {
+  const targetKey = getDateKey(date || new Date())
+  const records = getFeedingRecords().filter((item) => getRecordDateKey(item) === targetKey)
+  const totalAmount = records.reduce((sum, item) => {
+    const value = Number(String(item.amount || '').replace(/[^\d.]/g, ''))
+    return Number.isFinite(value) ? sum + value : sum
+  }, 0)
+  return {
+    count: records.length,
+    totalAmount,
+    records
+  }
+}
+
 module.exports = {
   DOCTOR_VISIT_RECORDS_KEY,
+  FEEDING_RECORDS_KEY,
+  VACCINE_RECORDS_KEY,
   getToolsByCategory,
   hasDoctorVisitTool,
   getDoctorQuestionTemplates,
   getDoctorVisitRecords,
   getDoctorVisitRecord,
+  getFeedingRecords,
+  getFeedingRecord,
+  getVaccineRecords,
+  getVaccineRecord,
   saveDoctorVisitRecord,
+  saveFeedingRecord,
+  saveVaccineRecord,
   deleteDoctorVisitRecord,
+  deleteFeedingRecord,
+  deleteVaccineRecord,
   clearDoctorVisitRecords,
-  formatRecordTime
+  clearFeedingRecords,
+  clearVaccineRecords,
+  formatRecordTime,
+  getTodayFeedingSummary
 }

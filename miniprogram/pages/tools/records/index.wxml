@@ -3,7 +3,7 @@
     <image class="records-head-icon pixel-img" src="/assets/icons/pixel-v2/action/doctor-note.png" mode="aspectFit" />
     <view class="records-head-copy">
       <view class="records-title">我的记录</view>
-      <view class="records-sub">本机保存的就医前记录单</view>
+      <view class="records-sub">本机保存的就医、喂养和疫苗记录</view>
     </view>
     <button wx:if="{{records.length}}" class="btn-plain head-new-button" bindtap="goNewRecord">新建</button>
   </view>
@@ -11,8 +11,8 @@
   <view wx:if="{{!records.length}}" class="records-empty card">
     <image class="records-empty-icon pixel-img" src="/assets/icons/pixel-v2/action/doctor-note.png" mode="aspectFit" />
     <view class="records-empty-copy">
-      <view class="records-empty-title">还没有就医记录</view>
-      <view class="records-empty-desc">可以先新建一张记录单，把体温、状态、用药和想问医生的问题整理好。</view>
+      <view class="records-empty-title">还没有记录</view>
+      <view class="records-empty-desc">可以先新建一条记录，把喂养、接种或就医前要问医生的问题整理好。</view>
     </view>
     <view class="empty-actions">
       <button class="btn-plain empty-primary" bindtap="goNewRecord">新建记录</button>
@@ -20,25 +20,88 @@
   </view>
 
   <view wx:else class="record-list">
-    <view wx:for="{{records}}" wx:key="id" class="record-card card">
+    <view class="filter-tabs">
+      <view wx:for="{{filterTabs}}" wx:key="id" class="filter-tab {{activeType === item.id ? 'active' : ''}}" data-type="{{item.id}}" bindtap="changeFilter">{{item.name}}</view>
+    </view>
+
+    <view wx:if="{{showFeedingTools && feedingDaySummaries.length}}" class="feeding-summary card">
+      <view class="summary-head">
+        <image class="summary-icon pixel-img" src="/assets/icons/pixel-v2/category/feeding.png" mode="aspectFit" />
+        <view class="summary-copy">
+          <view class="summary-title">奶量汇总</view>
+          <view class="summary-sub">按记录日期自动汇总</view>
+        </view>
+      </view>
+      <view class="summary-days">
+        <view wx:for="{{visibleFeedingDaySummaries}}" wx:key="key" class="summary-day">
+          <view class="summary-day-label">{{item.label}}</view>
+          <view class="summary-day-main">{{item.totalAmount}} ml</view>
+          <view class="summary-day-sub">{{item.count}} 次</view>
+        </view>
+      </view>
+      <view wx:if="{{feedingDaySummaries.length > 2}}" class="summary-toggle" bindtap="toggleFeedingSummary">{{isFeedingSummaryExpanded ? '收起汇总' : '展开全部日期'}}</view>
+    </view>
+
+    <view wx:if="{{showFeedingTools && feedingRecordCount > 1}}" class="fold-bar card" bindtap="toggleFeedingRecords">
+      <image class="fold-icon pixel-img" src="/assets/icons/pixel-v2/category/feeding.png" mode="aspectFit" />
+      <view class="fold-main">
+        <view class="fold-title">奶量记录 {{feedingRecordCount}} 条</view>
+        <view class="fold-sub">{{isFeedingExpanded ? '正在展示全部奶量记录' : '当前只展示最新一条'}}</view>
+      </view>
+      <view class="fold-action">{{isFeedingExpanded ? '收起' : '展开全部'}}</view>
+    </view>
+
+    <view wx:if="{{!visibleRecords.length}}" class="type-empty card">
+      <view class="type-empty-title">这个分类还没有记录</view>
+      <view class="type-empty-desc">点右上角新建，可以选择要添加的记录类型。</view>
+    </view>
+
+    <view wx:for="{{visibleRecords}}" wx:key="id" class="record-card card">
       <view class="record-head">
-        <image class="record-icon pixel-img" src="/assets/icons/pixel-v2/action/doctor-note.png" mode="aspectFit" />
+        <image class="record-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
         <view class="record-head-main">
-          <view class="record-title">{{item.questionTitle || '就医前记录单'}}</view>
+          <view class="record-title-row">
+            <view class="record-title">{{item.displayTitle}}</view>
+            <view class="record-type type-{{item.type}}">{{item.typeLabel}}</view>
+          </view>
           <view class="record-time">{{item.displayTime}}</view>
         </view>
       </view>
+
+      <view wx:if="{{item.sourceTitle}}" class="record-source">{{item.sourceTitle}}</view>
+
       <view class="record-meta">
         <text>{{item.babyName || '宝宝'}}</text>
         <text wx:if="{{item.babyAge}}">{{item.babyAge}}</text>
         <text wx:if="{{item.temperature}}">{{item.temperature}}</text>
+        <text wx:if="{{item.amountText}}">{{item.amountText}}</text>
+        <text wx:if="{{item.vaccineNameText}}">{{item.vaccineNameText}}</text>
       </view>
-      <view class="record-summary">
+
+      <view wx:if="{{item.type === 'doctor'}}" class="record-summary">
         <text wx:if="{{item.startedAt}}">开始：{{item.startedAt}}</text>
         <text wx:if="{{item.spirit}}">精神：{{item.spirit}}</text>
         <text wx:if="{{item.feeding}}">进食：{{item.feeding}}</text>
         <text wx:if="{{item.urine}}">尿量：{{item.urine}}</text>
       </view>
+
+      <view wx:if="{{item.type === 'feeding'}}" class="record-summary">
+        <text wx:if="{{item.fedAt}}">时间：{{item.fedAt}}</text>
+        <text wx:if="{{item.feedType}}">方式：{{item.feedType}}</text>
+        <text wx:if="{{item.duration}}">时长：{{item.duration}}</text>
+        <text wx:if="{{item.spitUp}}">吐奶：{{item.spitUp}}</text>
+        <text wx:if="{{item.diaper}}">尿便：{{item.diaper}}</text>
+      </view>
+
+      <view wx:if="{{item.type === 'vaccine'}}" class="record-summary">
+        <text wx:if="{{item.vaccinatedAt}}">接种：{{item.vaccinatedAt}}</text>
+        <text wx:if="{{item.vaccineManufacturer}}">厂商：{{item.vaccineManufacturer}}</text>
+        <text wx:if="{{item.doseNo}}">针次：{{item.doseNo}}</text>
+        <text wx:if="{{item.place}}">地点：{{item.place}}</text>
+        <text wx:if="{{item.reactionText}}">反应：{{item.reactionText}}</text>
+        <text wx:if="{{item.reactionStartedAt}}">出现：{{item.reactionStartedAt}}</text>
+      </view>
+
       <view wx:if="{{item.symptoms}}" class="record-detail">
         <view class="record-detail-label">症状</view>
         <view class="record-detail-text">{{item.symptoms}}</view>
@@ -51,12 +114,14 @@
         <view class="record-detail-label">备注</view>
         <view class="record-detail-text">{{item.notes}}</view>
       </view>
-      <view wx:if="{{item.questions.length}}" class="record-questions">
+
+      <view wx:if="{{item.questions && item.questions.length}}" class="record-questions">
         <view wx:for="{{item.questions}}" wx:key="*this" class="record-question">{{index + 1}}. {{item}}</view>
       </view>
+
       <view class="record-actions">
-        <button class="btn-plain edit-button" bindtap="editRecord" data-id="{{item.id}}">编辑</button>
-        <button class="btn-plain delete-button" bindtap="deleteRecord" data-id="{{item.id}}">删除</button>
+        <button class="btn-plain edit-button" bindtap="editRecord" data-id="{{item.id}}" data-type="{{item.type}}">编辑</button>
+        <button class="btn-plain delete-button" bindtap="deleteRecord" data-id="{{item.id}}" data-type="{{item.type}}">删除</button>
       </view>
     </view>
   </view>

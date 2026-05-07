@@ -1,0 +1,126 @@
+<view class="page vaccine-log-page">
+  <view class="tool-page-head">
+    <view class="tool-page-copy">
+      <view class="simple-title">疫苗记录</view>
+      <view class="simple-sub">记录接种、反应和下次要确认的问题</view>
+    </view>
+    <button class="btn-plain records-link" bindtap="goRecords" aria-label="查看我的记录">
+      <image class="records-link-icon pixel-img" src="{{actionIconPaths.history}}" mode="aspectFit" />
+      <text>我的记录</text>
+    </button>
+  </view>
+
+  <view class="notice-card card">
+    <image class="notice-icon pixel-img" src="/assets/icons/pixel-v2/category/vaccine.png" mode="aspectFit" />
+    <view class="notice-copy">
+      <view class="notice-title">以接种本和医生建议为准</view>
+      <view class="notice-text">这里适合做家庭回看和沟通辅助；如果出现高热、持续哭闹、呼吸异常、意识异常或家长无法判断，请及时联系接种门诊或线下就医。</view>
+    </view>
+  </view>
+
+  <view class="form-card card">
+    <view class="form-title">接种信息</view>
+    <view class="info-grid">
+      <view class="info-cell">
+        <view class="info-label">宝宝</view>
+        <view class="info-value">{{draft.babyName || '未填写'}}</view>
+      </view>
+      <view class="info-cell">
+        <view class="info-label">月龄</view>
+        <view class="info-value">{{draft.babyAge || '未设置'}}</view>
+      </view>
+    </view>
+
+    <view class="field-group">
+      <picker mode="selector" range="{{vaccineOptions}}" value="{{vaccineIndex}}" bindchange="onVaccineChange">
+        <view class="field-row picker-row">
+          <view class="field-label">疫苗</view>
+          <view class="picker-value">{{draft.vaccineName || '请选择'}}</view>
+          <view class="picker-arrow"></view>
+        </view>
+      </picker>
+      <view wx:if="{{draft.vaccineName === '其他疫苗'}}" class="field-row conditional-field">
+        <view class="field-label">具体疫苗</view>
+        <input class="field-input" value="{{draft.vaccineNameCustom}}" data-field="vaccineNameCustom" bindinput="onInput" placeholder="请输入疫苗名称" maxlength="40" />
+      </view>
+      <view class="field-row">
+        <view class="field-label">厂商</view>
+        <input class="field-input" value="{{draft.vaccineManufacturer}}" data-field="vaccineManufacturer" bindinput="onInput" placeholder="选填，例如 北京生物 / 康希诺" maxlength="40" />
+      </view>
+      <view class="field-row">
+        <view class="field-label">针次</view>
+        <input class="field-input" value="{{draft.doseNo}}" data-field="doseNo" bindinput="onInput" placeholder="例如 第 1 针 / 加强针" />
+      </view>
+      <view class="field-row time-picker-row">
+        <view class="field-label">时间</view>
+        <picker class="date-picker" mode="date" value="{{vaccinatedAtDate}}" start="{{minDate}}" end="{{maxDate}}" bindchange="onVaccinatedDateChange">
+          <view class="time-chip">
+            <text class="time-chip-label">日期</text>
+            <text class="time-chip-value">{{vaccinatedAtDate}}</text>
+          </view>
+        </picker>
+        <picker class="time-picker" mode="time" value="{{vaccinatedAtTime}}" bindchange="onVaccinatedTimeChange">
+          <view class="time-chip time-chip-clock">
+            <text class="time-chip-label">时间</text>
+            <text class="time-chip-value">{{vaccinatedAtTime}}</text>
+          </view>
+        </picker>
+      </view>
+      <view class="field-row">
+        <view class="field-label">地点</view>
+        <input class="field-input" value="{{draft.place}}" data-field="place" bindinput="onInput" placeholder="例如 社区卫生服务中心" />
+      </view>
+    </view>
+  </view>
+
+  <view class="form-card card">
+    <view class="form-title">接种后反应</view>
+    <picker mode="selector" range="{{reactionOptions}}" value="{{reactionIndex}}" bindchange="onReactionChange">
+      <view class="field-row picker-row solo-row">
+        <view class="field-label">反应</view>
+        <view class="picker-value">{{draft.reaction || '请选择'}}</view>
+        <view class="picker-arrow"></view>
+      </view>
+    </picker>
+    <view wx:if="{{draft.reaction === '其他反应'}}" class="field-row conditional-field">
+      <view class="field-label">具体反应</view>
+      <input class="field-input" value="{{draft.reactionCustom}}" data-field="reactionCustom" bindinput="onInput" placeholder="例如 轻微腹泻、食欲下降" maxlength="40" />
+    </view>
+    <view class="field-row time-picker-row reaction-time-row">
+      <view class="field-label">出现时间</view>
+      <picker class="date-picker" mode="date" value="{{reactionDate}}" start="{{minDate}}" end="{{maxDate}}" bindchange="onReactionDateChange">
+        <view class="time-chip">
+          <text class="time-chip-label">日期</text>
+          <text class="time-chip-value">{{reactionDate}}</text>
+        </view>
+      </picker>
+      <picker class="time-picker" mode="time" value="{{reactionTime}}" bindchange="onReactionTimeChange">
+        <view class="time-chip time-chip-clock">
+          <text class="time-chip-label">时间</text>
+          <text class="time-chip-value">{{draft.reactionStartedAt ? reactionTime : '未记录'}}</text>
+        </view>
+      </picker>
+      <view class="mini-clear" bindtap="clearReactionTime">清除</view>
+    </view>
+    <textarea class="text-area compact" value="{{draft.notes}}" data-field="notes" bindinput="onInput" placeholder="例如 体温变化、局部红肿大小、精神和吃奶情况" maxlength="240" />
+  </view>
+
+  <view class="checklist-card card">
+    <view class="form-title">下次可以确认</view>
+    <view class="question-list">
+      <view wx:for="{{questionRows}}" wx:key="index" class="question-row">
+        <view class="question-index">{{index + 1}}</view>
+        <input class="question-input" value="{{item}}" data-index="{{index}}" bindinput="onQuestionInput" placeholder="想确认的问题，一行一个" maxlength="80" />
+        <view class="question-remove" data-index="{{index}}" bindtap="removeQuestion">{{item || questionRows.length > 1 ? '清除' : ''}}</view>
+      </view>
+    </view>
+    <button class="btn-plain add-question-button" bindtap="addQuestion">继续添加问题</button>
+  </view>
+
+  <view class="bottom-actions">
+    <view class="bottom-actions-inner">
+      <view class="secondary-action" bindtap="resetDraft">清空</view>
+      <view class="primary-action" bindtap="saveRecord">保存记录</view>
+    </view>
+  </view>
+</view>

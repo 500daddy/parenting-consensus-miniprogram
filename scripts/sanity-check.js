@@ -179,6 +179,8 @@ const searchLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/sear
 const searchPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/search/index.wxml'), 'utf8')
 const profilePageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/index.wxml'), 'utf8')
 const profileLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/index.js'), 'utf8')
+const authorityPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/authority/index.wxml'), 'utf8')
+const authorityLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/authority/index.js'), 'utf8')
 const customTabBarSource = fs.readFileSync(path.join(miniprogramRoot, 'custom-tab-bar/index.wxml'), 'utf8')
 const customTabBarLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'custom-tab-bar/index.js'), 'utf8')
 const categoryIds = new Set(data.categories.map((item) => item.id))
@@ -216,6 +218,7 @@ assertInvariant(resultPageSource.indexOf('健康提醒') > -1, 'Result page shou
 assertInvariant(resultLogicSource.indexOf('按宝宝档案提醒') > -1, 'Result page should expose local baby-profile reminders after login')
 assertInvariant(resultLogicSource.indexOf('完善宝宝档案') > -1 && resultPageSource.indexOf('bindtap="goProfile"') > -1, 'Result page should guide users to complete missing baby profile fields')
 assertInvariant(resultPageSource.indexOf('内容说明') > -1, 'Result page should keep the MVP content boundary as a lower-priority note')
+assertInvariant(resultPageSource.indexOf('更多内容') === -1 && resultLogicSource.indexOf('goAuthority') === -1, 'Result page should keep authority content inline instead of pushing users to a secondary page')
 assertInvariant(profilePageSource.indexOf('隐私说明') > -1, 'Profile page should expose the MVP privacy explanation')
 assertInvariant(profilePageSource.indexOf('审核备注') > -1, 'Profile page should expose review-note guidance')
 assertInvariant(profilePageSource.indexOf('内测反馈') > -1, 'Profile page should provide a seed-user feedback path')
@@ -232,6 +235,9 @@ assertInvariant(customTabBarSource.indexOf('wx:if="{{!hidden}}"') > -1, 'Custom 
 assertInvariant(profileLogicSource.indexOf('setCustomTabBarHidden(true)') > -1, 'Profile pickers should hide the custom tabBar before opening')
 assertInvariant(profileLogicSource.indexOf('setCustomTabBarHidden(false)') > -1, 'Profile pickers should restore the custom tabBar after closing')
 assertInvariant(profilePageSource.indexOf('bindcancel="onProfilePickerClose"') > -1, 'Profile pickers should restore the custom tabBar when iOS picker is cancelled')
+assertInvariant(authorityPageSource.indexOf('home-illus') === -1, 'Authority page should avoid decorative hero art that competes with content')
+assertInvariant(authorityLogicSource.indexOf('relatedQuestionItems.slice(0, 2)') > -1, 'Authority page should show two related question cards')
+assertInvariant(authorityPageSource.indexOf('related-action') > -1 && authorityPageSource.indexOf('查看') > -1, 'Authority related cards should use a clear action button')
 
 for (const iconPath of Object.values(service.actionIconPaths)) {
   assertMiniProgramAsset(iconPath)

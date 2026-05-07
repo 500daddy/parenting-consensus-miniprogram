@@ -51,7 +51,7 @@ Page({
       favoriteCount: service.getFavorites().length,
       historyCount: service.getHistory().length,
       pendingQuestionCount: service.getPendingQuestions().length,
-      toolRecordCount: toolService.getDoctorVisitRecords().length
+      toolRecordCount: toolService.getDoctorVisitRecords().length + toolService.getFeedingRecords().length + toolService.getVaccineRecords().length
     })
   },
 
@@ -195,13 +195,15 @@ Page({
   logout() {
     wx.showModal({
       title: '退出登录',
-      content: '退出后会清空本机宝宝档案和就医记录。收藏、搜索历史和问题建议仍会保留。',
+      content: '退出后会清空本机宝宝档案和工具记录。收藏、搜索历史和问题建议仍会保留。',
       confirmText: '退出',
       confirmColor: '#d96f45',
       success: (res) => {
         if (!res.confirm) return
         const profile = service.logoutProfile()
         toolService.clearDoctorVisitRecords()
+        toolService.clearFeedingRecords()
+        toolService.clearVaccineRecords()
         const icon = getBabyIcon(profile.baby.gender)
         this.setData({
           profile,

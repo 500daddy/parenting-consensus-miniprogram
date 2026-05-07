@@ -1,0 +1,90 @@
+<view class="page feeding-log-page">
+  <view class="tool-page-head">
+    <view class="tool-page-copy">
+      <view class="simple-title">奶量记录</view>
+      <view class="simple-sub">记录单次喂养，回看今天总量</view>
+    </view>
+    <button class="btn-plain records-link" bindtap="goRecords" aria-label="查看我的记录">
+      <image class="records-link-icon pixel-img" src="{{actionIconPaths.history}}" mode="aspectFit" />
+      <text>我的记录</text>
+    </button>
+  </view>
+
+  <view class="summary-card card">
+    <image class="summary-icon pixel-img" src="/assets/icons/pixel-v2/category/feeding.png" mode="aspectFit" />
+    <view class="summary-main">
+      <view class="summary-title">今日已记录</view>
+      <view class="summary-text">{{todaySummary.count}} 次 · {{todaySummary.totalAmount}} ml</view>
+    </view>
+  </view>
+
+  <view class="form-card card">
+    <view class="form-title">本次喂养</view>
+    <view class="info-grid">
+      <view class="info-cell">
+        <view class="info-label">宝宝</view>
+        <view class="info-value">{{draft.babyName || '未填写'}}</view>
+      </view>
+      <view class="info-cell">
+        <view class="info-label">月龄</view>
+        <view class="info-value">{{draft.babyAge || '未设置'}}</view>
+      </view>
+    </view>
+
+    <view class="field-group">
+      <view class="field-row time-picker-row">
+        <view class="field-label">时间</view>
+        <picker class="date-picker" mode="date" value="{{fedAtDate}}" start="{{minDate}}" end="{{maxDate}}" bindchange="onFedDateChange">
+          <view class="time-chip">
+            <text class="time-chip-label">日期</text>
+            <text class="time-chip-value">{{fedAtDate}}</text>
+          </view>
+        </picker>
+        <picker class="time-picker" mode="time" value="{{fedAtTime}}" bindchange="onFedTimeChange">
+          <view class="time-chip time-chip-clock">
+            <text class="time-chip-label">时间</text>
+            <text class="time-chip-value">{{fedAtTime}}</text>
+          </view>
+        </picker>
+      </view>
+      <picker mode="selector" range="{{feedTypeOptions}}" value="{{feedTypeIndex}}" bindchange="onFeedTypeChange">
+        <view class="field-row picker-row">
+          <view class="field-label">方式</view>
+          <view class="picker-value">{{draft.feedType || '请选择'}}</view>
+          <view class="picker-arrow"></view>
+        </view>
+      </picker>
+      <view class="field-row">
+        <view class="field-label">奶量</view>
+        <input class="field-input" value="{{draft.amount}}" data-field="amount" bindinput="onInput" placeholder="例如 120 ml" type="number" />
+      </view>
+      <view class="field-row">
+        <view class="field-label">时长</view>
+        <input class="field-input" value="{{draft.duration}}" data-field="duration" bindinput="onInput" placeholder="例如 15 分钟" />
+      </view>
+      <picker mode="selector" range="{{spitUpOptions}}" value="{{spitUpIndex}}" bindchange="onSpitUpChange">
+        <view class="field-row picker-row">
+          <view class="field-label">吐奶</view>
+          <view class="picker-value">{{draft.spitUp || '请选择'}}</view>
+          <view class="picker-arrow"></view>
+        </view>
+      </picker>
+      <view class="field-row">
+        <view class="field-label">尿便</view>
+        <input class="field-input" value="{{draft.diaper}}" data-field="diaper" bindinput="onInput" placeholder="例如 尿 1 次 / 便便偏稀" />
+      </view>
+    </view>
+  </view>
+
+  <view class="form-card card">
+    <view class="form-title">备注</view>
+    <textarea class="text-area compact" value="{{draft.notes}}" data-field="notes" bindinput="onInput" placeholder="例如 吃得急、拍嗝后舒服、睡前奶等" maxlength="240" />
+  </view>
+
+  <view class="bottom-actions">
+    <view class="bottom-actions-inner">
+      <view class="secondary-action" bindtap="resetDraft">清空</view>
+      <view class="primary-action" bindtap="saveRecord">保存记录</view>
+    </view>
+  </view>
+</view>

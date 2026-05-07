@@ -2,12 +2,6 @@
   <view class="hero compact">
     <view class="hero-title">权威观点</view>
     <view class="hero-subtitle">优先看可信来源，再看观点分歧</view>
-    <view class="home-illus" aria-hidden="true">
-      <view class="sun"></view>
-      <view class="leaf one"></view>
-      <view class="leaf two"></view>
-      <view class="house"></view>
-    </view>
   </view>
 
   <scroll-view class="chip-row authority-filter" scroll-x enable-flex>
@@ -63,9 +57,11 @@
     </view>
     <view class="related-grid">
       <view wx:for="{{relatedQuestions}}" wx:key="id" class="tap-card related-card card" bindtap="goQuestion" data-id="{{item.id}}">
-        <view class="related-title">{{item.shortTitle}}</view>
-        <view class="related-sub">{{item.summary}}</view>
-        <view class="related-arrow">›</view>
+        <view class="related-main">
+          <view class="related-title">{{item.shortTitle}}</view>
+          <view class="related-sub">{{item.summary}}</view>
+        </view>
+        <view class="related-action">查看</view>
       </view>
     </view>
   </view>

@@ -146,14 +146,13 @@
     <view class="section">
       <view class="section-head">
         <view class="section-title"><image class="shield-small pixel-img" src="{{actionIconPaths.authority}}" mode="aspectFit" /><text>权威内容推荐</text></view>
-        <button class="btn-plain section-more" bindtap="goAuthority">更多内容 ›</button>
       </view>
       <view wx:if="{{result.authorityView}}" class="authority-view card">
         <view class="authority-view-label">权威观点</view>
         <view class="authority-view-text">{{result.authorityView}}</view>
       </view>
       <view class="authority-list">
-        <view wx:for="{{result.authoritySources}}" wx:key="id" class="tap-card authority-row card" bindtap="goAuthority" data-type="{{item.type}}">
+        <view wx:for="{{result.authoritySources}}" wx:key="id" class="authority-row card">
           <image class="authority-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
           <view class="authority-main">
             <view class="authority-head">
@@ -165,7 +164,6 @@
               <text wx:for="{{item.tags}}" wx:key="*this" class="authority-tag">{{item}}</text>
             </view>
           </view>
-          <view class="row-arrow"></view>
         </view>
       </view>
     </view>

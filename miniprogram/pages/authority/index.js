@@ -37,7 +37,7 @@ Page({
       activeType,
       questionId,
       warnings: result ? result.warnings : defaultWarnings,
-      relatedQuestions: result && result.relatedQuestionItems.length ? result.relatedQuestionItems : getFallbackQuestions(questionId)
+      relatedQuestions: result && result.relatedQuestionItems.length ? result.relatedQuestionItems.slice(0, 2) : getFallbackQuestions(questionId)
     })
     this.loadSources()
   },

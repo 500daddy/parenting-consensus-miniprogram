@@ -155,13 +155,6 @@ Page({
     wx.showToast({ title: isFavorite ? '已收藏，可在底部查看' : '已取消收藏', icon: 'none' })
   },
 
-  goAuthority(event) {
-    if (!this.data.result) return
-    const type = event && event.currentTarget ? event.currentTarget.dataset.type : ''
-    const typeQuery = type ? `&type=${type}` : ''
-    wx.navigateTo({ url: `/pages/authority/index?questionId=${this.data.result.questionId}${typeQuery}` })
-  },
-
   goQuestion(event) {
     const id = event.currentTarget.dataset.id
     if (!id) return

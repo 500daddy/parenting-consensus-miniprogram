@@ -3,7 +3,16 @@
 }
 
 .compact {
-  padding-bottom: 28rpx;
+  min-height: auto;
+  padding: 18rpx 0 22rpx;
+}
+
+.compact .hero-title {
+  max-width: 100%;
+}
+
+.compact .hero-subtitle {
+  max-width: 100%;
 }
 
 .authority-filter {
@@ -241,46 +250,74 @@
 .related-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14rpx;
+  gap: 18rpx;
   width: 100%;
 }
 
 .related-card {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
-  min-height: 132rpx;
-  padding: 22rpx 64rpx 22rpx 22rpx;
+  min-height: 208rpx;
+  padding: 24rpx;
   border-color: #ead8b8;
-  background: #fffdf6;
+  background: linear-gradient(180deg, #fffdf8 0%, #fff9ef 100%);
   text-align: left;
+}
+
+.related-main {
+  min-width: 0;
 }
 
 .related-title {
   color: #2f2a25;
-  font-size: 26rpx;
-  font-weight: 700;
+  font-size: 28rpx;
+  font-weight: 800;
+  line-height: 1.28;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .related-sub {
-  margin-top: 8rpx;
-  color: #8b8178;
-  font-size: 23rpx;
-  line-height: 1.35;
+  margin-top: 12rpx;
+  color: #756d66;
+  font-size: 24rpx;
+  line-height: 1.45;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
-.related-arrow {
-  position: absolute;
-  right: 18rpx;
-  top: 42rpx;
+.related-action {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48rpx;
+  align-self: flex-start;
+  min-width: 96rpx;
   height: 48rpx;
+  margin-top: 18rpx;
+  padding: 0 18rpx;
   border-radius: 12rpx;
   background: #eaf6df;
   color: #4f8a43;
-  font-size: 34rpx;
+  font-size: 23rpx;
+  font-weight: 800;
+  line-height: 48rpx;
+}
+
+.related-action::after {
+  content: "";
+  display: block;
+  width: 10rpx;
+  height: 10rpx;
+  margin-left: 8rpx;
+  border-top: 3rpx solid currentColor;
+  border-right: 3rpx solid currentColor;
+  transform: rotate(45deg);
 }
 
 @media (max-width: 360px) {
