@@ -2,7 +2,7 @@ const service = require('../../../utils/mockService.js')
 const toolService = require('../../../utils/toolService.js')
 
 function getSortTime(record) {
-  return String(record.updatedAt || record.createdAt || '')
+  return String(record.fedAt || record.vaccinatedAt || record.measuredAt || record.updatedAt || record.createdAt || '')
 }
 
 function enrichDoctorRecord(record) {
@@ -33,7 +33,7 @@ function enrichFeedingRecord(record) {
     typeLabel: '喂养',
     iconPath: '/assets/icons/pixel-v2/category/feeding.png',
     displayTitle: '奶量记录',
-    displayTime: toolService.formatRecordTime(record.updatedAt || record.createdAt),
+    displayTime: toolService.formatRecordTime(record.fedAt || record.updatedAt || record.createdAt),
     amountText
   })
 }
@@ -47,10 +47,27 @@ function enrichVaccineRecord(record) {
     iconPath: '/assets/icons/pixel-v2/category/vaccine.png',
     displayTitle: '疫苗记录',
     sourceTitle: record.questionTitle || '',
-    displayTime: toolService.formatRecordTime(record.updatedAt || record.createdAt),
+    displayTime: toolService.formatRecordTime(record.vaccinatedAt || record.updatedAt || record.createdAt),
     vaccineNameText,
     reactionText,
     questions: record.nextQuestions || []
+  })
+}
+
+function enrichGrowthRecord(record) {
+  const metricText = [
+    record.weight ? `${record.weight} kg` : '',
+    record.height ? `${record.height} cm` : '',
+    record.headCircumference ? `头围 ${record.headCircumference} cm` : ''
+  ].filter(Boolean).join(' / ')
+  return Object.assign({}, record, {
+    type: 'growth',
+    typeLabel: '生长',
+    iconPath: '/assets/icons/pixel-v2/category/growth.png',
+    displayTitle: '生长记录',
+    sourceTitle: record.questionTitle || '',
+    displayTime: toolService.formatRecordTime(record.measuredAt || record.updatedAt || record.createdAt),
+    metricText
   })
 }
 
@@ -93,18 +110,27 @@ Page({
     records: [],
     visibleRecords: [],
     feedingRecordCount: 0,
+    vaccineRecordCount: 0,
+    growthRecordCount: 0,
     feedingDaySummaries: [],
     visibleFeedingDaySummaries: [],
     isFeedingExpanded: false,
     isFeedingSummaryExpanded: false,
+    isVaccineExpanded: false,
+    isGrowthExpanded: false,
     showFeedingTools: true,
+    showVaccineTools: true,
+    showGrowthTools: true,
+    showRecordTools: false,
     activeType: 'all',
     filterTabs: [
       { id: 'all', name: '全部' },
       { id: 'doctor', name: '就医' },
       { id: 'feeding', name: '喂养' },
-      { id: 'vaccine', name: '疫苗' }
+      { id: 'vaccine', name: '疫苗' },
+      { id: 'growth', name: '生长' }
     ],
+    availableTools: toolService.getAllTools(),
     actionIconPaths: service.actionIconPaths
   },
 
@@ -112,13 +138,22 @@ Page({
     const doctorRecords = toolService.getDoctorVisitRecords().map(enrichDoctorRecord)
     const feedingRecords = toolService.getFeedingRecords().map(enrichFeedingRecord)
     const vaccineRecords = toolService.getVaccineRecords().map(enrichVaccineRecord)
+    const growthRecords = toolService.getGrowthRecords().map(enrichGrowthRecord)
     const daySummaries = buildFeedingDaySummaries(feedingRecords)
     const showFeedingTools = this.data.activeType === 'all' || this.data.activeType === 'feeding'
+    const showVaccineTools = this.data.activeType === 'all' || this.data.activeType === 'vaccine'
+    const showGrowthTools = this.data.activeType === 'all' || this.data.activeType === 'growth'
+    const showRecordTools = (showFeedingTools && (daySummaries.length || feedingRecords.length > 1)) ||
+      (showVaccineTools && vaccineRecords.length > 1) ||
+      (showGrowthTools && growthRecords.length > 1)
     const records = this.buildRecords(
       doctorRecords,
       feedingRecords,
       vaccineRecords,
+      growthRecords,
       this.data.isFeedingExpanded,
+      this.data.isVaccineExpanded,
+      this.data.isGrowthExpanded,
       this.data.activeType
     )
 
@@ -126,24 +161,33 @@ Page({
       records: records.allRecords,
       visibleRecords: records.visibleRecords,
       feedingRecordCount: feedingRecords.length,
+      vaccineRecordCount: vaccineRecords.length,
+      growthRecordCount: growthRecords.length,
       feedingDaySummaries: daySummaries,
       visibleFeedingDaySummaries: this.data.isFeedingSummaryExpanded ? daySummaries : daySummaries.slice(0, 2),
-      showFeedingTools
+      showFeedingTools,
+      showVaccineTools,
+      showGrowthTools,
+      showRecordTools
     })
   },
 
-  buildRecords(doctorRecords, feedingRecords, vaccineRecords, expanded, activeType) {
-    const shownFeedingRecords = expanded ? feedingRecords : feedingRecords.slice(0, 1)
-    const allRecords = doctorRecords.concat(feedingRecords, vaccineRecords)
+  buildRecords(doctorRecords, feedingRecords, vaccineRecords, growthRecords, feedingExpanded, vaccineExpanded, growthExpanded, activeType) {
+    const shownFeedingRecords = feedingExpanded ? feedingRecords : feedingRecords.slice(0, 1)
+    const shownVaccineRecords = vaccineExpanded ? vaccineRecords : vaccineRecords.slice(0, 1)
+    const shownGrowthRecords = growthExpanded ? growthRecords : growthRecords.slice(0, 1)
+    const allRecords = doctorRecords.concat(feedingRecords, vaccineRecords, growthRecords)
       .sort((left, right) => getSortTime(right).localeCompare(getSortTime(left)))
 
-    let typedRecords = doctorRecords.concat(shownFeedingRecords, vaccineRecords)
+    let typedRecords = doctorRecords.concat(shownFeedingRecords, shownVaccineRecords, shownGrowthRecords)
     if (activeType === 'doctor') {
       typedRecords = doctorRecords
     } else if (activeType === 'feeding') {
       typedRecords = shownFeedingRecords
     } else if (activeType === 'vaccine') {
-      typedRecords = vaccineRecords
+      typedRecords = shownVaccineRecords
+    } else if (activeType === 'growth') {
+      typedRecords = shownGrowthRecords
     }
 
     return {
@@ -154,21 +198,43 @@ Page({
 
   goNewRecord() {
     wx.showActionSheet({
-      itemList: ['就医前记录单', '奶量记录', '疫苗记录'],
+      itemList: ['就医前记录单', '奶量记录', '疫苗记录', '生长记录'],
       success: (res) => {
         const paths = [
           '/pages/tools/doctor-visit/index',
           '/pages/tools/feeding-log/index',
-          '/pages/tools/vaccine-log/index'
+          '/pages/tools/vaccine-log/index',
+          '/pages/tools/growth-log/index'
         ]
         wx.navigateTo({ url: paths[res.tapIndex] || paths[0] })
       }
     })
   },
 
+  openTool(event) {
+    const id = event.currentTarget.dataset.id
+    const tool = (this.data.availableTools || []).find((item) => item.id === id)
+    if (!tool) return
+    wx.navigateTo({ url: tool.path })
+  },
+
   toggleFeedingRecords() {
     this.setData({
       isFeedingExpanded: !this.data.isFeedingExpanded
+    })
+    this.onShow()
+  },
+
+  toggleVaccineRecords() {
+    this.setData({
+      isVaccineExpanded: !this.data.isVaccineExpanded
+    })
+    this.onShow()
+  },
+
+  toggleGrowthRecords() {
+    this.setData({
+      isGrowthExpanded: !this.data.isGrowthExpanded
     })
     this.onShow()
   },
@@ -194,7 +260,8 @@ Page({
     const paths = {
       doctor: '/pages/tools/doctor-visit/index',
       feeding: '/pages/tools/feeding-log/index',
-      vaccine: '/pages/tools/vaccine-log/index'
+      vaccine: '/pages/tools/vaccine-log/index',
+      growth: '/pages/tools/growth-log/index'
     }
     wx.navigateTo({ url: `${paths[type] || paths.doctor}?recordId=${id}` })
   },
@@ -214,6 +281,8 @@ Page({
           toolService.deleteFeedingRecord(id)
         } else if (type === 'vaccine') {
           toolService.deleteVaccineRecord(id)
+        } else if (type === 'growth') {
+          toolService.deleteGrowthRecord(id)
         } else {
           toolService.deleteDoctorVisitRecord(id)
         }

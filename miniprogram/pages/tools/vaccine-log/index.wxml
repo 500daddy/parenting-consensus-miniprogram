@@ -70,6 +70,13 @@
         <view class="field-label">地点</view>
         <input class="field-input" value="{{draft.place}}" data-field="place" bindinput="onInput" placeholder="例如 社区卫生服务中心" />
       </view>
+      <view class="field-row single-date-row">
+        <view class="field-label">下次接种</view>
+        <picker class="single-date-picker" mode="date" value="{{nextVaccinationDate}}" start="{{maxDate}}" end="{{maxScheduleDate}}" bindchange="onNextVaccinationDateChange">
+          <view class="single-date-value">{{draft.nextVaccinationAt || '未设置'}}</view>
+        </picker>
+        <view class="mini-clear" bindtap="clearNextVaccination">清除</view>
+      </view>
     </view>
   </view>
 

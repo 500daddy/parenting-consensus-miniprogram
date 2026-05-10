@@ -44,6 +44,7 @@ const actionIconPaths = {
   search: `${ICON_ROOT}/action/search.png`,
   share: `${ICON_ROOT}/action/share.png`,
   star: `${ICON_ROOT}/action/star.png`,
+  tools: `${ICON_ROOT}/action/toolbox.png`,
   warning: `${ICON_ROOT}/action/warning.png`
 }
 const profileIconPaths = {

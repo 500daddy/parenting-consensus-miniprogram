@@ -87,7 +87,7 @@ function prepareResult(result) {
     })),
     riskNotice: getRiskNotice(result),
     profileHint: buildProfileHint(result),
-    tools: toolService.getToolsByCategory(result.categoryId),
+    tools: toolService.getRecommendedTools(result),
     dataSourceNote: '当前内容基于已整理题库和参考资料，不是实时联网搜索结果。上线后可由后台持续更新。',
     contentBoundaryNotice: '养娃新手村当前为本地数据 MVP，内容用于问前梳理和家长沟通参考，不提供诊断、处方或急救替代方案。'
   })
@@ -101,6 +101,7 @@ Page({
     noResult: false,
     glossaryPopup: null,
     fallbackQuestions: [],
+    isToolPanelOpen: false,
     actionIconPaths: service.actionIconPaths
   },
 
@@ -133,7 +134,8 @@ Page({
       keyword: keyword || result.question.title,
       result,
       isFavorite: service.isFavorite(result.questionId),
-      noResult: false
+      noResult: false,
+      isToolPanelOpen: false
     })
   },
 
@@ -169,11 +171,27 @@ Page({
     wx.switchTab({ url: '/pages/profile/index' })
   },
 
+  goToolRecords() {
+    this.closeToolPanel()
+    wx.navigateTo({ url: '/pages/tools/records/index' })
+  },
+
+  toggleToolPanel() {
+    this.setData({
+      isToolPanelOpen: !this.data.isToolPanelOpen
+    })
+  },
+
+  closeToolPanel() {
+    this.setData({ isToolPanelOpen: false })
+  },
+
   openTool(event) {
     if (!this.data.result) return
     const toolId = event.currentTarget.dataset.id
     const tool = (this.data.result.tools || []).find((item) => item.id === toolId)
     if (!tool) return
+    this.closeToolPanel()
     wx.navigateTo({
       url: `${tool.path}?questionId=${this.data.result.questionId}&categoryId=${this.data.result.categoryId}`
     })

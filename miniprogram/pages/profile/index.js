@@ -1,6 +1,8 @@
 const service = require('../../utils/mockService.js')
 const toolService = require('../../utils/toolService.js')
 
+const PROFILE_EDIT_INTENT_KEY = 'parenting_profile_edit_intent'
+
 function buildAgeOptions() {
   const monthOptions = Array.from({ length: 25 }, (_, index) => `${index}个月`)
   const yearOptions = Array.from({ length: 17 }, (_, index) => `${index + 2}岁`)
@@ -11,6 +13,22 @@ function getBabyIcon(gender) {
   if (gender === '男宝') return { babyIconTone: 'boy' }
   if (gender === '女宝') return { babyIconTone: 'girl' }
   return { babyIconTone: 'neutral' }
+}
+
+function hasBabyEditIntent() {
+  try {
+    return Boolean(wx.getStorageSync(PROFILE_EDIT_INTENT_KEY))
+  } catch (error) {
+    return false
+  }
+}
+
+function clearBabyEditIntent() {
+  try {
+    wx.removeStorageSync(PROFILE_EDIT_INTENT_KEY)
+  } catch (error) {
+    // Storage may be unavailable in preview runtimes.
+  }
 }
 
 const initialProfile = service.getProfile()
@@ -41,17 +59,21 @@ Page({
     }
     const profile = service.getProfile()
     const icon = getBabyIcon(profile.baby.gender)
+    const shouldEditBaby = profile.isLoggedIn && hasBabyEditIntent()
+    if (shouldEditBaby) {
+      clearBabyEditIntent()
+    }
     this.setData({
       profile,
       draftBaby: Object.assign({}, profile.baby),
       ageIndex: this.getAgeIndex(profile.baby.age),
       genderIndex: this.getGenderIndex(profile.baby.gender),
       babyIconTone: icon.babyIconTone,
-      isEditingBaby: false,
+      isEditingBaby: shouldEditBaby,
       favoriteCount: service.getFavorites().length,
       historyCount: service.getHistory().length,
       pendingQuestionCount: service.getPendingQuestions().length,
-      toolRecordCount: toolService.getDoctorVisitRecords().length + toolService.getFeedingRecords().length + toolService.getVaccineRecords().length
+      toolRecordCount: toolService.getDoctorVisitRecords().length + toolService.getFeedingRecords().length + toolService.getVaccineRecords().length + toolService.getGrowthRecords().length
     })
   },
 
@@ -87,12 +109,17 @@ Page({
         success: (res) => {
           const profile = service.loginProfile(res.userInfo || {})
           const icon = getBabyIcon(profile.baby.gender)
+          const shouldEditBaby = hasBabyEditIntent()
+          if (shouldEditBaby) {
+            clearBabyEditIntent()
+          }
           this.setData({
             profile,
             draftBaby: Object.assign({}, profile.baby),
             ageIndex: this.getAgeIndex(profile.baby.age),
             genderIndex: this.getGenderIndex(profile.baby.gender),
-            babyIconTone: icon.babyIconTone
+            babyIconTone: icon.babyIconTone,
+            isEditingBaby: shouldEditBaby
           })
           wx.showToast({ title: '已登录', icon: 'none' })
         },
@@ -108,12 +135,17 @@ Page({
   loginAsGuest() {
     const profile = service.loginProfile({ nickName: '新手村家长' })
     const icon = getBabyIcon(profile.baby.gender)
+    const shouldEditBaby = hasBabyEditIntent()
+    if (shouldEditBaby) {
+      clearBabyEditIntent()
+    }
     this.setData({
       profile,
       draftBaby: Object.assign({}, profile.baby),
       ageIndex: this.getAgeIndex(profile.baby.age),
       genderIndex: this.getGenderIndex(profile.baby.gender),
-      babyIconTone: icon.babyIconTone
+      babyIconTone: icon.babyIconTone,
+      isEditingBaby: shouldEditBaby
     })
     wx.showToast({ title: '已进入新手村', icon: 'none' })
   },
@@ -204,6 +236,7 @@ Page({
         toolService.clearDoctorVisitRecords()
         toolService.clearFeedingRecords()
         toolService.clearVaccineRecords()
+        toolService.clearGrowthRecords()
         const icon = getBabyIcon(profile.baby.gender)
         this.setData({
           profile,

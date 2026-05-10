@@ -58,6 +58,103 @@
   flex: none;
 }
 
+.tool-hub {
+  padding: 20rpx;
+  border-color: #ead8b8;
+  background: #fffdf6;
+}
+
+.tool-hub-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18rpx;
+}
+
+.tool-hub-title {
+  color: #2f2a25;
+  font-size: 30rpx;
+  font-weight: 900;
+}
+
+.tool-hub-sub {
+  margin-top: 5rpx;
+  color: #6f6258;
+  font-size: 23rpx;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.tool-hub-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76rpx;
+  height: 42rpx;
+  padding: 0 14rpx;
+  border-radius: 999rpx;
+  background: #eaf6df;
+  color: #4f8a43;
+  font-size: 22rpx;
+  font-weight: 900;
+  flex: none;
+}
+
+.tool-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+
+.tool-hub-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+  min-height: 132rpx;
+  padding: 14rpx;
+  border: 2rpx solid #d8e8cf;
+  border-radius: 16rpx;
+  background: #f7fbf2;
+}
+
+.tool-hub-item:active {
+  opacity: 0.86;
+  transform: translateY(2rpx);
+}
+
+.tool-hub-icon {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 12rpx;
+  background: #eaf6df;
+  flex: none;
+}
+
+.tool-hub-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.tool-hub-name {
+  color: #2f2a25;
+  font-size: 25rpx;
+  line-height: 1.25;
+  font-weight: 900;
+}
+
+.tool-hub-desc {
+  margin-top: 6rpx;
+  color: #5f6e52;
+  font-size: 21rpx;
+  line-height: 1.35;
+  font-weight: 700;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
 .records-empty {
   display: flex;
   flex-direction: column;
@@ -133,7 +230,7 @@
 
 .filter-tabs {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10rpx;
   padding: 8rpx;
   border: 2rpx solid #ead8b8;
@@ -148,7 +245,7 @@
   height: 58rpx;
   border-radius: 14rpx;
   color: #8b8178;
-  font-size: 25rpx;
+  font-size: 24rpx;
   font-weight: 900;
 }
 
@@ -158,9 +255,19 @@
   box-shadow: 0 4rpx 0 rgba(58, 111, 54, 0.14);
 }
 
+.record-tools-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  padding: 12rpx;
+  border: 2rpx solid #ead8b8;
+  border-radius: 18rpx;
+  background: #fffdf6;
+}
+
 .feeding-summary {
-  padding: 22rpx;
-  border-color: #d8e8cf;
+  padding: 18rpx;
+  border-radius: 14rpx;
   background: #f7fbf2;
 }
 
@@ -171,8 +278,8 @@
 }
 
 .summary-icon {
-  width: 52rpx;
-  height: 52rpx;
+  width: 46rpx;
+  height: 46rpx;
   border-radius: 12rpx;
   background: #eaf6df;
   flex: none;
@@ -185,7 +292,7 @@
 
 .summary-title {
   color: #2f2a25;
-  font-size: 28rpx;
+  font-size: 26rpx;
   line-height: 1.3;
   font-weight: 900;
 }
@@ -200,8 +307,8 @@
 .summary-days {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12rpx;
-  margin-top: 16rpx;
+  gap: 10rpx;
+  margin-top: 14rpx;
 }
 
 .summary-toggle {
@@ -209,8 +316,8 @@
   align-items: center;
   justify-content: center;
   width: 240rpx;
-  height: 52rpx;
-  margin: 16rpx auto 0;
+  height: 48rpx;
+  margin: 14rpx auto 0;
   border: 2rpx solid #cfe3c4;
   border-radius: 999rpx;
   background: #fffdf6;
@@ -220,8 +327,8 @@
 }
 
 .summary-day {
-  min-height: 94rpx;
-  padding: 14rpx;
+  min-height: 82rpx;
+  padding: 12rpx;
   border: 2rpx solid #d8e8cf;
   border-radius: 14rpx;
   background: #fffdf6;
@@ -234,9 +341,9 @@
 }
 
 .summary-day-main {
-  margin-top: 6rpx;
+  margin-top: 4rpx;
   color: #4f8a43;
-  font-size: 30rpx;
+  font-size: 28rpx;
   font-weight: 900;
 }
 
@@ -250,15 +357,16 @@
 .fold-bar {
   display: flex;
   align-items: center;
-  gap: 16rpx;
-  padding: 20rpx;
-  border-color: #d8e8cf;
+  gap: 14rpx;
+  min-height: 72rpx;
+  padding: 14rpx 16rpx;
+  border-radius: 14rpx;
   background: #f7fbf2;
 }
 
 .fold-icon {
-  width: 52rpx;
-  height: 52rpx;
+  width: 44rpx;
+  height: 44rpx;
   border-radius: 12rpx;
   background: #eaf6df;
   flex: none;
@@ -271,7 +379,7 @@
 
 .fold-title {
   color: #2f2a25;
-  font-size: 27rpx;
+  font-size: 25rpx;
   font-weight: 900;
   line-height: 1.3;
 }
@@ -287,8 +395,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 112rpx;
-  height: 44rpx;
+  min-width: 102rpx;
+  height: 42rpx;
   padding: 0 14rpx;
   border-radius: 999rpx;
   background: #75b86f;
@@ -296,6 +404,30 @@
   font-size: 22rpx;
   font-weight: 900;
   flex: none;
+}
+
+.vaccine-fold-bar {
+  background: #fff6f0;
+}
+
+.vaccine-fold-icon {
+  background: #fffdf6;
+}
+
+.vaccine-fold-action {
+  background: #d96f45;
+}
+
+.growth-fold-bar {
+  background: #f7fbf2;
+}
+
+.growth-fold-icon {
+  background: #eaf6df;
+}
+
+.growth-fold-action {
+  background: #75b86f;
 }
 
 .record-card {
@@ -368,6 +500,11 @@
 .type-vaccine {
   background: #fff1ea;
   color: #b44d39;
+}
+
+.type-growth {
+  background: #eaf6df;
+  color: #4f8a43;
 }
 
 .type-empty {

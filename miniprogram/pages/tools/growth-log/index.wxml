@@ -1,0 +1,127 @@
+<view class="page growth-log-page">
+  <view class="tool-page-head">
+    <view class="tool-page-copy">
+      <view class="simple-title">生长记录</view>
+      <view class="simple-sub">记录体重、身高、头围，回看近期变化</view>
+    </view>
+    <button class="btn-plain records-link" bindtap="goRecords" aria-label="查看我的记录">
+      <image class="records-link-icon pixel-img" src="{{actionIconPaths.history}}" mode="aspectFit" />
+      <text>我的记录</text>
+    </button>
+  </view>
+
+  <view class="summary-card card">
+    <image class="summary-icon pixel-img" src="/assets/icons/pixel-v2/category/growth.png" mode="aspectFit" />
+    <view class="summary-main">
+      <view class="summary-title">最近记录</view>
+      <view wx:if="{{trendSummary.latest}}" class="summary-text">
+        <text wx:if="{{trendSummary.latest.weight}}">{{trendSummary.latest.weight}} kg</text>
+        <text wx:if="{{trendSummary.latest.height}}">{{trendSummary.latest.height}} cm</text>
+        <text wx:if="{{trendSummary.latest.headCircumference}}">头围 {{trendSummary.latest.headCircumference}} cm</text>
+      </view>
+      <view wx:else class="summary-text muted">还没有生长记录</view>
+      <view wx:if="{{trendSummary.previous}}" class="summary-diff">
+        <text wx:if="{{trendSummary.weightDiff}}">体重 {{trendSummary.weightDiff}} kg</text>
+        <text wx:if="{{trendSummary.heightDiff}}">身高 {{trendSummary.heightDiff}} cm</text>
+        <text wx:if="{{trendSummary.headDiff}}">头围 {{trendSummary.headDiff}} cm</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="notice-card card">
+    <image class="notice-icon pixel-img" src="/assets/icons/pixel-v2/category/growth.png" mode="aspectFit" />
+    <view class="notice-copy">
+      <view class="notice-title">看趋势，不看单个数字</view>
+      <view class="notice-text">家里测量会有误差，生长判断建议结合连续记录、喂养状态和儿保/医生评估。</view>
+    </view>
+  </view>
+
+  <view class="form-card card">
+    <view class="form-title">本次测量</view>
+    <view class="info-grid">
+      <view class="info-cell">
+        <view class="info-label">宝宝</view>
+        <view class="info-value">{{draft.babyName || '未填写'}}</view>
+      </view>
+      <view class="info-cell">
+        <view class="info-label">月龄</view>
+        <view class="info-value">{{draft.babyAge || '未设置'}}</view>
+      </view>
+    </view>
+    <view wx:if="{{!isBabyProfileReady}}" class="profile-hint">
+      <view class="profile-hint-text">{{babyProfileHintText}}</view>
+      <view class="profile-hint-action" bindtap="goEditBabyProfile">去完善宝宝信息</view>
+    </view>
+
+    <view class="field-group">
+      <view class="field-row">
+        <view class="field-label">日期</view>
+        <picker class="date-picker" mode="date" value="{{measuredAtDate}}" start="{{minDate}}" end="{{maxDate}}" bindchange="onMeasuredDateChange">
+          <view class="picker-value">{{draft.measuredAt || measuredAtDate}}</view>
+        </picker>
+      </view>
+      <picker mode="selector" range="{{sourceTypeOptions}}" value="{{sourceTypeIndex}}" bindchange="onSourceTypeChange">
+        <view class="field-row picker-row">
+          <view class="field-label">来源</view>
+          <view class="picker-value">{{draft.sourceType || '请选择'}}</view>
+          <view class="picker-arrow"></view>
+        </view>
+      </picker>
+      <view class="field-row">
+        <view class="field-label">体重</view>
+        <view class="metric-input">
+          <input class="field-input" value="{{draft.weight}}" data-field="weight" bindinput="onInput" placeholder="例如 8.2" type="digit" />
+          <text class="unit-suffix">kg</text>
+        </view>
+      </view>
+      <view class="field-row">
+        <view class="field-label">身高</view>
+        <view class="metric-input">
+          <input class="field-input" value="{{draft.height}}" data-field="height" bindinput="onInput" placeholder="例如 68.5" type="digit" />
+          <text class="unit-suffix">cm</text>
+        </view>
+      </view>
+      <view class="field-row">
+        <view class="field-label">头围</view>
+        <view class="metric-input">
+          <input class="field-input" value="{{draft.headCircumference}}" data-field="headCircumference" bindinput="onInput" placeholder="例如 43.2" type="digit" />
+          <text class="unit-suffix">cm</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="form-card card">
+    <view class="form-title">备注</view>
+    <textarea class="text-area compact" value="{{draft.notes}}" data-field="notes" bindinput="onInput" placeholder="例如 体检测量、饭后称重、最近奶量变化等" maxlength="240" />
+  </view>
+
+  <view class="reference-card card">
+    <view class="reference-head">
+      <view>
+        <view class="reference-title">本月龄参考</view>
+        <view class="reference-sub">只作身高体重参考，不替代儿保或医生判断</view>
+      </view>
+      <view wx:if="{{growthReference.available}}" class="reference-baby">{{growthReference.gender}} · {{growthReference.age}}</view>
+    </view>
+    <view wx:if="{{growthReference.available}}" class="reference-body">
+      <view wx:for="{{growthReference.metricItems}}" wx:key="key" class="reference-metric">
+        <view class="reference-metric-head">
+          <text>{{item.label}}</text>
+          <text>参考范围 {{item.rangeText}}</text>
+        </view>
+        <view class="reference-median">参考中位数 {{item.medianText}}</view>
+        <view wx:if="{{item.diffText}}" class="reference-diff">{{item.diffText}}</view>
+      </view>
+      <view class="reference-source">{{growthReference.sourceTitle}} · {{growthReference.sourceNote}}</view>
+    </view>
+    <view wx:else class="reference-empty">{{growthReference.message}}</view>
+  </view>
+
+  <view class="bottom-actions">
+    <view class="bottom-actions-inner">
+      <view class="secondary-action" bindtap="resetDraft">清空</view>
+      <view class="primary-action" bindtap="saveRecord">保存记录</view>
+    </view>
+  </view>
+</view>

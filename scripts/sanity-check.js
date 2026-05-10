@@ -113,6 +113,8 @@ assertInvariant(app.pages.every((page) => page.indexOf('community') === -1), 'Co
 assertExists('assets/hero/village-hero.png')
 const heroSize = readPngSize('assets/hero/village-hero.png')
 assertInvariant(heroSize.width === 690 && heroSize.height === 300, 'village hero image should be 690x300')
+const toolboxIconSize = readPngSize('assets/icons/pixel-v2/action/toolbox.png')
+assertInvariant(toolboxIconSize.width === 96 && toolboxIconSize.height === 96, 'Toolbox icon should match pixel action icon size')
 
 for (const page of ['pages/search/index', 'pages/favorites/index', 'pages/profile/index']) {
   const pageConfig = readJson(path.join(miniprogramRoot, `${page}.json`))
@@ -181,6 +183,12 @@ const profilePageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/prof
 const profileLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/index.js'), 'utf8')
 const authorityPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/authority/index.wxml'), 'utf8')
 const authorityLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/authority/index.js'), 'utf8')
+const recordsPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/records/index.wxml'), 'utf8')
+const recordsLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/records/index.js'), 'utf8')
+const vaccineLogPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/vaccine-log/index.wxml'), 'utf8')
+const vaccineLogLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/vaccine-log/index.js'), 'utf8')
+const growthLogPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/growth-log/index.wxml'), 'utf8')
+const growthLogLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/growth-log/index.js'), 'utf8')
 const customTabBarSource = fs.readFileSync(path.join(miniprogramRoot, 'custom-tab-bar/index.wxml'), 'utf8')
 const customTabBarLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'custom-tab-bar/index.js'), 'utf8')
 const categoryIds = new Set(data.categories.map((item) => item.id))
@@ -217,6 +225,10 @@ assertInvariant(resultPageSource.indexOf('作为补充参考') > -1, 'Result pag
 assertInvariant(resultPageSource.indexOf('健康提醒') > -1, 'Result page should keep health/risk reminders near the answer')
 assertInvariant(resultLogicSource.indexOf('按宝宝档案提醒') > -1, 'Result page should expose local baby-profile reminders after login')
 assertInvariant(resultLogicSource.indexOf('完善宝宝档案') > -1 && resultPageSource.indexOf('bindtap="goProfile"') > -1, 'Result page should guide users to complete missing baby profile fields')
+assertInvariant(resultLogicSource.indexOf('getRecommendedTools') > -1, 'Result page should use semantic tool recommendations instead of category-only tools')
+assertInvariant(resultPageSource.indexOf('可用小工具') > -1 && resultPageSource.indexOf('tool-panel-mask') > -1, 'Result page should collapse tools behind a selectable floating panel')
+assertInvariant(resultPageSource.indexOf('tool-float-icon pixel-img" src="{{actionIconPaths.tools}}"') > -1, 'Result tool entry should use a generic toolbox icon instead of the first recommended tool icon')
+assertInvariant(resultPageSource.indexOf('还有更多小工具') > -1 && resultLogicSource.indexOf('goToolRecords') > -1, 'Result tool panel should link users to the broader tool records page')
 assertInvariant(resultPageSource.indexOf('内容说明') > -1, 'Result page should keep the MVP content boundary as a lower-priority note')
 assertInvariant(resultPageSource.indexOf('更多内容') === -1 && resultLogicSource.indexOf('goAuthority') === -1, 'Result page should keep authority content inline instead of pushing users to a secondary page')
 assertInvariant(profilePageSource.indexOf('隐私说明') > -1, 'Profile page should expose the MVP privacy explanation')
@@ -238,6 +250,36 @@ assertInvariant(profilePageSource.indexOf('bindcancel="onProfilePickerClose"') >
 assertInvariant(authorityPageSource.indexOf('home-illus') === -1, 'Authority page should avoid decorative hero art that competes with content')
 assertInvariant(authorityLogicSource.indexOf('relatedQuestionItems.slice(0, 2)') > -1, 'Authority page should show two related question cards')
 assertInvariant(authorityPageSource.indexOf('related-action') > -1 && authorityPageSource.indexOf('查看') > -1, 'Authority related cards should use a clear action button')
+assertInvariant(app.pages.indexOf('pages/tools/feeding-log/index') > -1, 'Feeding log tool page should be registered')
+assertInvariant(app.pages.indexOf('pages/tools/vaccine-log/index') > -1, 'Vaccine log tool page should be registered')
+assertInvariant(app.pages.indexOf('pages/tools/growth-log/index') > -1, 'Growth log tool page should be registered')
+assertInvariant(recordsPageSource.indexOf('全部') > -1 && recordsPageSource.indexOf('奶量汇总') > -1, 'Records page should expose tool filters and feeding summary')
+assertInvariant(recordsLogicSource.indexOf('showActionSheet') > -1 && recordsLogicSource.indexOf('/pages/tools/vaccine-log/index') > -1 && recordsLogicSource.indexOf('/pages/tools/growth-log/index') > -1, 'Records page new action should let users choose the tool type')
+assertInvariant(recordsLogicSource.indexOf('record.fedAt || record.updatedAt') > -1, 'Feeding cards should use the feeding time as the primary record time')
+assertInvariant(recordsLogicSource.indexOf('record.vaccinatedAt || record.updatedAt') > -1, 'Vaccine cards should use the vaccination time as the primary record time')
+assertInvariant(recordsLogicSource.indexOf('record.measuredAt || record.updatedAt') > -1, 'Growth cards should use the measured date as the primary record time')
+assertInvariant(recordsLogicSource.indexOf('isVaccineExpanded') > -1 && recordsLogicSource.indexOf('toggleVaccineRecords') > -1, 'Records page should collapse and expand vaccine records')
+assertInvariant(recordsPageSource.indexOf('vaccineRecordCount') > -1 && recordsPageSource.indexOf('toggleVaccineRecords') > -1, 'Records page should expose the vaccine record fold control')
+assertInvariant(recordsLogicSource.indexOf('isGrowthExpanded') > -1 && recordsLogicSource.indexOf('toggleGrowthRecords') > -1, 'Records page should collapse and expand growth records')
+assertInvariant(recordsPageSource.indexOf('growthRecordCount') > -1 && recordsPageSource.indexOf('toggleGrowthRecords') > -1, 'Records page should expose the growth record fold control')
+assertInvariant(recordsPageSource.indexOf('小工具与记录') > -1 && recordsPageSource.indexOf('tool-hub') > -1, 'Records page should act as a tool hub as well as a record list')
+assertInvariant(recordsPageSource.indexOf('actionIconPaths.tools') > -1, 'Records tool hub should use the generic toolbox icon')
+assertInvariant(recordsLogicSource.indexOf('getAllTools') > -1 && recordsLogicSource.indexOf('openTool') > -1, 'Records page should list all tools and open them directly')
+assertInvariant(recordsPageSource.indexOf('record-tools-panel') > -1 && recordsLogicSource.indexOf('showRecordTools') > -1, 'Records page should group summary and fold controls into a compact tool panel')
+assertInvariant(vaccineLogPageSource.indexOf("draft.vaccineName === '其他疫苗'") > -1 && vaccineLogPageSource.indexOf('具体疫苗') > -1, 'Vaccine log should reveal a custom vaccine field only for other vaccine')
+assertInvariant(vaccineLogPageSource.indexOf("draft.reaction === '其他反应'") > -1 && vaccineLogPageSource.indexOf('具体反应') > -1, 'Vaccine log should reveal a custom reaction field only for other reaction')
+assertInvariant(vaccineLogPageSource.indexOf('厂商') > -1, 'Vaccine log should include an optional manufacturer field')
+assertInvariant(vaccineLogPageSource.indexOf('下次接种') > -1 && vaccineLogLogicSource.indexOf('nextVaccinationAt') > -1, 'Vaccine log should include an optional next vaccination date')
+assertInvariant(vaccineLogLogicSource.indexOf('请选择疫苗名称') > -1, 'Vaccine log should avoid saving an accidental empty/default vaccine record')
+assertInvariant(growthLogPageSource.indexOf('生长记录') > -1 && growthLogPageSource.indexOf('体重') > -1 && growthLogPageSource.indexOf('身高') > -1 && growthLogPageSource.indexOf('头围') > -1, 'Growth log should collect key growth measurements')
+assertInvariant(growthLogPageSource.indexOf('unit-suffix') > -1 && growthLogPageSource.indexOf('kg') > -1 && growthLogPageSource.indexOf('cm') > -1, 'Growth log should show fixed measurement units instead of asking users to type units')
+assertInvariant(growthLogPageSource.indexOf('生长趋势') === -1 && growthLogPageSource.indexOf('sparkline') === -1, 'Growth log should remove the bulky trend visualization')
+assertInvariant(growthLogPageSource.indexOf('本月龄参考') > -1 && growthLogPageSource.indexOf('参考中位数') > -1, 'Growth log should show age and gender based standard references')
+assertInvariant(growthLogPageSource.indexOf('本次测量') < growthLogPageSource.indexOf('本月龄参考'), 'Growth log should keep recording fields before the standard reference card')
+assertInvariant(growthLogPageSource.indexOf('去完善宝宝信息') > -1 && growthLogLogicSource.indexOf('goEditBabyProfile') > -1, 'Growth log should link missing baby profile fields to profile editing')
+assertInvariant(growthLogLogicSource.indexOf('saveGrowthRecord') > -1 && growthLogLogicSource.indexOf('getGrowthStandardReference') > -1, 'Growth log should save records and show a standard reference')
+assertInvariant(growthLogLogicSource.indexOf('metricFields') > -1 && growthLogLogicSource.indexOf('getMetricError') > -1, 'Growth log should validate measurement ranges before saving')
+assertInvariant(profileLogicSource.indexOf('parenting_profile_edit_intent') > -1 && profileLogicSource.indexOf('hasBabyEditIntent') > -1, 'Profile page should open baby editing from tool intents')
 
 for (const iconPath of Object.values(service.actionIconPaths)) {
   assertMiniProgramAsset(iconPath)
@@ -370,6 +412,72 @@ assertInvariant(pendingQuestions.length === 1 && pendingQuestions[0].hitCount ==
 service.clearPendingQuestions()
 assertInvariant(fs.existsSync(path.join(root, 'docs/question-bank-expansion-2026-05-06.md')), 'Question-bank expansion plan should be documented')
 assertInvariant(fs.existsSync(path.join(root, 'docs/pending-question-backend-contract.md')), 'Pending-question backend contract should be documented')
+assertInvariant(toolService.getToolsByCategory('feeding').some((item) => item.id === 'feeding_log'), 'Feeding category should expose the feeding log tool')
+assertInvariant(toolService.getAllTools().length >= 4 && toolService.getAllTools().some((item) => item.id === 'growth_log'), 'Tool service should expose a full tool hub list')
+assertInvariant(toolService.getToolsByCategory('vaccine_check').some((item) => item.id === 'vaccine_log'), 'Vaccine category should expose the vaccine log tool')
+assertInvariant(toolService.getToolsByCategory('vaccine_check').some((item) => item.id === 'growth_log'), 'Vaccine and growth category should expose the growth log tool')
+const growthQuestionTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'q_041' })).map((item) => item.id)
+assertInvariant(growthQuestionTools.indexOf('growth_log') > -1 && growthQuestionTools.indexOf('vaccine_log') === -1, 'Growth questions should recommend growth tools without unrelated vaccine logs')
+const vaccineQuestionTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'q_039' })).map((item) => item.id)
+assertInvariant(vaccineQuestionTools.indexOf('vaccine_log') > -1, 'Vaccine reaction questions should recommend the vaccine log')
+assertInvariant(toolService.formatRecordTime('2026-05-07 11:43') === '5月7日 11:43', 'Tool record time formatter should parse local date-time strings')
+const missingGrowthReference = toolService.getGrowthStandardReference({ age: '未设置', gender: '男宝' })
+assertInvariant(missingGrowthReference.available === false && missingGrowthReference.message.indexOf('完善宝宝档案') > -1, 'Growth reference should guide users to complete baby profile')
+const boyFourMonthReference = toolService.getGrowthStandardReference({ age: '4个月', gender: '男宝' })
+assertInvariant(boyFourMonthReference.available === true && boyFourMonthReference.metricItems[0].medianText === '7.5 kg' && boyFourMonthReference.metricItems[1].medianText === '64.8 cm', 'Growth reference should include boy 4-month domestic standards')
+const girlNineMonthReference = toolService.getGrowthStandardReference({ age: '9个月', gender: '女宝' })
+assertInvariant(girlNineMonthReference.available === true && girlNineMonthReference.metricItems[0].medianText === '8.7 kg' && girlNineMonthReference.metricItems[1].medianText === '71.5 cm', 'Growth reference should include girl 9-month domestic standards')
+toolService.clearFeedingRecords()
+toolService.clearVaccineRecords()
+toolService.clearGrowthRecords()
+const feedingRecord = toolService.saveFeedingRecord({ babyName: '小豆', amount: '120', fedAt: '2026-05-07 11:30' })
+assertInvariant(toolService.getFeedingRecord(feedingRecord.id).amount === '120', 'Feeding records should save and load by id')
+assertInvariant(toolService.getTodayFeedingSummary('2026-05-07 00:00').totalAmount === 120, 'Feeding summary should total records by selected day')
+const vaccineRecord = toolService.saveVaccineRecord({
+  babyName: '小豆',
+  vaccineName: '其他疫苗',
+  vaccineNameCustom: '五联疫苗',
+  vaccineManufacturer: '北京生物',
+  reaction: '其他反应',
+  reactionCustom: '轻微腹泻',
+  vaccinatedAt: '2026-05-07 11:43',
+  nextVaccinationAt: '2026-06-07'
+})
+const storedVaccineRecord = toolService.getVaccineRecord(vaccineRecord.id)
+assertInvariant(storedVaccineRecord.vaccineNameCustom === '五联疫苗' && storedVaccineRecord.reactionCustom === '轻微腹泻', 'Vaccine records should preserve custom vaccine and reaction copy')
+assertInvariant(storedVaccineRecord.vaccineManufacturer === '北京生物', 'Vaccine records should preserve optional manufacturer')
+assertInvariant(storedVaccineRecord.nextVaccinationAt === '2026-06-07', 'Vaccine records should preserve optional next vaccination date')
+const growthRecord = toolService.saveGrowthRecord({
+  babyName: '小豆',
+  measuredAt: '2026-05-07',
+  weight: '8.2',
+  height: '68.5',
+  headCircumference: '43.2'
+})
+assertInvariant(toolService.getGrowthRecord(growthRecord.id).weight === '8.2', 'Growth records should save and load by id')
+const convertedGrowthRecord = toolService.saveGrowthRecord({
+  babyName: '小豆',
+  measuredAt: '2026-04-07',
+  weight: '8200g',
+  height: '0.69m',
+  headCircumference: '43.20cm'
+})
+const storedConvertedGrowthRecord = toolService.getGrowthRecord(convertedGrowthRecord.id)
+assertInvariant(storedConvertedGrowthRecord.weight === '8.2' && storedConvertedGrowthRecord.height === '69' && storedConvertedGrowthRecord.headCircumference === '43.2', 'Growth records should normalize legacy metric units')
+toolService.saveGrowthRecord({
+  babyName: '小豆',
+  measuredAt: '2026-06-07',
+  weight: '8.5',
+  height: '70',
+  headCircumference: '44'
+})
+const growthSummary = toolService.getGrowthTrendSummary()
+assertInvariant(growthSummary.count === 3 && growthSummary.weightDiff === '+0.3' && growthSummary.heightDiff === '+1.5', 'Growth trend summary should compare the latest two measurements')
+const growthReferenceWithRecord = toolService.getGrowthStandardReference({ age: '4个月', gender: '男宝' }, growthSummary.latest)
+assertInvariant(growthReferenceWithRecord.metricItems[0].diffText === '比参考中位数多 1 kg' && growthReferenceWithRecord.metricItems[1].diffText === '比参考中位数多 5.2 cm', 'Growth reference should compare latest records with the median reference')
+toolService.clearFeedingRecords()
+toolService.clearVaccineRecords()
+toolService.clearGrowthRecords()
 const savedProfile = service.saveBabyProfile({ name: '小豆', age: '9个月', gender: '女宝', allergy: '蛋白过敏' })
 assertInvariant(savedProfile.baby.name === '小豆' && savedProfile.baby.age === '9个月', 'Baby profile should save editable fields')
 const storedProfile = service.getProfile()

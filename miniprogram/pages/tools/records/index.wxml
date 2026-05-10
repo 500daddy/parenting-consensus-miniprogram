@@ -1,15 +1,34 @@
 <view class="page records-page">
   <view class="records-head">
-    <image class="records-head-icon pixel-img" src="/assets/icons/pixel-v2/action/doctor-note.png" mode="aspectFit" />
+    <image class="records-head-icon pixel-img" src="{{actionIconPaths.tools}}" mode="aspectFit" />
     <view class="records-head-copy">
-      <view class="records-title">我的记录</view>
-      <view class="records-sub">本机保存的就医、喂养和疫苗记录</view>
+      <view class="records-title">小工具与记录</view>
+      <view class="records-sub">选择小工具，或查看本机保存的记录</view>
     </view>
     <button wx:if="{{records.length}}" class="btn-plain head-new-button" bindtap="goNewRecord">新建</button>
   </view>
 
+  <view class="tool-hub card">
+    <view class="tool-hub-head">
+      <view>
+        <view class="tool-hub-title">小工具</view>
+        <view class="tool-hub-sub">按需要选择，记录都只保存在本机</view>
+      </view>
+      <view class="tool-hub-count">{{availableTools.length}} 个</view>
+    </view>
+    <view class="tool-hub-grid">
+      <view wx:for="{{availableTools}}" wx:key="id" class="tool-hub-item" bindtap="openTool" data-id="{{item.id}}">
+        <image class="tool-hub-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
+        <view class="tool-hub-main">
+          <view class="tool-hub-name">{{item.title}}</view>
+          <view class="tool-hub-desc">{{item.desc}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <view wx:if="{{!records.length}}" class="records-empty card">
-    <image class="records-empty-icon pixel-img" src="/assets/icons/pixel-v2/action/doctor-note.png" mode="aspectFit" />
+    <image class="records-empty-icon pixel-img" src="{{actionIconPaths.tools}}" mode="aspectFit" />
     <view class="records-empty-copy">
       <view class="records-empty-title">还没有记录</view>
       <view class="records-empty-desc">可以先新建一条记录，把喂养、接种或就医前要问医生的问题整理好。</view>
@@ -24,31 +43,51 @@
       <view wx:for="{{filterTabs}}" wx:key="id" class="filter-tab {{activeType === item.id ? 'active' : ''}}" data-type="{{item.id}}" bindtap="changeFilter">{{item.name}}</view>
     </view>
 
-    <view wx:if="{{showFeedingTools && feedingDaySummaries.length}}" class="feeding-summary card">
-      <view class="summary-head">
-        <image class="summary-icon pixel-img" src="/assets/icons/pixel-v2/category/feeding.png" mode="aspectFit" />
-        <view class="summary-copy">
-          <view class="summary-title">奶量汇总</view>
-          <view class="summary-sub">按记录日期自动汇总</view>
+    <view wx:if="{{showRecordTools}}" class="record-tools-panel">
+      <view wx:if="{{showFeedingTools && feedingDaySummaries.length}}" class="feeding-summary">
+        <view class="summary-head">
+          <image class="summary-icon pixel-img" src="/assets/icons/pixel-v2/category/feeding.png" mode="aspectFit" />
+          <view class="summary-copy">
+            <view class="summary-title">奶量汇总</view>
+            <view class="summary-sub">按记录日期自动汇总</view>
+          </view>
         </view>
-      </view>
-      <view class="summary-days">
-        <view wx:for="{{visibleFeedingDaySummaries}}" wx:key="key" class="summary-day">
-          <view class="summary-day-label">{{item.label}}</view>
-          <view class="summary-day-main">{{item.totalAmount}} ml</view>
-          <view class="summary-day-sub">{{item.count}} 次</view>
+        <view class="summary-days">
+          <view wx:for="{{visibleFeedingDaySummaries}}" wx:key="key" class="summary-day">
+            <view class="summary-day-label">{{item.label}}</view>
+            <view class="summary-day-main">{{item.totalAmount}} ml</view>
+            <view class="summary-day-sub">{{item.count}} 次</view>
+          </view>
         </view>
+        <view wx:if="{{feedingDaySummaries.length > 2}}" class="summary-toggle" bindtap="toggleFeedingSummary">{{isFeedingSummaryExpanded ? '收起汇总' : '展开全部日期'}}</view>
       </view>
-      <view wx:if="{{feedingDaySummaries.length > 2}}" class="summary-toggle" bindtap="toggleFeedingSummary">{{isFeedingSummaryExpanded ? '收起汇总' : '展开全部日期'}}</view>
-    </view>
 
-    <view wx:if="{{showFeedingTools && feedingRecordCount > 1}}" class="fold-bar card" bindtap="toggleFeedingRecords">
-      <image class="fold-icon pixel-img" src="/assets/icons/pixel-v2/category/feeding.png" mode="aspectFit" />
-      <view class="fold-main">
-        <view class="fold-title">奶量记录 {{feedingRecordCount}} 条</view>
-        <view class="fold-sub">{{isFeedingExpanded ? '正在展示全部奶量记录' : '当前只展示最新一条'}}</view>
+      <view wx:if="{{showFeedingTools && feedingRecordCount > 1}}" class="fold-bar" bindtap="toggleFeedingRecords">
+        <image class="fold-icon pixel-img" src="/assets/icons/pixel-v2/category/feeding.png" mode="aspectFit" />
+        <view class="fold-main">
+          <view class="fold-title">奶量记录 {{feedingRecordCount}} 条</view>
+          <view class="fold-sub">{{isFeedingExpanded ? '正在展示全部奶量记录' : '当前只展示最新一条'}}</view>
+        </view>
+        <view class="fold-action">{{isFeedingExpanded ? '收起' : '展开全部'}}</view>
       </view>
-      <view class="fold-action">{{isFeedingExpanded ? '收起' : '展开全部'}}</view>
+
+      <view wx:if="{{showVaccineTools && vaccineRecordCount > 1}}" class="fold-bar vaccine-fold-bar" bindtap="toggleVaccineRecords">
+        <image class="fold-icon vaccine-fold-icon pixel-img" src="/assets/icons/pixel-v2/category/vaccine.png" mode="aspectFit" />
+        <view class="fold-main">
+          <view class="fold-title">疫苗记录 {{vaccineRecordCount}} 条</view>
+          <view class="fold-sub">{{isVaccineExpanded ? '正在展示全部疫苗记录' : '当前只展示最新一条'}}</view>
+        </view>
+        <view class="fold-action vaccine-fold-action">{{isVaccineExpanded ? '收起' : '展开全部'}}</view>
+      </view>
+
+      <view wx:if="{{showGrowthTools && growthRecordCount > 1}}" class="fold-bar growth-fold-bar" bindtap="toggleGrowthRecords">
+        <image class="fold-icon growth-fold-icon pixel-img" src="/assets/icons/pixel-v2/category/growth.png" mode="aspectFit" />
+        <view class="fold-main">
+          <view class="fold-title">生长记录 {{growthRecordCount}} 条</view>
+          <view class="fold-sub">{{isGrowthExpanded ? '正在展示全部生长记录' : '当前只展示最新一条'}}</view>
+        </view>
+        <view class="fold-action growth-fold-action">{{isGrowthExpanded ? '收起' : '展开全部'}}</view>
+      </view>
     </view>
 
     <view wx:if="{{!visibleRecords.length}}" class="type-empty card">
@@ -76,6 +115,7 @@
         <text wx:if="{{item.temperature}}">{{item.temperature}}</text>
         <text wx:if="{{item.amountText}}">{{item.amountText}}</text>
         <text wx:if="{{item.vaccineNameText}}">{{item.vaccineNameText}}</text>
+        <text wx:if="{{item.metricText}}">{{item.metricText}}</text>
       </view>
 
       <view wx:if="{{item.type === 'doctor'}}" class="record-summary">
@@ -98,8 +138,17 @@
         <text wx:if="{{item.vaccineManufacturer}}">厂商：{{item.vaccineManufacturer}}</text>
         <text wx:if="{{item.doseNo}}">针次：{{item.doseNo}}</text>
         <text wx:if="{{item.place}}">地点：{{item.place}}</text>
+        <text wx:if="{{item.nextVaccinationAt}}">下次：{{item.nextVaccinationAt}}</text>
         <text wx:if="{{item.reactionText}}">反应：{{item.reactionText}}</text>
         <text wx:if="{{item.reactionStartedAt}}">出现：{{item.reactionStartedAt}}</text>
+      </view>
+
+      <view wx:if="{{item.type === 'growth'}}" class="record-summary">
+        <text wx:if="{{item.measuredAt}}">日期：{{item.measuredAt}}</text>
+        <text wx:if="{{item.sourceType}}">来源：{{item.sourceType}}</text>
+        <text wx:if="{{item.weight}}">体重：{{item.weight}} kg</text>
+        <text wx:if="{{item.height}}">身高：{{item.height}} cm</text>
+        <text wx:if="{{item.headCircumference}}">头围：{{item.headCircumference}} cm</text>
       </view>
 
       <view wx:if="{{item.symptoms}}" class="record-detail">

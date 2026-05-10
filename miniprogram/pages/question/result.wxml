@@ -81,17 +81,44 @@
         </view>
       </view>
 
-      <view wx:if="{{result.tools && result.tools.length}}" class="tool-hint">
-        <view wx:for="{{result.tools}}" wx:key="id" class="tap-card tool-card" bindtap="openTool" data-id="{{item.id}}">
-          <image class="tool-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
-          <view class="tool-main">
-            <view class="tool-head">
-              <view class="tool-label">{{item.label}}</view>
-              <view class="tool-title">{{item.title}}</view>
+      <view wx:if="{{result.tools && result.tools.length}}" class="tool-float-entry" bindtap="toggleToolPanel">
+        <image class="tool-float-icon pixel-img" src="{{actionIconPaths.tools}}" mode="aspectFit" />
+        <view class="tool-float-copy">
+          <view class="tool-float-title">可用小工具</view>
+          <view class="tool-float-sub">{{result.tools.length}} 个，点开选择</view>
+        </view>
+        <view class="tool-float-action">{{isToolPanelOpen ? '收起' : '打开'}}</view>
+      </view>
+
+      <view wx:if="{{isToolPanelOpen}}" class="tool-panel-mask" catchtap="closeToolPanel">
+        <view class="tool-panel card" catchtap="noop">
+          <view class="tool-panel-head">
+            <view>
+              <view class="tool-panel-title">选择小工具</view>
+              <view class="tool-panel-sub">根据当前问题推荐，可按需打开</view>
             </view>
-            <view class="tool-desc">{{item.desc}}</view>
+            <view class="tool-panel-close" catchtap="closeToolPanel">×</view>
           </view>
-          <view class="tool-action">{{item.actionText}}</view>
+          <view class="tool-panel-list">
+            <view wx:for="{{result.tools}}" wx:key="id" class="tap-card tool-card" bindtap="openTool" data-id="{{item.id}}">
+              <image class="tool-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
+              <view class="tool-main">
+                <view class="tool-head">
+                  <view class="tool-label">{{item.label}}</view>
+                  <view class="tool-title">{{item.title}}</view>
+                </view>
+                <view class="tool-desc">{{item.desc}}</view>
+              </view>
+              <view class="tool-action">{{item.actionText}}</view>
+            </view>
+          </view>
+          <view class="tool-panel-more" bindtap="goToolRecords">
+            <view>
+              <view class="tool-panel-more-title">还有更多小工具</view>
+              <view class="tool-panel-more-sub">可以查看已保存记录，也可以新建其他记录工具。</view>
+            </view>
+            <view class="tool-panel-more-action">去查看</view>
+          </view>
         </view>
       </view>
 

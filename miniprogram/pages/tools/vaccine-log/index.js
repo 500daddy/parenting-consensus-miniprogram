@@ -70,6 +70,14 @@ function getMinDate() {
   return `${date.getFullYear()}-${month}-${day}`
 }
 
+function getMaxScheduleDate() {
+  const date = new Date()
+  date.setFullYear(date.getFullYear() + 6)
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${month}-${day}`
+}
+
 function buildDraft(options) {
   const profile = service.getProfile()
   const baby = profile.baby || {}
@@ -82,7 +90,7 @@ function buildDraft(options) {
     babyName: baby.name && baby.name !== '未设置' ? baby.name : '',
     babyAge: baby.age && baby.age !== '未设置' ? baby.age : '',
     vaccinatedAt: defaultDateTime(),
-    vaccineName: vaccineOptions[0],
+    vaccineName: '',
     vaccineNameCustom: '',
     vaccineManufacturer: '',
     doseNo: '',
@@ -90,6 +98,7 @@ function buildDraft(options) {
     reaction: reactionOptions[0],
     reactionCustom: '',
     reactionStartedAt: '',
+    nextVaccinationAt: '',
     notes: '',
     nextQuestions: defaultQuestionRows
   }
@@ -107,8 +116,10 @@ Page({
     vaccinatedAtTime: getCurrentTime(),
     reactionDate: getTodayDate(),
     reactionTime: getCurrentTime(),
+    nextVaccinationDate: getTodayDate(),
     minDate: getMinDate(),
     maxDate: getTodayDate(),
+    maxScheduleDate: getMaxScheduleDate(),
     actionIconPaths: service.actionIconPaths
   },
 
@@ -119,6 +130,7 @@ Page({
     const reactionIndex = this.data.reactionOptions.indexOf(draft.reaction)
     const vaccinatedAtParts = getDateTimeParts(draft.vaccinatedAt)
     const reactionParts = getDateTimeParts(draft.reactionStartedAt || draft.vaccinatedAt)
+    const nextVaccinationDate = draft.nextVaccinationAt || getTodayDate()
     this.setData({
       draft: Object.assign({}, draft, {
         vaccinatedAt: `${vaccinatedAtParts.date} ${vaccinatedAtParts.time}`,
@@ -130,7 +142,8 @@ Page({
       vaccinatedAtDate: vaccinatedAtParts.date,
       vaccinatedAtTime: vaccinatedAtParts.time,
       reactionDate: reactionParts.date,
-      reactionTime: reactionParts.time
+      reactionTime: reactionParts.time,
+      nextVaccinationDate
     })
   },
 
@@ -204,6 +217,19 @@ Page({
     })
   },
 
+  onNextVaccinationDateChange(event) {
+    this.setData({
+      nextVaccinationDate: event.detail.value,
+      'draft.nextVaccinationAt': event.detail.value
+    })
+  },
+
+  clearNextVaccination() {
+    this.setData({
+      'draft.nextVaccinationAt': ''
+    })
+  },
+
   onQuestionInput(event) {
     const index = Number(event.currentTarget.dataset.index || 0)
     const rows = this.data.questionRows.slice()
@@ -241,7 +267,8 @@ Page({
       vaccinatedAtDate: vaccinatedAtParts.date,
       vaccinatedAtTime: vaccinatedAtParts.time,
       reactionDate: vaccinatedAtParts.date,
-      reactionTime: vaccinatedAtParts.time
+      reactionTime: vaccinatedAtParts.time,
+      nextVaccinationDate: getTodayDate()
     })
   },
 
@@ -249,28 +276,16 @@ Page({
     const draft = this.data.draft || {}
     const vaccineNameCustom = String(draft.vaccineNameCustom || '').trim()
     const reactionCustom = String(draft.reactionCustom || '').trim()
+    if (!draft.vaccineName) {
+      wx.showToast({ title: '请选择疫苗名称', icon: 'none' })
+      return
+    }
     if (draft.vaccineName === OTHER_VACCINE && !vaccineNameCustom) {
       wx.showToast({ title: '请填写具体疫苗名称', icon: 'none' })
       return
     }
     if (draft.reaction === OTHER_REACTION && !reactionCustom) {
       wx.showToast({ title: '请填写具体反应', icon: 'none' })
-      return
-    }
-    const hasInfo = [
-      draft.vaccineName,
-      vaccineNameCustom,
-      draft.vaccineManufacturer,
-      draft.doseNo,
-      draft.place,
-      draft.reaction,
-      reactionCustom,
-      draft.notes,
-      (this.data.questionRows || []).join('')
-    ].some((item) => String(item || '').trim())
-
-    if (!hasInfo) {
-      wx.showToast({ title: '先记录疫苗名称或接种情况', icon: 'none' })
       return
     }
 
