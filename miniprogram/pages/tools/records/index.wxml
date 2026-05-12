@@ -16,14 +16,11 @@
       </view>
       <view class="tool-hub-count">{{availableTools.length}} 个</view>
     </view>
+    <view class="tool-tabs">
+      <view wx:for="{{toolTabs}}" wx:key="id" class="tool-tab {{activeToolGroup === item.id ? 'active' : ''}}" data-group="{{item.id}}" bindtap="changeToolGroup">{{item.name}}</view>
+    </view>
     <view class="tool-hub-grid">
-      <view wx:for="{{availableTools}}" wx:key="id" class="tool-hub-item" bindtap="openTool" data-id="{{item.id}}">
-        <image class="tool-hub-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
-        <view class="tool-hub-main">
-          <view class="tool-hub-name">{{item.title}}</view>
-          <view class="tool-hub-desc">{{item.desc}}</view>
-        </view>
-      </view>
+      <tool-card wx:for="{{visibleTools}}" wx:key="id" tool="{{item}}" bind:select="openTool" />
     </view>
   </view>
 

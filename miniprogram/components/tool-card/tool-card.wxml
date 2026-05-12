@@ -1,0 +1,7 @@
+<view class="tap-card tool-card" bindtap="onTap">
+  <image class="tool-icon" src="{{tool.iconPath}}" mode="aspectFit" />
+  <view class="tool-main">
+    <view class="tool-title">{{tool.title}}</view>
+    <view class="tool-desc">{{tool.desc}}</view>
+  </view>
+</view>

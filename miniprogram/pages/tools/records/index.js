@@ -123,6 +123,8 @@ Page({
     showGrowthTools: true,
     showRecordTools: false,
     activeType: 'all',
+    activeToolGroup: 'all',
+    toolTabs: toolService.getToolHubTabs(),
     filterTabs: [
       { id: 'all', name: '全部' },
       { id: 'doctor', name: '就医' },
@@ -131,6 +133,7 @@ Page({
       { id: 'growth', name: '生长' }
     ],
     availableTools: toolService.getAllTools(),
+    visibleTools: toolService.getToolsByHubGroup('all'),
     actionIconPaths: service.actionIconPaths
   },
 
@@ -168,8 +171,13 @@ Page({
       showFeedingTools,
       showVaccineTools,
       showGrowthTools,
-      showRecordTools
+      showRecordTools,
+      visibleTools: this.getVisibleTools(this.data.activeToolGroup)
     })
+  },
+
+  getVisibleTools(group) {
+    return toolService.getToolsByHubGroup(group)
   },
 
   buildRecords(doctorRecords, feedingRecords, vaccineRecords, growthRecords, feedingExpanded, vaccineExpanded, growthExpanded, activeType) {
@@ -197,22 +205,19 @@ Page({
   },
 
   goNewRecord() {
+    const tools = this.data.availableTools || []
+    if (!tools.length) return
     wx.showActionSheet({
-      itemList: ['就医前记录单', '奶量记录', '疫苗记录', '生长记录'],
+      itemList: tools.map((tool) => tool.title),
       success: (res) => {
-        const paths = [
-          '/pages/tools/doctor-visit/index',
-          '/pages/tools/feeding-log/index',
-          '/pages/tools/vaccine-log/index',
-          '/pages/tools/growth-log/index'
-        ]
-        wx.navigateTo({ url: paths[res.tapIndex] || paths[0] })
+        const tool = tools[res.tapIndex] || tools[0]
+        wx.navigateTo({ url: tool.path })
       }
     })
   },
 
   openTool(event) {
-    const id = event.currentTarget.dataset.id
+    const id = event.detail && event.detail.id
     const tool = (this.data.availableTools || []).find((item) => item.id === id)
     if (!tool) return
     wx.navigateTo({ url: tool.path })
@@ -250,6 +255,14 @@ Page({
     const type = event.currentTarget.dataset.type || 'all'
     this.setData({ activeType: type })
     this.onShow()
+  },
+
+  changeToolGroup(event) {
+    const group = event.currentTarget.dataset.group || 'all'
+    this.setData({
+      activeToolGroup: group,
+      visibleTools: this.getVisibleTools(group)
+    })
   },
 
   editRecord(event) {

@@ -49,6 +49,7 @@ Page({
     historyCount: 0,
     pendingQuestionCount: 0,
     toolRecordCount: 0,
+    toolCount: toolService.getAllTools().length,
     actionIconPaths: service.actionIconPaths,
     profileIconPaths: service.profileIconPaths
   },
@@ -73,6 +74,7 @@ Page({
       favoriteCount: service.getFavorites().length,
       historyCount: service.getHistory().length,
       pendingQuestionCount: service.getPendingQuestions().length,
+      toolCount: toolService.getAllTools().length,
       toolRecordCount: toolService.getDoctorVisitRecords().length + toolService.getFeedingRecords().length + toolService.getVaccineRecords().length + toolService.getGrowthRecords().length
     })
   },

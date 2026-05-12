@@ -135,9 +135,9 @@
       <view class="menu-arrow">›</view>
     </view>
     <view class="tap-card menu-row" bindtap="goToolRecords">
-      <image class="menu-icon pixel-img" src="{{actionIconPaths.reminder}}" mode="aspectFit" />
-      <view class="menu-main">我的记录</view>
-      <view class="menu-extra">{{toolRecordCount}} 条</view>
+      <image class="menu-icon pixel-img" src="{{actionIconPaths.tools}}" mode="aspectFit" />
+      <view class="menu-main">小工具与记录</view>
+      <view class="menu-extra">{{toolCount}} 个工具 · {{toolRecordCount}} 条记录</view>
       <view class="menu-arrow">›</view>
     </view>
     <view class="tap-card menu-row" bindtap="showFeedback">

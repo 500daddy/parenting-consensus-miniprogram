@@ -20,6 +20,16 @@ const toolRegistry = {
   feeding: ['feeding_log']
 }
 
+const allToolIds = ['doctor_visit', 'feeding_log', 'vaccine_log', 'growth_log']
+
+const toolHubGroups = [
+  { id: 'all', name: '全部', toolIds: allToolIds },
+  { id: 'doctor', name: '就医', toolIds: ['doctor_visit'] },
+  { id: 'feeding', name: '喂养', toolIds: ['feeding_log'] },
+  { id: 'vaccine', name: '疫苗', toolIds: ['vaccine_log'] },
+  { id: 'growth', name: '生长', toolIds: ['growth_log'] }
+]
+
 const toolMatchRules = [
   {
     id: 'doctor_visit',
@@ -76,7 +86,7 @@ const toolMeta = {
     iconPath: '/assets/icons/pixel-v2/category/growth.png',
     label: '小工具',
     title: '生长记录',
-    desc: '记录体重、身高和头围，方便回看近期变化。',
+    desc: '记录体重、身高和头围，查看当前月龄国内参考。',
     actionText: '打开',
     path: '/pages/tools/growth-log/index'
   }
@@ -487,9 +497,22 @@ function getToolsByCategory(categoryId) {
 }
 
 function getAllTools() {
-  return ['doctor_visit', 'feeding_log', 'vaccine_log', 'growth_log']
+  return allToolIds
     .map((id) => toolMeta[id])
     .filter(Boolean)
+}
+
+function getToolHubTabs() {
+  return toolHubGroups.map((group) => ({
+    id: group.id,
+    name: group.name,
+    count: group.toolIds.filter((id) => Boolean(toolMeta[id])).length
+  }))
+}
+
+function getToolsByHubGroup(groupId) {
+  const group = toolHubGroups.find((item) => item.id === groupId) || toolHubGroups[0]
+  return group.toolIds.map((id) => toolMeta[id]).filter(Boolean)
 }
 
 function getRecommendedTools(context) {
@@ -726,6 +749,8 @@ module.exports = {
   GROWTH_RECORDS_KEY,
   getToolsByCategory,
   getAllTools,
+  getToolHubTabs,
+  getToolsByHubGroup,
   getRecommendedTools,
   hasDoctorVisitTool,
   getDoctorQuestionTemplates,

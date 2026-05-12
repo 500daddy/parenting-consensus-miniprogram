@@ -2,11 +2,11 @@
   <view class="tool-page-head">
     <view class="tool-page-copy">
       <view class="simple-title">生长记录</view>
-      <view class="simple-sub">记录体重、身高、头围，回看近期变化</view>
+      <view class="simple-sub">记录体重、身高、头围，查看月龄参考</view>
     </view>
-    <button class="btn-plain records-link" bindtap="goRecords" aria-label="查看我的记录">
-      <image class="records-link-icon pixel-img" src="{{actionIconPaths.history}}" mode="aspectFit" />
-      <text>我的记录</text>
+    <button class="btn-plain records-link" bindtap="goRecords" aria-label="查看小工具与记录">
+      <image class="records-link-icon pixel-img" src="{{actionIconPaths.tools}}" mode="aspectFit" />
+      <text>工具记录</text>
     </button>
   </view>
 
@@ -31,8 +31,8 @@
   <view class="notice-card card">
     <image class="notice-icon pixel-img" src="/assets/icons/pixel-v2/category/growth.png" mode="aspectFit" />
     <view class="notice-copy">
-      <view class="notice-title">看趋势，不看单个数字</view>
-      <view class="notice-text">家里测量会有误差，生长判断建议结合连续记录、喂养状态和儿保/医生评估。</view>
+      <view class="notice-title">参考值只做对照</view>
+      <view class="notice-text">家里测量会有误差，本页只展示国内标准参考和中位数差异，不做正常或异常判断。</view>
     </view>
   </view>
 

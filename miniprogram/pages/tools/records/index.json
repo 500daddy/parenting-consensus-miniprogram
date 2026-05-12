@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "我的记录"
+  "navigationBarTitleText": "小工具与记录",
+  "usingComponents": {
+    "tool-card": "/components/tool-card/tool-card"
+  }
 }

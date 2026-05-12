@@ -4,9 +4,9 @@
       <view class="simple-title">问医生清单</view>
       <view class="simple-sub">把症状和想问的问题先整理好</view>
     </view>
-    <button class="btn-plain records-link" bindtap="goRecords" aria-label="查看我的记录">
-      <image class="records-link-icon pixel-img" src="{{actionIconPaths.history}}" mode="aspectFit" />
-      <text>我的记录</text>
+    <button class="btn-plain records-link" bindtap="goRecords" aria-label="查看小工具与记录">
+      <image class="records-link-icon pixel-img" src="{{actionIconPaths.tools}}" mode="aspectFit" />
+      <text>工具记录</text>
     </button>
   </view>
 
