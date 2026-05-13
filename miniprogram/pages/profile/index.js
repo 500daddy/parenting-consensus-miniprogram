@@ -15,6 +15,16 @@ function getBabyIcon(gender) {
   return { babyIconTone: 'neutral' }
 }
 
+function normalizeDraftBaby(profile) {
+  const baby = profile.baby || {}
+  return {
+    name: baby.name && baby.name !== '未设置' ? baby.name : '',
+    age: baby.age && baby.age !== '未设置' ? baby.age : '',
+    gender: baby.gender && baby.gender !== '未设置' ? baby.gender : '',
+    allergy: baby.allergy && baby.allergy !== '暂无记录' ? baby.allergy : ''
+  }
+}
+
 function hasBabyEditIntent() {
   try {
     return Boolean(wx.getStorageSync(PROFILE_EDIT_INTENT_KEY))
@@ -38,7 +48,7 @@ const initialAgeIndex = ageOptions.indexOf(initialProfile.baby.age)
 Page({
   data: {
     profile: initialProfile,
-    draftBaby: initialProfile.baby,
+    draftBaby: normalizeDraftBaby(initialProfile),
     isEditingBaby: false,
     ageOptions,
     ageIndex: initialAgeIndex > -1 ? initialAgeIndex : 0,
@@ -50,6 +60,8 @@ Page({
     pendingQuestionCount: 0,
     toolRecordCount: 0,
     toolCount: toolService.getAllTools().length,
+    isPendingQuestionModalOpen: false,
+    pendingQuestionDraft: '',
     actionIconPaths: service.actionIconPaths,
     profileIconPaths: service.profileIconPaths
   },
@@ -66,7 +78,7 @@ Page({
     }
     this.setData({
       profile,
-      draftBaby: Object.assign({}, profile.baby),
+      draftBaby: normalizeDraftBaby(profile),
       ageIndex: this.getAgeIndex(profile.baby.age),
       genderIndex: this.getGenderIndex(profile.baby.gender),
       babyIconTone: icon.babyIconTone,
@@ -117,7 +129,7 @@ Page({
           }
           this.setData({
             profile,
-            draftBaby: Object.assign({}, profile.baby),
+            draftBaby: normalizeDraftBaby(profile),
             ageIndex: this.getAgeIndex(profile.baby.age),
             genderIndex: this.getGenderIndex(profile.baby.gender),
             babyIconTone: icon.babyIconTone,
@@ -143,7 +155,7 @@ Page({
     }
     this.setData({
       profile,
-      draftBaby: Object.assign({}, profile.baby),
+      draftBaby: normalizeDraftBaby(profile),
       ageIndex: this.getAgeIndex(profile.baby.age),
       genderIndex: this.getGenderIndex(profile.baby.gender),
       babyIconTone: icon.babyIconTone,
@@ -160,6 +172,7 @@ Page({
     const icon = getBabyIcon(this.data.profile.baby.gender)
     this.setData({
       isEditingBaby: true,
+      draftBaby: normalizeDraftBaby(this.data.profile),
       ageIndex: this.getAgeIndex(this.data.profile.baby.age),
       genderIndex: this.getGenderIndex(this.data.profile.baby.gender),
       babyIconTone: icon.babyIconTone
@@ -170,7 +183,7 @@ Page({
     const icon = getBabyIcon(this.data.profile.baby.gender)
     this.setData({
       isEditingBaby: false,
-      draftBaby: Object.assign({}, this.data.profile.baby),
+      draftBaby: normalizeDraftBaby(this.data.profile),
       ageIndex: this.getAgeIndex(this.data.profile.baby.age),
       genderIndex: this.getGenderIndex(this.data.profile.baby.gender),
       babyIconTone: icon.babyIconTone
@@ -217,7 +230,7 @@ Page({
     const icon = getBabyIcon(profile.baby.gender)
     this.setData({
       profile,
-      draftBaby: Object.assign({}, profile.baby),
+      draftBaby: normalizeDraftBaby(profile),
       ageIndex: this.getAgeIndex(profile.baby.age),
       genderIndex: this.getGenderIndex(profile.baby.gender),
       babyIconTone: icon.babyIconTone,
@@ -242,7 +255,7 @@ Page({
         const icon = getBabyIcon(profile.baby.gender)
         this.setData({
           profile,
-          draftBaby: Object.assign({}, profile.baby),
+          draftBaby: normalizeDraftBaby(profile),
           ageIndex: this.getAgeIndex(profile.baby.age),
           genderIndex: this.getGenderIndex(profile.baby.gender),
           babyIconTone: icon.babyIconTone,
@@ -268,8 +281,8 @@ Page({
 
   showFeedback() {
     wx.showModal({
-      title: '内测反馈',
-      content: '当前版本面向小范围种子用户。遇到内容不准确、搜索不到问题或页面异常时，请在内测群反馈问题截图、宝宝月龄和搜索词，方便我们优先修正。',
+      title: '怎么反馈问题',
+      content: '当前版本还没有在线提交入口。遇到内容不准确、搜索不到问题或页面显示异常时，可以把截图、问题描述、手机型号和刚才搜索的词发给邀请你体验的人，方便我们排查。',
       confirmText: '知道了',
       showCancel: false
     })
@@ -278,20 +291,81 @@ Page({
   showPendingQuestions() {
     const pendingQuestions = service.getPendingQuestions()
     if (!pendingQuestions.length) {
+      this.submitPendingQuestion()
+      return
+    }
+    wx.showActionSheet({
+      itemList: ['提交新问题', '查看已提交'],
+      success: (res) => {
+        if (res.tapIndex === 0) {
+          this.submitPendingQuestion()
+        } else {
+          this.viewPendingQuestions()
+        }
+      }
+    })
+  },
+
+  submitPendingQuestion() {
+    this.setData({
+      isPendingQuestionModalOpen: true,
+      pendingQuestionDraft: ''
+    })
+  },
+
+  onPendingQuestionInput(event) {
+    this.setData({
+      pendingQuestionDraft: event.detail.value
+    })
+  },
+
+  closePendingQuestionModal() {
+    this.setData({
+      isPendingQuestionModalOpen: false,
+      pendingQuestionDraft: ''
+    })
+  },
+
+  savePendingQuestion() {
+    const validation = service.validatePendingQuestion(this.data.pendingQuestionDraft)
+    if (!validation.valid) {
+      wx.showToast({ title: validation.message, icon: 'none' })
+      return
+    }
+    service.addPendingQuestion(validation.text, 'profile')
+    this.setData({
+      isPendingQuestionModalOpen: false,
+      pendingQuestionDraft: '',
+      pendingQuestionCount: service.getPendingQuestions().length
+    })
+    wx.showToast({ title: '已保存在本机', icon: 'none' })
+  },
+
+  viewPendingQuestions() {
+    const pendingQuestions = service.getPendingQuestions()
+    if (!pendingQuestions.length) {
       wx.showModal({
         title: '问题建议',
-        content: '当前本机还没有收集到未命中问题。朋友测试时可以让大家直接搜索，没搜到就点“提交这个问题”，并尽量写成完整育儿问题。',
-        confirmText: '知道了',
-        showCancel: false
+        content: '当前还没有记录。可以先补充一个你希望后续看到答案的育儿问题。',
+        confirmText: '去补充',
+        cancelText: '关闭',
+        success: (res) => {
+          if (res.confirm) this.submitPendingQuestion()
+        },
+        showCancel: true
       })
       return
     }
     const recent = pendingQuestions.slice(0, 8).map((item, index) => `${index + 1}. ${item.keyword}${item.hitCount > 1 ? ` ×${item.hitCount}` : ''}`)
     wx.showModal({
-      title: `问题建议（${pendingQuestions.length}）`,
-      content: `当前为本机收集，正式上线后会接后台。\n${recent.join('\n')}`,
-      confirmText: '知道了',
-      showCancel: false
+      title: `已提交的问题（${pendingQuestions.length}）`,
+      content: `这些问题目前只保存在这台手机。\n${recent.join('\n')}`,
+      confirmText: '继续补充',
+      cancelText: '关闭',
+      success: (res) => {
+        if (res.confirm) this.submitPendingQuestion()
+      },
+      showCancel: true
     })
   },
 
@@ -319,5 +393,7 @@ Page({
       content: '本小程序内容仅用于育儿信息参考，不能替代医生诊断、个体化处方或急救处理。涉及疾病、用药、疫苗反应或紧急情况时，请及时咨询医生、接种门诊或线下就医。',
       showCancel: false
     })
-  }
+  },
+
+  noop() {}
 })

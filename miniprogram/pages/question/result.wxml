@@ -156,34 +156,42 @@
       </view>
     </view>
 
-    <view class="section">
-      <view class="section-title"><image class="question-mark pixel-img" src="{{actionIconPaths.question}}" mode="aspectFit" /><text>为什么这么认为</text></view>
-      <view class="reason-grid">
-        <view wx:for="{{result.reasons}}" wx:key="id" class="reason-card tone-{{item.tone}}">
-          <image class="reason-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
-          <view class="reason-title">{{item.title}}</view>
-          <view class="reason-desc">{{item.description}}</view>
+    <view wx:if="{{result.evidenceItems && result.evidenceItems.length}}" class="section evidence-section">
+      <view class="section-head compact-head">
+        <view class="section-title"><image class="question-mark pixel-img" src="{{actionIconPaths.question}}" mode="aspectFit" /><text>判断依据</text></view>
+        <view class="section-hint">辅助理解答案</view>
+      </view>
+      <view class="evidence-card card">
+        <view wx:for="{{result.evidenceItems}}" wx:key="title" class="evidence-row">
+          <view class="evidence-dot">{{index + 1}}</view>
+          <view class="evidence-main">
+            <view class="evidence-title">{{item.title}}</view>
+            <view class="evidence-text">{{item.text}}</view>
+          </view>
         </view>
       </view>
     </view>
 
-    <view class="section">
+    <view wx:if="{{result.referenceSummary}}" class="section reference-section">
       <view class="section-head">
-        <view class="section-title"><image class="shield-small pixel-img" src="{{actionIconPaths.authority}}" mode="aspectFit" /><text>权威内容推荐</text></view>
+        <view class="section-title"><image class="shield-small pixel-img" src="{{actionIconPaths.authority}}" mode="aspectFit" /><text>参考来源</text></view>
       </view>
-      <view wx:if="{{result.authorityView}}" class="authority-view card">
-        <view class="authority-view-label">权威观点</view>
-        <view class="authority-view-text">{{result.authorityView}}</view>
+      <view class="reference-card card" bindtap="toggleReference">
+        <view class="reference-main">
+          <view class="reference-title">{{result.referenceSummary}}</view>
+          <view class="reference-sub">想了解答案从哪里来，可以展开看看。</view>
+        </view>
+        <view class="reference-action">{{isReferenceOpen ? '收起' : '查看'}}</view>
       </view>
-      <view class="authority-list">
-        <view wx:for="{{result.authoritySources}}" wx:key="id" class="authority-row card">
+      <view wx:if="{{isReferenceOpen}}" class="authority-list compact-authority-list">
+        <view wx:for="{{result.referenceSources}}" wx:key="id" class="authority-row compact-authority-row card">
           <image class="authority-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
           <view class="authority-main">
             <view class="authority-head">
               <view class="authority-title">{{item.typeName}}</view>
-              <text class="trust-dot">{{item.trustLabel}}</text>
+              <text class="trust-dot">{{item.displayTrustLabel}}</text>
             </view>
-            <view class="authority-summary">{{item.summary}}</view>
+            <view class="authority-summary">{{item.contextSummary}}</view>
             <view class="authority-tags">
               <text wx:for="{{item.tags}}" wx:key="*this" class="authority-tag">{{item}}</text>
             </view>

@@ -2,7 +2,6 @@ Component({
   data: {
     hidden: false,
     selected: 0,
-    pressedIndex: -1,
     list: [
       {
         pagePath: '/pages/index/index',
@@ -34,11 +33,6 @@ Component({
   methods: {
     switchTab(event) {
       const path = event.currentTarget.dataset.path
-      const index = event.currentTarget.dataset.index
-      this.setData({ selected: index, pressedIndex: index })
-      setTimeout(() => {
-        this.setData({ pressedIndex: -1 })
-      }, 180)
       wx.switchTab({ url: path })
     }
   }

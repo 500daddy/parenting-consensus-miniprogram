@@ -988,6 +988,70 @@
   flex: none;
 }
 
+.evidence-section,
+.reference-section {
+  margin-top: 26rpx;
+}
+
+.compact-head {
+  margin-bottom: 14rpx;
+}
+
+.evidence-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 8rpx 22rpx;
+  background: #fffdf6;
+  border-color: #ead8b8;
+}
+
+.evidence-row {
+  display: flex;
+  gap: 16rpx;
+  padding: 18rpx 0;
+  border-bottom: 2rpx solid #f2e7d4;
+}
+
+.evidence-row:last-child {
+  border-bottom: 0;
+}
+
+.evidence-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34rpx;
+  height: 34rpx;
+  margin-top: 2rpx;
+  border-radius: 10rpx;
+  background: #eaf6df;
+  color: #4f8a43;
+  font-size: 22rpx;
+  line-height: 34rpx;
+  font-weight: 800;
+  flex: none;
+}
+
+.evidence-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.evidence-title {
+  color: #2f2a25;
+  font-size: 25rpx;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.evidence-text {
+  margin-top: 6rpx;
+  color: #746b62;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
 .reason-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1066,11 +1130,59 @@
   line-height: 1.5;
 }
 
+.reference-card {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  width: 100%;
+  padding: 22rpx;
+  background: #fffaf3;
+  border-color: #ead8b8;
+}
+
+.reference-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.reference-title {
+  color: #4a3a2c;
+  font-size: 25rpx;
+  line-height: 1.42;
+  font-weight: 700;
+}
+
+.reference-sub {
+  margin-top: 6rpx;
+  color: #8a8177;
+  font-size: 22rpx;
+  line-height: 1.35;
+}
+
+.reference-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72rpx;
+  height: 50rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  background: #eaf6df;
+  color: #4f8a43;
+  font-size: 23rpx;
+  font-weight: 800;
+  flex: none;
+}
+
 .authority-list {
   display: flex;
   flex-direction: column;
   gap: 14rpx;
   width: 100%;
+}
+
+.compact-authority-list {
+  margin-top: 14rpx;
 }
 
 .authority-row {
@@ -1082,6 +1194,10 @@
   background: #fffdf6;
   border-color: #ead8b8;
   text-align: left;
+}
+
+.compact-authority-row {
+  padding: 18rpx 20rpx;
 }
 
 .authority-icon {

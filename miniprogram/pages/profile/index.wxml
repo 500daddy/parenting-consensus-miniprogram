@@ -142,7 +142,7 @@
     </view>
     <view class="tap-card menu-row" bindtap="showFeedback">
       <image class="menu-icon pixel-img" src="{{actionIconPaths.question}}" mode="aspectFit" />
-      <view class="menu-main">内测反馈</view>
+      <view class="menu-main">反馈说明</view>
       <view class="menu-arrow">›</view>
     </view>
     <view class="tap-card menu-row" bindtap="showPendingQuestions">
@@ -165,6 +165,30 @@
       <image class="menu-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
       <view class="menu-main">免责声明</view>
       <view class="menu-arrow">›</view>
+    </view>
+  </view>
+
+  <view wx:if="{{isPendingQuestionModalOpen}}" class="pending-mask" catchtap="closePendingQuestionModal" catchtouchmove="noop">
+    <view class="pending-dialog card" catchtap="noop">
+      <view class="pending-dialog-head">
+        <view class="pending-dialog-title">补充一个问题</view>
+        <view class="pending-dialog-close" catchtap="closePendingQuestionModal">×</view>
+      </view>
+      <view class="pending-dialog-desc">写下你希望后续看到答案的育儿问题。目前只会保存在这台手机。</view>
+      <textarea
+        class="pending-question-input"
+        value="{{pendingQuestionDraft}}"
+        bindinput="onPendingQuestionInput"
+        maxlength="40"
+        auto-focus="true"
+        placeholder="例如：宝宝半夜总醒怎么办？"
+        placeholder-class="pending-question-placeholder"
+      />
+      <view class="pending-dialog-tip">尽量写成完整问句，方便后续补充答案。</view>
+      <view class="pending-dialog-actions">
+        <view class="pending-cancel" catchtap="closePendingQuestionModal">取消</view>
+        <view class="pending-submit" catchtap="savePendingQuestion">提交</view>
+      </view>
     </view>
   </view>
 </view>

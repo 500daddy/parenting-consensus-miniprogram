@@ -3,7 +3,7 @@
     <cover-view
       wx:for="{{list}}"
       wx:key="pagePath"
-      class="tab-item {{selected == index ? 'active' : ''}} {{pressedIndex == index ? 'pressed' : ''}}"
+      class="tab-item {{selected == index ? 'active' : ''}}"
       data-path="{{item.pagePath}}"
       data-index="{{index}}"
       bindtap="switchTab"

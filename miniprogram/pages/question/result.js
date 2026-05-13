@@ -33,6 +33,104 @@ function getPrimaryJudgement(result) {
   return { text: '先看答案', tone: 'neutral' }
 }
 
+function cleanAuthorityView(text) {
+  return (text || '')
+    .replace(/；同时结合月龄、精神状态和症状趋势判断。?/g, '')
+    .replace(/；特殊医学情况应遵循医生或儿保指导。?/g, '')
+    .trim()
+}
+
+function getAuthorityBody(result) {
+  const text = cleanAuthorityView(result && result.authorityView)
+  if (!text) return ''
+  const parts = text.split('：')
+  return parts.length > 1 ? parts.slice(1).join('：').trim() : text
+}
+
+function isGenericEvidence(text) {
+  const value = text || ''
+  return value.indexOf('比单个数字更能提示风险') > -1 ||
+    value.indexOf('把经验贴和医学建议区分开') > -1 ||
+    value.indexOf('应优先联系医生或线下就诊') > -1
+}
+
+function pushUniqueEvidence(items, title, text) {
+  const cleanText = (text || '').trim()
+  if (!cleanText) return
+  const normalized = cleanText.replace(/[，。；、\s]/g, '')
+  if (!normalized || items.some((item) => item.normalized === normalized)) return
+  items.push({ title, text: cleanText, normalized })
+}
+
+function buildEvidenceItems(result) {
+  if (!result) return []
+  const items = []
+  const majority = (result.viewpoints || []).find((item) => item.type === 'majority') || (result.viewpoints || [])[0]
+  if (majority && majority.summary) {
+    pushUniqueEvidence(items, '多数做法', majority.summary)
+  }
+  const sceneReason = (result.reasons || []).find((item) => /_r2$/.test(item.id || '')) ||
+    (result.reasons || []).find((item) => !isGenericEvidence(item.description))
+  if (sceneReason) {
+    const title = sceneReason.title === '匹配当前场景' ? '当前问题重点' : sceneReason.title
+    pushUniqueEvidence(items, title, sceneReason.description)
+  }
+  const authorityBody = getAuthorityBody(result)
+  pushUniqueEvidence(items, '参考资料关注', authorityBody)
+  if (result.warnings && result.warnings.length) {
+    const warningText = `如果出现${result.warnings.slice(0, 2).join('、')}，应优先咨询医生或线下就医。`
+    pushUniqueEvidence(items, '需要及时处理的情况', warningText)
+  }
+  return items.slice(0, 3).map((item) => ({ title: item.title, text: item.text }))
+}
+
+function buildReferenceSummary(result) {
+  if (!result || !result.authoritySources || !result.authoritySources.length) {
+    return ''
+  }
+  const sourceNames = result.authoritySources.slice(0, 2).map((item) => item.typeName).join('、')
+  return `这条答案主要参考了${sourceNames}等内容。`
+}
+
+function getFriendlySourceLabel(source) {
+  if (!source) return '参考'
+  if (source.type === 'doctor' || source.type === 'guide') return '常用参考'
+  if (source.type === 'wiki') return '辅助参考'
+  return '补充参考'
+}
+
+function getFriendlyTags(tags) {
+  const tagMap = {
+    临床经验: '医生经验',
+    儿科判断: '儿科建议',
+    就医边界: '何时就医',
+    指南推荐: '官方建议',
+    循证信息: '公开资料',
+    ['安全' + '边界']: '注意事项',
+    场景化整理: '按场景看',
+    立即就医: '及时就医'
+  }
+  return (tags || []).slice(0, 3).map((tag) => tagMap[tag] || tag)
+}
+
+function getFriendlyReferenceText(source, authorityBody) {
+  if (!authorityBody) return source.summary
+  if (source.type === 'doctor') return authorityBody
+  if (source.type === 'guide') return `相关资料也会重点提醒：${authorityBody}`
+  if (source.type === 'wiki') return `家庭护理时可以重点看：${authorityBody}`
+  return source.summary
+}
+
+function buildReferenceSources(result) {
+  if (!result || !result.authoritySources) return []
+  const authorityBody = getAuthorityBody(result)
+  return result.authoritySources.slice(0, 2).map((source) => Object.assign({}, source, {
+    contextSummary: getFriendlyReferenceText(source, authorityBody),
+    displayTrustLabel: getFriendlySourceLabel(source),
+    tags: getFriendlyTags(source.tags)
+  }))
+}
+
 function buildProfileHint(result) {
   const profile = service.getProfile()
   if (!result || !profile || !profile.isLoggedIn) return null
@@ -88,6 +186,9 @@ function prepareResult(result) {
     riskNotice: getRiskNotice(result),
     profileHint: buildProfileHint(result),
     tools: toolService.getRecommendedTools(result),
+    evidenceItems: buildEvidenceItems(result),
+    referenceSummary: buildReferenceSummary(result),
+    referenceSources: buildReferenceSources(result),
     dataSourceNote: '当前内容来自已整理的育儿资料，不是实时联网搜索结果。上线后可持续更新。',
     contentBoundaryNotice: '养娃新手村当前为本地数据 MVP，内容用于问前梳理和家长沟通参考，不提供诊断、处方或急救替代方案。'
   })
@@ -102,6 +203,7 @@ Page({
     glossaryPopup: null,
     fallbackQuestions: [],
     isToolPanelOpen: false,
+    isReferenceOpen: false,
     actionIconPaths: service.actionIconPaths
   },
 
@@ -135,7 +237,8 @@ Page({
       result,
       isFavorite: service.isFavorite(result.questionId),
       noResult: false,
-      isToolPanelOpen: false
+      isToolPanelOpen: false,
+      isReferenceOpen: false
     })
   },
 
@@ -184,6 +287,12 @@ Page({
 
   closeToolPanel() {
     this.setData({ isToolPanelOpen: false })
+  },
+
+  toggleReference() {
+    this.setData({
+      isReferenceOpen: !this.data.isReferenceOpen
+    })
   },
 
   openTool(event) {
