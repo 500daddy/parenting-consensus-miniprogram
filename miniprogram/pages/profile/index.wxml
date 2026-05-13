@@ -156,11 +156,6 @@
       <view class="menu-main">隐私说明</view>
       <view class="menu-arrow">›</view>
     </view>
-    <view class="tap-card menu-row" bindtap="showReviewNote">
-      <image class="menu-icon pixel-img" src="{{actionIconPaths.authority}}" mode="aspectFit" />
-      <view class="menu-main">审核备注</view>
-      <view class="menu-arrow">›</view>
-    </view>
     <view class="tap-card menu-row last" bindtap="showDisclaimer">
       <image class="menu-icon pixel-img" src="{{actionIconPaths.warning}}" mode="aspectFit" />
       <view class="menu-main">免责声明</view>

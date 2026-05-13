@@ -378,15 +378,6 @@ Page({
     })
   },
 
-  showReviewNote() {
-    wx.showModal({
-      title: '审核备注建议',
-      content: '当前版本为本地数据 MVP，无后台请求、无支付、无客服系统。页面内容为固定育儿科普样例，仅供家长信息参考和就医沟通前梳理，不能替代医生诊断、个体化处方或急救处理。涉及疾病、用药、疫苗反应或紧急情况时，请及时咨询医生、接种门诊或线下就医。',
-      confirmText: '知道了',
-      showCancel: false
-    })
-  },
-
   showDisclaimer() {
     wx.showModal({
       title: '免责声明',
