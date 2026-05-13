@@ -30,6 +30,10 @@
         <view class="info-value">{{draft.babyAge || '未设置'}}</view>
       </view>
     </view>
+    <view wx:if="{{!isBabyProfileReady}}" class="profile-hint">
+      <view class="profile-hint-text">{{babyProfileHintText}}</view>
+      <view class="profile-hint-action" bindtap="goEditBabyProfile">去完善宝宝信息</view>
+    </view>
 
     <view class="field-group">
       <picker mode="selector" range="{{vaccineOptions}}" value="{{vaccineIndex}}" bindchange="onVaccineChange">

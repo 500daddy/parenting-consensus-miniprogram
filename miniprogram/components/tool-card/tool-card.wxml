@@ -1,7 +1,11 @@
 <view class="tap-card tool-card" bindtap="onTap">
-  <image class="tool-icon" src="{{tool.iconPath}}" mode="aspectFit" />
+  <image class="tool-icon pixel-img" src="{{tool.iconPath}}" mode="aspectFit" />
   <view class="tool-main">
-    <view class="tool-title">{{tool.title}}</view>
+    <view class="tool-head">
+      <view wx:if="{{tool.label}}" class="tool-label">{{tool.label}}</view>
+      <view class="tool-title">{{tool.title}}</view>
+    </view>
     <view class="tool-desc">{{tool.desc}}</view>
   </view>
+  <view wx:if="{{tool.actionText}}" class="tool-action">{{tool.actionText}}</view>
 </view>

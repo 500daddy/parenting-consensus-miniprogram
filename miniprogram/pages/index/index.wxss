@@ -318,14 +318,6 @@
   background: #fffdf6;
 }
 
-.hot-1 {
-  background: #fffdf8;
-}
-
-.hot-2 {
-  background: #fbfdf8;
-}
-
 .hot-card .tag {
   min-height: 34rpx;
   padding: 0 12rpx;
@@ -374,6 +366,38 @@
   margin-top: 10rpx;
   color: #8b8178;
   font-size: 22rpx;
+}
+
+.hot-more-tip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  width: fit-content;
+  min-width: 220rpx;
+  height: 56rpx;
+  margin: 18rpx auto 0;
+  padding: 0 22rpx;
+  border: 2rpx solid #d8e8cf;
+  border-radius: 999rpx;
+  background: #f7fbf2;
+  color: #4f8a43;
+  font-size: 24rpx;
+  font-weight: 900;
+  box-shadow: 0 4rpx 0 rgba(111, 152, 90, 0.1);
+}
+
+.hot-more-tip:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 2rpx 0 rgba(111, 152, 90, 0.1);
+}
+
+.hot-more-arrow {
+  width: 14rpx;
+  height: 14rpx;
+  border-top: 4rpx solid #4f8a43;
+  border-right: 4rpx solid #4f8a43;
+  transform: rotate(45deg);
 }
 
 .row-arrow {

@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "问题汇总"
+  "navigationBarTitleText": "问题汇总",
+  "usingComponents": {
+    "tool-card": "/components/tool-card/tool-card"
+  }
 }

@@ -18,7 +18,6 @@
 
   <view wx:else class="history-list">
     <view wx:for="{{history}}" wx:key="*this" class="tap-card history-row card" bindtap="goSearch" data-keyword="{{item}}">
-      <image class="history-icon pixel-img" src="{{actionIconPaths.history}}" mode="aspectFit" />
       <view class="history-keyword">{{item}}</view>
       <view class="row-arrow"></view>
     </view>

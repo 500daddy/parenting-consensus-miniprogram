@@ -79,6 +79,10 @@
         <view class="row-arrow"></view>
       </view>
     </view>
+    <view class="hot-more-tip" bindtap="goSearch" aria-label="查看更多育儿问题">
+      <text>查看更多问题</text>
+      <view class="hot-more-arrow"></view>
+    </view>
   </view>
 
   <view wx:if="{{glossaryPopup}}" class="glossary-mask" catchtap="hideGlossary">

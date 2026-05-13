@@ -175,12 +175,16 @@ const service = require(path.join(miniprogramRoot, 'utils/mockService.js'))
 const toolService = require(path.join(miniprogramRoot, 'utils/toolService.js'))
 const resultPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/question/result.wxml'), 'utf8')
 const resultLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/question/result.js'), 'utf8')
+const resultPageConfig = readJson(path.join(miniprogramRoot, 'pages/question/result.json'))
 const homePageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/index/index.wxml'), 'utf8')
 const homeLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/index/index.js'), 'utf8')
 const searchLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/search/index.js'), 'utf8')
 const searchPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/search/index.wxml'), 'utf8')
 const profilePageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/index.wxml'), 'utf8')
 const profileLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/index.js'), 'utf8')
+const babyEditPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/baby-edit/index.wxml'), 'utf8')
+const babyEditLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/profile/baby-edit/index.js'), 'utf8')
+const historyPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/history/index.wxml'), 'utf8')
 const authorityPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/authority/index.wxml'), 'utf8')
 const authorityLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/authority/index.js'), 'utf8')
 const recordsPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/records/index.wxml'), 'utf8')
@@ -188,8 +192,11 @@ const recordsLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/too
 const recordsPageConfig = readJson(path.join(miniprogramRoot, 'pages/tools/records/index.json'))
 const toolCardSource = fs.readFileSync(path.join(miniprogramRoot, 'components/tool-card/tool-card.wxml'), 'utf8')
 const toolCardLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'components/tool-card/tool-card.js'), 'utf8')
+const toolCardStyleSource = fs.readFileSync(path.join(miniprogramRoot, 'components/tool-card/tool-card.wxss'), 'utf8')
 const doctorVisitPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/doctor-visit/index.wxml'), 'utf8')
+const doctorVisitLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/doctor-visit/index.js'), 'utf8')
 const feedingLogPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/feeding-log/index.wxml'), 'utf8')
+const feedingLogLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/feeding-log/index.js'), 'utf8')
 const vaccineLogPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/vaccine-log/index.wxml'), 'utf8')
 const vaccineLogLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/vaccine-log/index.js'), 'utf8')
 const growthLogPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/tools/growth-log/index.wxml'), 'utf8')
@@ -209,6 +216,8 @@ assertInvariant(typeof service.getGlossaryEntry('喷射状呕吐') === 'object',
 assertInvariant(service.buildGlossarySegments('区分生理性溢奶与喷射状呕吐').some((item) => item.term === '生理性溢奶'), 'Glossary segmentation should mark physiological spit-up')
 assertInvariant(homePageSource.indexOf('glossary-term') > -1, 'Home announcement should underline glossary terms')
 assertInvariant(homeLogicSource.indexOf('conclusionSegments') > -1, 'Home page should pre-split glossary terms')
+assertInvariant(fs.readFileSync(path.join(miniprogramRoot, 'pages/index/index.wxss'), 'utf8').indexOf('.hot-2') === -1, 'Home hot question cards should not alternate into a different background color')
+assertInvariant(homePageSource.indexOf('hot-more-tip') > -1 && homePageSource.indexOf('查看更多问题') > -1, 'Home hot question list should provide a lightweight more entry at the end')
 assertInvariant(!/goQuestion\s*\([^)]*\)\s*\{[\s\S]*?addHistory/.test(searchLogicSource), 'Browsing recommended questions should not be recorded as search history')
 assertInvariant(resultPageSource.indexOf('glossary-term') > -1, 'Result conclusion should underline glossary terms')
 assertInvariant(resultLogicSource.indexOf('conclusionSegments') > -1, 'Result page should pre-split glossary terms')
@@ -219,12 +228,47 @@ assertInvariant(resultPageSource.indexOf('bindtap="changeQuestion"') > -1, 'Resu
 assertInvariant(resultPageSource.indexOf('wx:if="{{!noResult}}" class="change-btn"') > -1, 'Result page should hide change button when there is no search result')
 assertInvariant(resultLogicSource.indexOf('changeQuestion()') > -1 && resultLogicSource.indexOf('loadResult({ id: nextQuestion.id })') > -1, 'Result page should load the next question without leaving the page')
 assertInvariant(resultLogicSource.indexOf('slice(0, 4)') > -1, 'Result no-match page should show four fallback questions')
+assertInvariant(resultPageSource.indexOf('relatedSummary') > -1 && resultPageSource.indexOf('related-footer') > -1, 'Related question cards should use concise copy and clear actions')
+assertInvariant(resultPageSource.indexOf('section-link" bindtap="goSearch"') > -1, 'Related question header action should be tappable')
 assertInvariant(resultPageSource.indexOf('提交这个问题') > -1 && resultLogicSource.indexOf('addPendingQuestion') > -1, 'Result empty state should let users submit missing questions')
 assertInvariant(searchPageSource.indexOf('提交这个问题') > -1 && searchLogicSource.indexOf('addPendingQuestion') > -1, 'Search empty state should collect missing questions')
 assertInvariant(resultLogicSource.indexOf('validatePendingQuestion') > -1 && searchLogicSource.indexOf('validatePendingQuestion') > -1, 'Missing-question submission should validate question quality before storing')
 assertInvariant(searchPageSource.indexOf('宝宝夜里频繁醒怎么办') > -1 && resultPageSource.indexOf('宝宝夜里频繁醒怎么办') > -1, 'Missing-question empty states should show a complete-question example')
 assertInvariant(searchPageSource.indexOf('scroll-view class="category-scroll"') === -1, 'Search categories should be fully visible instead of hidden behind horizontal scroll')
 assertInvariant(resultLogicSource.indexOf('不是实时联网搜索结果') > -1, 'Result page should disclose that answers are not live web search results')
+for (const file of ['utils/mockService.js', 'pages/question/result.js', 'mock/questions.json', 'mock/questionResult.json', 'mock/data.js']) {
+  const source = fs.readFileSync(path.join(miniprogramRoot, file), 'utf8')
+  assertInvariant(source.indexOf('红旗信号') === -1, `${file} should use plain user-facing wording instead of red-flag jargon`)
+}
+const userFacingCopyIssues = [
+  '健康科普通常',
+  '急诊建议建议',
+  '平台共识',
+  '平台答案',
+  '本地样例答案',
+  '强行训练'
+]
+const resultCopyText = service.getAvailableQuestions().map((question) => {
+  const result = service.getQuestionResult({ id: question.id })
+  return [
+    question.title,
+    question.shortTitle,
+    question.summary,
+    question.resultFocus,
+    result && result.title,
+    result && result.conclusion,
+    result && result.mainstreamConsensus,
+    result && result.authorityView,
+    result && result.safetyNotice,
+    result && result.disclaimer,
+    ...((result && result.viewpoints) || []).flatMap((item) => [item.title, item.summary]),
+    ...((result && result.reasons) || []).flatMap((item) => [item.title, item.description]),
+    ...((result && result.warnings) || [])
+  ].filter(Boolean).join('\n')
+}).join('\n')
+userFacingCopyIssues.forEach((phrase) => {
+  assertInvariant(resultCopyText.indexOf(phrase) === -1, `User-facing result copy should avoid "${phrase}"`)
+})
 assertInvariant(resultPageSource.indexOf('不同观点在说什么') > -1, 'Result page should explain viewpoint groups, not only show percentages')
 assertInvariant(resultPageSource.indexOf('作为补充参考') > -1, 'Result page should demote viewpoint groups below the primary answer')
 assertInvariant(resultPageSource.indexOf('健康提醒') > -1, 'Result page should keep health/risk reminders near the answer')
@@ -233,6 +277,8 @@ assertInvariant(resultLogicSource.indexOf('完善宝宝档案') > -1 && resultPa
 assertInvariant(resultLogicSource.indexOf('getRecommendedTools') > -1, 'Result page should use semantic tool recommendations instead of category-only tools')
 assertInvariant(resultPageSource.indexOf('可用小工具') > -1 && resultPageSource.indexOf('tool-panel-mask') > -1, 'Result page should collapse tools behind a selectable floating panel')
 assertInvariant(resultPageSource.indexOf('tool-float-icon pixel-img" src="{{actionIconPaths.tools}}"') > -1, 'Result tool entry should use a generic toolbox icon instead of the first recommended tool icon')
+assertInvariant(resultPageSource.indexOf('<tool-card') > -1 && resultPageConfig.usingComponents && resultPageConfig.usingComponents['tool-card'], 'Result tool panel should reuse the shared tool card component')
+assertInvariant(resultLogicSource.indexOf('event.detail && event.detail.id') > -1, 'Result tool opener should accept tool-card component events')
 assertInvariant(resultPageSource.indexOf('还有更多小工具') > -1 && resultLogicSource.indexOf('goToolRecords') > -1, 'Result tool panel should link users to the broader tool records page')
 assertInvariant(resultPageSource.indexOf('内容说明') > -1, 'Result page should keep the MVP content boundary as a lower-priority note')
 assertInvariant(resultPageSource.indexOf('更多内容') === -1 && resultLogicSource.indexOf('goAuthority') === -1, 'Result page should keep authority content inline instead of pushing users to a secondary page')
@@ -244,6 +290,7 @@ assertInvariant(profilePageSource.indexOf('小工具与记录') > -1 && profileP
 assertInvariant(profilePageSource.indexOf('帮我们补问题') > -1 && profilePageSource.indexOf('建议') > -1, 'Profile page should expose the pending-question pool with user-facing copy')
 assertInvariant(profileLogicSource.indexOf('getPendingQuestions') > -1, 'Profile page should read pending-question count from local storage')
 assertInvariant(profileLogicSource.indexOf('正式上线后会接后台') > -1, 'Pending-question pool should explain the current local-only backend boundary')
+assertInvariant(historyPageSource.indexOf('class="history-icon') === -1, 'History list rows should not show a mismatched repeated icon')
 assertInvariant(profileLogicSource.indexOf('clearDoctorVisitRecords') > -1, 'Logout should clear local baby-related doctor visit records')
 assertInvariant(profileLogicSource.indexOf('已退出并清空档案') > -1, 'Logout should tell users the baby profile was cleared')
 assertInvariant(profileLogicSource.indexOf('不上传宝宝档案') > -1, 'Privacy modal should state local-only profile storage')
@@ -253,6 +300,11 @@ assertInvariant(customTabBarSource.indexOf('wx:if="{{!hidden}}"') > -1, 'Custom 
 assertInvariant(profileLogicSource.indexOf('setCustomTabBarHidden(true)') > -1, 'Profile pickers should hide the custom tabBar before opening')
 assertInvariant(profileLogicSource.indexOf('setCustomTabBarHidden(false)') > -1, 'Profile pickers should restore the custom tabBar after closing')
 assertInvariant(profilePageSource.indexOf('bindcancel="onProfilePickerClose"') > -1, 'Profile pickers should restore the custom tabBar when iOS picker is cancelled')
+assertInvariant(profileLogicSource.indexOf("return ['未设置'].concat") === -1 && profileLogicSource.indexOf("genderOptions: ['未设置'") === -1, 'Profile age and gender pickers should not include unset as a selectable option')
+assertInvariant(app.pages.indexOf('pages/profile/baby-edit/index') > -1, 'Baby profile edit page should be registered as a non-tab returnable page')
+assertInvariant(babyEditPageSource.indexOf('保存并返回') > -1 && babyEditLogicSource.indexOf('wx.navigateBack()') > -1, 'Baby profile edit page should return to the originating tool page')
+assertInvariant(babyEditPageSource.indexOf('放心记录') > -1 && babyEditPageSource.indexOf('这台手机') > -1, 'Baby profile edit page should use user-facing local storage copy')
+assertInvariant(babyEditLogicSource.indexOf("return ['未设置'].concat") === -1 && babyEditLogicSource.indexOf("genderOptions = ['未设置'") === -1, 'Baby edit page age and gender pickers should not include unset as a selectable option')
 assertInvariant(authorityPageSource.indexOf('home-illus') === -1, 'Authority page should avoid decorative hero art that competes with content')
 assertInvariant(authorityLogicSource.indexOf('relatedQuestionItems.slice(0, 2)') > -1, 'Authority page should show two related question cards')
 assertInvariant(authorityPageSource.indexOf('related-action') > -1 && authorityPageSource.indexOf('查看') > -1, 'Authority related cards should use a clear action button')
@@ -268,16 +320,21 @@ assertInvariant(recordsLogicSource.indexOf('isVaccineExpanded') > -1 && recordsL
 assertInvariant(recordsPageSource.indexOf('vaccineRecordCount') > -1 && recordsPageSource.indexOf('toggleVaccineRecords') > -1, 'Records page should expose the vaccine record fold control')
 assertInvariant(recordsLogicSource.indexOf('isGrowthExpanded') > -1 && recordsLogicSource.indexOf('toggleGrowthRecords') > -1, 'Records page should collapse and expand growth records')
 assertInvariant(recordsPageSource.indexOf('growthRecordCount') > -1 && recordsPageSource.indexOf('toggleGrowthRecords') > -1, 'Records page should expose the growth record fold control')
-assertInvariant(recordsPageSource.indexOf('小工具与记录') > -1 && recordsPageSource.indexOf('tool-hub') > -1, 'Records page should act as a tool hub as well as a record list')
+assertInvariant(recordsPageSource.indexOf('小工具与记录') > -1 && recordsPageSource.indexOf('tool-hub') === -1, 'Records page should focus on records and avoid a bulky tool picker module')
 assertInvariant(recordsPageConfig.navigationBarTitleText === '小工具与记录', 'Records page navigation title should match the unified tool hub role')
 assertInvariant(recordsPageSource.indexOf('actionIconPaths.tools') > -1, 'Records tool hub should use the generic toolbox icon')
-assertInvariant(recordsLogicSource.indexOf('getAllTools') > -1 && recordsLogicSource.indexOf('openTool') > -1, 'Records page should list all tools and open them directly')
-assertInvariant(recordsPageSource.indexOf('<tool-card') > -1 && recordsPageConfig.usingComponents && recordsPageConfig.usingComponents['tool-card'], 'Records page should use the reusable tool card component')
+assertInvariant(recordsLogicSource.indexOf('getAllTools') > -1 && recordsLogicSource.indexOf('showActionSheet') > -1, 'Records page should create new records from the header action sheet')
+assertInvariant(recordsPageSource.indexOf('<tool-card') === -1 && (!recordsPageConfig.usingComponents || !recordsPageConfig.usingComponents['tool-card']), 'Records page should not render the reusable tool card picker')
 assertInvariant(toolCardSource.indexOf('tool.iconPath') > -1 && toolCardLogicSource.indexOf("triggerEvent('select'") > -1, 'Tool card component should render tools and emit selection events')
-assertInvariant(recordsPageSource.indexOf('tool-tabs') > -1 && recordsLogicSource.indexOf('changeToolGroup') > -1 && recordsLogicSource.indexOf('getToolsByHubGroup') > -1, 'Records tool hub should let users switch tool categories from the service registry as the tool set grows')
+assertInvariant(toolCardSource.indexOf('tool.label') > -1 && toolCardSource.indexOf('tool.actionText') > -1, 'Tool card component should support consistent labels and actions')
+assertInvariant(toolCardStyleSource.indexOf('-webkit-line-clamp: 2') > -1 && toolCardStyleSource.indexOf('position: absolute') > -1, 'Tool card titles should have room to wrap without being squeezed by the action')
 assertInvariant(recordsPageSource.indexOf('record-tools-panel') > -1 && recordsLogicSource.indexOf('showRecordTools') > -1, 'Records page should group summary and fold controls into a compact tool panel')
 for (const toolPageSource of [doctorVisitPageSource, feedingLogPageSource, vaccineLogPageSource, growthLogPageSource]) {
   assertInvariant(toolPageSource.indexOf('工具记录') > -1 && toolPageSource.indexOf('actionIconPaths.tools') > -1, 'Tool detail pages should point back to the unified tool-record hub')
+  assertInvariant(toolPageSource.indexOf('去完善宝宝信息') > -1 && toolPageSource.indexOf('bindtap="goEditBabyProfile"') > -1, 'Tool detail pages should link missing baby profile fields to profile editing')
+}
+for (const toolLogicSource of [doctorVisitLogicSource, feedingLogLogicSource, vaccineLogLogicSource, growthLogLogicSource]) {
+  assertInvariant(toolLogicSource.indexOf('/pages/profile/baby-edit/index') > -1 && toolLogicSource.indexOf('onShow()') > -1, 'Tool detail pages should open the returnable baby edit page and refresh profile fields on return')
 }
 assertInvariant(vaccineLogPageSource.indexOf("draft.vaccineName === '其他疫苗'") > -1 && vaccineLogPageSource.indexOf('具体疫苗') > -1, 'Vaccine log should reveal a custom vaccine field only for other vaccine')
 assertInvariant(vaccineLogPageSource.indexOf("draft.reaction === '其他反应'") > -1 && vaccineLogPageSource.indexOf('具体反应') > -1, 'Vaccine log should reveal a custom reaction field only for other reaction')
@@ -339,8 +396,10 @@ for (const id of Object.keys(data.questionResults)) {
   }
   assertInvariant(Boolean(result), `Missing service result for ${id}`)
   if (result) {
+    assertInvariant(result.relatedQuestionItems.length <= 2, `Related questions for ${id} should be limited to two cards`)
     for (const item of result.relatedQuestionItems) {
       assertInvariant(service.hasQuestionResult(item.id), `Related question ${item.id} from ${id} has no result`)
+      assertInvariant(Boolean(item.relatedSummary) && item.relatedSummary.length <= 37, `Related question ${item.id} should have concise card copy`)
     }
     for (const source of result.authoritySources) {
       assertInvariant(source.questionIds.indexOf(id) > -1, `Authority source ${source.id} is not linked to ${id}`)

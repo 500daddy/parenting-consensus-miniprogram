@@ -66,6 +66,22 @@ function buildDraft(options) {
   }
 }
 
+function getProfileBabyFields() {
+  const profile = service.getProfile()
+  const baby = profile.baby || {}
+  return {
+    babyName: baby.name && baby.name !== '未设置' ? baby.name : '',
+    babyAge: baby.age && baby.age !== '未设置' ? baby.age : ''
+  }
+}
+
+function getBabyProfileState(draft) {
+  return {
+    isBabyProfileReady: Boolean(draft.babyName && draft.babyAge),
+    babyProfileHintText: '完善宝宝信息后，可自动带入宝宝和月龄。'
+  }
+}
+
 Page({
   data: {
     draft: {},
@@ -78,7 +94,22 @@ Page({
     fedAtTime: getCurrentTime(),
     minDate: getMinDate(),
     maxDate: getTodayDate(),
+    isBabyProfileReady: false,
+    babyProfileHintText: '',
     actionIconPaths: service.actionIconPaths
+  },
+
+  onShow() {
+    if (!this.data.draft || !Object.keys(this.data.draft).length) return
+    const babyFields = getProfileBabyFields()
+    const nextDraft = Object.assign({}, this.data.draft, babyFields)
+    const babyProfileState = getBabyProfileState(nextDraft)
+    this.setData({
+      'draft.babyName': babyFields.babyName,
+      'draft.babyAge': babyFields.babyAge,
+      isBabyProfileReady: babyProfileState.isBabyProfileReady,
+      babyProfileHintText: babyProfileState.babyProfileHintText
+    })
   },
 
   onLoad(options) {
@@ -87,6 +118,7 @@ Page({
     const feedTypeIndex = this.data.feedTypeOptions.indexOf(draft.feedType)
     const spitUpIndex = this.data.spitUpOptions.indexOf(draft.spitUp)
     const fedAtParts = getFedAtParts(draft.fedAt)
+    const babyProfileState = getBabyProfileState(draft)
     this.setData({
       draft: Object.assign({}, draft, {
         fedAt: `${fedAtParts.date} ${fedAtParts.time}`,
@@ -96,7 +128,9 @@ Page({
       spitUpIndex: spitUpIndex > -1 ? spitUpIndex : 0,
       fedAtDate: fedAtParts.date,
       fedAtTime: fedAtParts.time,
-      todaySummary: toolService.getTodayFeedingSummary()
+      todaySummary: toolService.getTodayFeedingSummary(),
+      isBabyProfileReady: babyProfileState.isBabyProfileReady,
+      babyProfileHintText: babyProfileState.babyProfileHintText
     })
   },
 
@@ -184,5 +218,9 @@ Page({
 
   goRecords() {
     wx.navigateTo({ url: '/pages/tools/records/index' })
+  },
+
+  goEditBabyProfile() {
+    wx.navigateTo({ url: '/pages/profile/baby-edit/index?from=feeding_log' })
   }
 })

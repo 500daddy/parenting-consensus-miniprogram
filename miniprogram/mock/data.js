@@ -8,7 +8,7 @@ const questionsData = {
       "id": "fever_care",
       "name": "发烧护理",
       "icon": "温",
-      "description": "发热判断、退烧护理、用药和就医红旗信号。"
+      "description": "发热判断、退烧护理、用药和需要及时就医的表现。"
     },
     {
       "id": "common_illness",
@@ -177,8 +177,8 @@ const questionsData = {
     {
       "id": "q_005",
       "seedId": "Q005",
-      "title": "宝宝发烧什么情况必须去医院？",
-      "shortTitle": "发烧什么情况必须去医院？",
+      "title": "宝宝发烧什么情况要去医院？",
+      "shortTitle": "发烧什么情况要去医院？",
       "categoryId": "fever_care",
       "categoryName": "发烧/疾病护理",
       "scene": "就医判断",
@@ -190,14 +190,15 @@ const questionsData = {
       "tags": [
         "发烧",
         "就医",
-        "红旗信号"
+        "需要及时就医的表现"
       ],
       "searchTerms": [
         "发烧多久去医院",
-        "宝宝高烧不退怎么办"
+        "宝宝高烧不退怎么办",
+        "宝宝发烧什么情况必须去医院"
       ],
-      "summary": "突出精神差、呼吸异常、抽搐、脱水、持续发热等红旗信号。",
-      "resultFocus": "突出精神差、呼吸异常、抽搐、脱水、持续发热等红旗信号",
+      "summary": "突出精神差、呼吸异常、抽搐、脱水、持续发热等需要及时就医的表现。",
+      "resultFocus": "突出精神差、呼吸异常、抽搐、脱水、持续发热等需要及时就医的表现",
       "sourceUrl": "https://ontariofamilyphysicians.ca/wp-content/uploads/2023/08/ocfp_actionsparentscantake-simplified-chinese.pdf",
       "updatedAt": "2026-04-30T00:00:00+08:00"
     },
@@ -358,8 +359,8 @@ const questionsData = {
         "二月闹怎么办",
         "肠胀气排气操有用吗"
       ],
-      "summary": "整理排气、拍嗝、安抚、就医红旗信号。",
-      "resultFocus": "整理排气、拍嗝、安抚、就医红旗信号",
+      "summary": "整理排气、拍嗝、安抚、需要及时就医的表现。",
+      "resultFocus": "整理排气、拍嗝、安抚、需要及时就医的表现",
       "sourceUrl": "https://www.dealmoon.com/cn/what-to-do-if-baby-gets-sick/570574.html",
       "updatedAt": "2026-04-30T00:00:00+08:00"
     },
@@ -736,8 +737,8 @@ const questionsData = {
         "宝宝哭闹不止怎么办",
         "怎么安抚"
       ],
-      "summary": "从饿、困、尿布、胀气、疾病等排查，列红旗信号。",
-      "resultFocus": "从饿、困、尿布、胀气、疾病等排查，列红旗信号",
+      "summary": "从饿、困、尿布、胀气、疾病等排查，列需要及时就医的表现。",
+      "resultFocus": "从饿、困、尿布、胀气、疾病等排查，列需要及时就医的表现",
       "sourceUrl": "https://www.mayoclinic.org/zh-hans/healthy-lifestyle/infant-and-toddler-health/in-depth/healthy-baby/art-20047793",
       "updatedAt": "2026-04-30T00:00:00+08:00"
     },
@@ -828,7 +829,7 @@ const questionResultData = {
       "trustLevel": "high",
       "trustLabel": "高可信",
       "icon": "指",
-      "summary": "优先采用公开健康科普和指南中的红旗信号、护理原则和安全边界。",
+      "summary": "优先采用公开健康科普和指南中的需要及时就医的表现、护理原则和安全边界。",
       "tags": [
         "指南推荐",
         "循证信息",
@@ -967,7 +968,7 @@ const questionResultData = {
       "icon": "急",
       "summary": "遇到呼吸困难、卡噎、误食危险物或意识异常时，优先启动急救和线下就医。",
       "tags": [
-        "红旗信号",
+        "需要及时就医的表现",
         "急救流程",
         "立即就医"
       ],
@@ -1066,13 +1067,13 @@ const questionResultData = {
         },
         {
           "id": "q_001_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
         }
       ],
-      "authorityView": "儿科指南、医生科普、官方健康科普通常把 38.0°C 左右作为儿童发热界线；3 个月以内宝宝直肠温度达到 38.0°C 更需要及时咨询医生。",
+      "authorityView": "儿科指南、医生科普、官方健康科普资料通常把 38.0°C 左右作为儿童发热界线；3 个月以内宝宝直肠温度达到 38.0°C 更需要及时咨询医生。",
       "authoritySourceIds": [
         "a_pediatrician",
         "a_medical_guide",
@@ -1161,7 +1162,7 @@ const questionResultData = {
         },
         {
           "id": "q_002_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -1256,7 +1257,7 @@ const questionResultData = {
         },
         {
           "id": "q_003_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -1351,7 +1352,7 @@ const questionResultData = {
         },
         {
           "id": "q_004_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -1371,7 +1372,7 @@ const questionResultData = {
         "抽搐、持续高热或口唇发青",
         "尿量明显减少或疑似脱水"
       ],
-      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现红旗信号，不要等平台共识，请及时就医或拨打当地急救电话。",
+      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现需要及时就医的表现，不要只等线上答案，请及时就医或拨打当地急救电话。",
       "relatedQuestions": [
         "q_001",
         "q_002",
@@ -1384,15 +1385,15 @@ const questionResultData = {
     "q_005": {
       "questionId": "q_005",
       "seedId": "Q005",
-      "title": "宝宝发烧什么情况必须去医院？",
+      "title": "宝宝发烧什么情况要去医院？",
       "categoryId": "fever_care",
       "categoryName": "发烧/疾病护理",
       "scene": "就医判断",
       "priority": "P0",
       "riskLevel": "高",
       "isHighRisk": true,
-      "mainstreamConsensus": "主流共识认为：突出精神差、呼吸异常、抽搐、脱水、持续发热等红旗信号。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
-      "conclusion": "主流共识认为：突出精神差、呼吸异常、抽搐、脱水、持续发热等红旗信号。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
+      "mainstreamConsensus": "主流共识认为：突出精神差、呼吸异常、抽搐、脱水、持续发热等需要及时就医的表现。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
+      "conclusion": "主流共识认为：突出精神差、呼吸异常、抽搐、脱水、持续发热等需要及时就医的表现。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
       "sourceCount": 240,
       "expertCount": 70,
       "confidenceLevel": "较高",
@@ -1403,7 +1404,7 @@ const questionResultData = {
           "title": "主流做法：按条件判断",
           "percentage": 55,
           "type": "majority",
-          "summary": "突出精神差、呼吸异常、抽搐、脱水、持续发热等红旗信号",
+          "summary": "突出精神差、呼吸异常、抽搐、脱水、持续发热等需要及时就医的表现",
           "color": "#7EA66A"
         },
         {
@@ -1434,7 +1435,7 @@ const questionResultData = {
         {
           "id": "q_005_r2",
           "title": "匹配当前场景",
-          "description": "突出精神差、呼吸异常、抽搐、脱水、持续发热等红旗信号",
+          "description": "突出精神差、呼吸异常、抽搐、脱水、持续发热等需要及时就医的表现",
           "icon": "问",
           "tone": "orange"
         },
@@ -1447,13 +1448,13 @@ const questionResultData = {
         },
         {
           "id": "q_005_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
         }
       ],
-      "authorityView": "儿科指南、急诊建议建议：突出精神差、呼吸异常、抽搐、脱水、持续发热等红旗信号；同时结合月龄、精神状态和症状趋势判断。",
+      "authorityView": "儿科指南、急诊建议：突出精神差、呼吸异常、抽搐、脱水、持续发热等需要及时就医的表现；同时结合月龄、精神状态和症状趋势判断。",
       "authoritySourceIds": [
         "a_pediatrician",
         "a_medical_guide",
@@ -1467,7 +1468,7 @@ const questionResultData = {
         "抽搐、持续高热或口唇发青",
         "尿量明显减少或疑似脱水"
       ],
-      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现红旗信号，不要等平台共识，请及时就医或拨打当地急救电话。",
+      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现需要及时就医的表现，不要只等线上答案，请及时就医或拨打当地急救电话。",
       "relatedQuestions": [
         "q_001",
         "q_002",
@@ -1543,7 +1544,7 @@ const questionResultData = {
         },
         {
           "id": "q_006_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -1638,7 +1639,7 @@ const questionResultData = {
         },
         {
           "id": "q_008_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -1658,7 +1659,7 @@ const questionResultData = {
         "抽搐、持续高热或口唇发青",
         "尿量明显减少或疑似脱水"
       ],
-      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现红旗信号，不要等平台共识，请及时就医或拨打当地急救电话。",
+      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现需要及时就医的表现，不要只等线上答案，请及时就医或拨打当地急救电话。",
       "relatedQuestions": [
         "q_004",
         "q_001"
@@ -1733,7 +1734,7 @@ const questionResultData = {
         },
         {
           "id": "q_011_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -1828,7 +1829,7 @@ const questionResultData = {
         },
         {
           "id": "q_012_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -1923,7 +1924,7 @@ const questionResultData = {
         },
         {
           "id": "q_013_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -1962,8 +1963,8 @@ const questionResultData = {
       "priority": "P0",
       "riskLevel": "中",
       "isHighRisk": false,
-      "mainstreamConsensus": "主流共识认为：整理排气、拍嗝、安抚、就医红旗信号。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
-      "conclusion": "主流共识认为：整理排气、拍嗝、安抚、就医红旗信号。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
+      "mainstreamConsensus": "主流共识认为：整理排气、拍嗝、安抚、需要及时就医的表现。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
+      "conclusion": "主流共识认为：整理排气、拍嗝、安抚、需要及时就医的表现。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
       "sourceCount": 210,
       "expertCount": 64,
       "confidenceLevel": "较高",
@@ -1974,7 +1975,7 @@ const questionResultData = {
           "title": "主流做法：按条件判断",
           "percentage": 60,
           "type": "majority",
-          "summary": "整理排气、拍嗝、安抚、就医红旗信号",
+          "summary": "整理排气、拍嗝、安抚、需要及时就医的表现",
           "color": "#7EA66A"
         },
         {
@@ -2005,7 +2006,7 @@ const questionResultData = {
         {
           "id": "q_014_r2",
           "title": "匹配当前场景",
-          "description": "整理排气、拍嗝、安抚、就医红旗信号",
+          "description": "整理排气、拍嗝、安抚、需要及时就医的表现",
           "icon": "问",
           "tone": "orange"
         },
@@ -2018,13 +2019,13 @@ const questionResultData = {
         },
         {
           "id": "q_014_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
         }
       ],
-      "authorityView": "儿科医生、育儿百科建议：整理排气、拍嗝、安抚、就医红旗信号；同时结合月龄、精神状态和症状趋势判断。",
+      "authorityView": "儿科医生、育儿百科建议：整理排气、拍嗝、安抚、需要及时就医的表现；同时结合月龄、精神状态和症状趋势判断。",
       "authoritySourceIds": [
         "a_pediatrician",
         "a_nutrition",
@@ -2113,7 +2114,7 @@ const questionResultData = {
         },
         {
           "id": "q_017_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -2208,7 +2209,7 @@ const questionResultData = {
         },
         {
           "id": "q_018_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -2303,7 +2304,7 @@ const questionResultData = {
         },
         {
           "id": "q_019_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -2398,7 +2399,7 @@ const questionResultData = {
         },
         {
           "id": "q_020_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -2493,7 +2494,7 @@ const questionResultData = {
         },
         {
           "id": "q_021_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -2513,7 +2514,7 @@ const questionResultData = {
         "皮疹、腹泻或呼吸异常",
         "进食时反复呛咳或吞咽困难"
       ],
-      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现红旗信号，不要等平台共识，请及时就医或拨打当地急救电话。",
+      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现需要及时就医的表现，不要只等线上答案，请及时就医或拨打当地急救电话。",
       "relatedQuestions": [
         "q_019",
         "q_020",
@@ -2589,7 +2590,7 @@ const questionResultData = {
         },
         {
           "id": "q_024_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -2684,7 +2685,7 @@ const questionResultData = {
         },
         {
           "id": "q_027_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -2779,7 +2780,7 @@ const questionResultData = {
         },
         {
           "id": "q_028_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -2873,7 +2874,7 @@ const questionResultData = {
         },
         {
           "id": "q_030_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -2893,7 +2894,7 @@ const questionResultData = {
         "体重增长不佳",
         "疑似疼痛或疾病表现"
       ],
-      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现红旗信号，不要等平台共识，请及时就医或拨打当地急救电话。",
+      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现需要及时就医的表现，不要只等线上答案，请及时就医或拨打当地急救电话。",
       "relatedQuestions": [
         "q_027",
         "q_028"
@@ -2968,7 +2969,7 @@ const questionResultData = {
         },
         {
           "id": "q_034_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -3063,7 +3064,7 @@ const questionResultData = {
         },
         {
           "id": "q_039_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -3158,7 +3159,7 @@ const questionResultData = {
         },
         {
           "id": "q_041_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -3252,7 +3253,7 @@ const questionResultData = {
         },
         {
           "id": "q_043_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -3290,8 +3291,8 @@ const questionResultData = {
       "priority": "P0",
       "riskLevel": "中",
       "isHighRisk": false,
-      "mainstreamConsensus": "主流共识认为：从饿、困、尿布、胀气、疾病等排查，列红旗信号。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
-      "conclusion": "主流共识认为：从饿、困、尿布、胀气、疾病等排查，列红旗信号。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
+      "mainstreamConsensus": "主流共识认为：从饿、困、尿布、胀气、疾病等排查，列需要及时就医的表现。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
+      "conclusion": "主流共识认为：从饿、困、尿布、胀气、疾病等排查，列需要及时就医的表现。先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医。",
       "sourceCount": 140,
       "expertCount": 50,
       "confidenceLevel": "较高",
@@ -3302,7 +3303,7 @@ const questionResultData = {
           "title": "主流做法：按条件判断",
           "percentage": 60,
           "type": "majority",
-          "summary": "从饿、困、尿布、胀气、疾病等排查，列红旗信号",
+          "summary": "从饿、困、尿布、胀气、疾病等排查，列需要及时就医的表现",
           "color": "#7EA66A"
         },
         {
@@ -3333,7 +3334,7 @@ const questionResultData = {
         {
           "id": "q_047_r2",
           "title": "匹配当前场景",
-          "description": "从饿、困、尿布、胀气、疾病等排查，列红旗信号",
+          "description": "从饿、困、尿布、胀气、疾病等排查，列需要及时就医的表现",
           "icon": "问",
           "tone": "orange"
         },
@@ -3346,13 +3347,13 @@ const questionResultData = {
         },
         {
           "id": "q_047_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
         }
       ],
-      "authorityView": "儿科医生、育儿百科建议：从饿、困、尿布、胀气、疾病等排查，列红旗信号；同时结合月龄、精神状态和症状趋势判断。",
+      "authorityView": "儿科医生、育儿百科建议：从饿、困、尿布、胀气、疾病等排查，列需要及时就医的表现；同时结合月龄、精神状态和症状趋势判断。",
       "authoritySourceIds": [
         "a_pediatrician",
         "a_parenting_wiki",
@@ -3440,7 +3441,7 @@ const questionResultData = {
         },
         {
           "id": "q_050_r4",
-          "title": "出现红旗信号先就医",
+          "title": "出现异常表现先就医",
           "description": "若命中下方安全提醒，应优先联系医生或线下就诊。",
           "icon": "!",
           "tone": "red"
@@ -3460,7 +3461,7 @@ const questionResultData = {
         "面色发青或意识异常",
         "处理后仍持续咳嗽、呕吐或不适"
       ],
-      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现红旗信号，不要等平台共识，请及时就医或拨打当地急救电话。",
+      "safetyNotice": "高风险问题请优先看安全提醒：一旦出现需要及时就医的表现，不要只等线上答案，请及时就医或拨打当地急救电话。",
       "relatedQuestions": [
         "q_001",
         "q_002"

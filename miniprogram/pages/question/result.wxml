@@ -25,9 +25,16 @@
     </view>
     <view class="related-grid">
       <view wx:for="{{fallbackQuestions}}" wx:key="id" class="tap-card related-card card" bindtap="goQuestion" data-id="{{item.id}}">
+        <view class="related-top">
+          <image class="related-icon pixel-img" src="{{item.tagIconPath}}" mode="aspectFit" />
+          <text class="related-tag">{{item.tag}}</text>
+        </view>
         <view class="related-title">{{item.shortTitle}}</view>
         <view class="related-sub">{{item.summary}}</view>
-        <view class="related-arrow">›</view>
+        <view class="related-footer">
+          <text>查看答案</text>
+          <view class="related-arrow">›</view>
+        </view>
       </view>
     </view>
   </view>
@@ -100,17 +107,7 @@
             <view class="tool-panel-close" catchtap="closeToolPanel">×</view>
           </view>
           <view class="tool-panel-list">
-            <view wx:for="{{result.tools}}" wx:key="id" class="tap-card tool-card" bindtap="openTool" data-id="{{item.id}}">
-              <image class="tool-icon pixel-img" src="{{item.iconPath}}" mode="aspectFit" />
-              <view class="tool-main">
-                <view class="tool-head">
-                  <view class="tool-label">{{item.label}}</view>
-                  <view class="tool-title">{{item.title}}</view>
-                </view>
-                <view class="tool-desc">{{item.desc}}</view>
-              </view>
-              <view class="tool-action">{{item.actionText}}</view>
-            </view>
+            <tool-card wx:for="{{result.tools}}" wx:key="id" tool="{{item}}" bind:select="openTool" />
           </view>
           <view class="tool-panel-more" bindtap="goToolRecords">
             <view>
@@ -214,12 +211,20 @@
     <view wx:if="{{result.relatedQuestionItems.length}}" class="section">
       <view class="section-head">
         <view class="section-title">相关问题</view>
+        <view class="section-hint section-link" bindtap="goSearch">更多问题</view>
       </view>
       <view class="related-grid">
         <view wx:for="{{result.relatedQuestionItems}}" wx:key="id" class="tap-card related-card card" bindtap="goQuestion" data-id="{{item.id}}">
+          <view class="related-top">
+            <image class="related-icon pixel-img" src="{{item.tagIconPath}}" mode="aspectFit" />
+            <text class="related-tag">{{item.tag}}</text>
+          </view>
           <view class="related-title">{{item.shortTitle}}</view>
-          <view class="related-sub">{{item.summary}}</view>
-          <view class="related-arrow">›</view>
+          <view class="related-sub">{{item.relatedSummary}}</view>
+          <view class="related-footer">
+            <text>查看答案</text>
+            <view class="related-arrow">›</view>
+          </view>
         </view>
       </view>
     </view>

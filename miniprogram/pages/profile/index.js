@@ -6,7 +6,7 @@ const PROFILE_EDIT_INTENT_KEY = 'parenting_profile_edit_intent'
 function buildAgeOptions() {
   const monthOptions = Array.from({ length: 25 }, (_, index) => `${index}个月`)
   const yearOptions = Array.from({ length: 17 }, (_, index) => `${index + 2}岁`)
-  return ['未设置'].concat(monthOptions, yearOptions)
+  return monthOptions.concat(yearOptions)
 }
 
 function getBabyIcon(gender) {
@@ -42,7 +42,7 @@ Page({
     isEditingBaby: false,
     ageOptions,
     ageIndex: initialAgeIndex > -1 ? initialAgeIndex : 0,
-    genderOptions: ['未设置', '男宝', '女宝'],
+    genderOptions: ['男宝', '女宝'],
     genderIndex: 0,
     babyIconTone: getBabyIcon(initialProfile.baby.gender).babyIconTone,
     favoriteCount: 0,
@@ -190,14 +190,14 @@ Page({
     const index = Number(event.detail.value || 0)
     this.setData({
       ageIndex: index,
-      'draftBaby.age': this.data.ageOptions[index] || '未设置'
+      'draftBaby.age': this.data.ageOptions[index] || this.data.ageOptions[0]
     })
   },
 
   onGenderChange(event) {
     this.onProfilePickerClose()
     const index = Number(event.detail.value || 0)
-    const gender = this.data.genderOptions[index] || '未设置'
+    const gender = this.data.genderOptions[index] || this.data.genderOptions[0]
     const icon = getBabyIcon(gender)
     this.setData({
       genderIndex: index,

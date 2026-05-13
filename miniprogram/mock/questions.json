@@ -8,7 +8,7 @@
       "id": "fever_care",
       "name": "发烧护理",
       "icon": "温",
-      "description": "发热判断、退烧护理、用药和就医红旗信号。"
+      "description": "发热判断、退烧护理、用药和需要及时就医的表现。"
     },
     {
       "id": "common_illness",
@@ -177,8 +177,8 @@
     {
       "id": "q_005",
       "seedId": "Q005",
-      "title": "宝宝发烧什么情况必须去医院？",
-      "shortTitle": "发烧什么情况必须去医院？",
+      "title": "宝宝发烧什么情况要去医院？",
+      "shortTitle": "发烧什么情况要去医院？",
       "categoryId": "fever_care",
       "categoryName": "发烧/疾病护理",
       "scene": "就医判断",
@@ -190,14 +190,15 @@
       "tags": [
         "发烧",
         "就医",
-        "红旗信号"
+        "需要及时就医的表现"
       ],
       "searchTerms": [
         "发烧多久去医院",
-        "宝宝高烧不退怎么办"
+        "宝宝高烧不退怎么办",
+        "宝宝发烧什么情况必须去医院"
       ],
-      "summary": "突出精神差、呼吸异常、抽搐、脱水、持续发热等红旗信号。",
-      "resultFocus": "突出精神差、呼吸异常、抽搐、脱水、持续发热等红旗信号",
+      "summary": "突出精神差、呼吸异常、抽搐、脱水、持续发热等需要及时就医的表现。",
+      "resultFocus": "突出精神差、呼吸异常、抽搐、脱水、持续发热等需要及时就医的表现",
       "sourceUrl": "https://ontariofamilyphysicians.ca/wp-content/uploads/2023/08/ocfp_actionsparentscantake-simplified-chinese.pdf",
       "updatedAt": "2026-04-30T00:00:00+08:00"
     },
@@ -358,8 +359,8 @@
         "二月闹怎么办",
         "肠胀气排气操有用吗"
       ],
-      "summary": "整理排气、拍嗝、安抚、就医红旗信号。",
-      "resultFocus": "整理排气、拍嗝、安抚、就医红旗信号",
+      "summary": "整理排气、拍嗝、安抚、需要及时就医的表现。",
+      "resultFocus": "整理排气、拍嗝、安抚、需要及时就医的表现",
       "sourceUrl": "https://www.dealmoon.com/cn/what-to-do-if-baby-gets-sick/570574.html",
       "updatedAt": "2026-04-30T00:00:00+08:00"
     },
@@ -736,8 +737,8 @@
         "宝宝哭闹不止怎么办",
         "怎么安抚"
       ],
-      "summary": "从饿、困、尿布、胀气、疾病等排查，列红旗信号。",
-      "resultFocus": "从饿、困、尿布、胀气、疾病等排查，列红旗信号",
+      "summary": "从饿、困、尿布、胀气、疾病等排查，列需要及时就医的表现。",
+      "resultFocus": "从饿、困、尿布、胀气、疾病等排查，列需要及时就医的表现",
       "sourceUrl": "https://www.mayoclinic.org/zh-hans/healthy-lifestyle/infant-and-toddler-health/in-depth/healthy-baby/art-20047793",
       "updatedAt": "2026-04-30T00:00:00+08:00"
     },

@@ -1,0 +1,46 @@
+<view class="page baby-edit-page">
+  <view class="edit-head">
+    <image class="edit-icon pixel-img" src="{{profileIconPaths.family}}" mode="aspectFit" />
+    <view class="edit-copy">
+      <view class="edit-title">宝宝信息</view>
+      <view class="edit-sub">完善后会自动带回刚才的小工具</view>
+    </view>
+  </view>
+
+  <view class="edit-card card">
+    <view class="form-row">
+      <view class="form-label">宝宝昵称</view>
+      <input class="form-input" value="{{draftBaby.name}}" data-field="name" bindinput="onBabyInput" placeholder="例如：小满" />
+    </view>
+    <picker class="form-picker-row" mode="selector" range="{{ageOptions}}" value="{{ageIndex}}" bindchange="onAgeChange">
+      <view class="form-row picker-row">
+        <view class="form-label">月龄</view>
+        <view class="picker-value">{{draftBaby.age || '未设置'}}</view>
+        <view class="picker-arrow"></view>
+      </view>
+    </picker>
+    <picker class="form-picker-row" mode="selector" range="{{genderOptions}}" value="{{genderIndex}}" bindchange="onGenderChange">
+      <view class="form-row picker-row">
+        <view class="form-label">性别</view>
+        <view class="picker-value">{{draftBaby.gender || '未设置'}}</view>
+        <view class="picker-arrow"></view>
+      </view>
+    </picker>
+    <view class="form-row">
+      <view class="form-label">过敏史</view>
+      <input class="form-input" value="{{draftBaby.allergy}}" data-field="allergy" bindinput="onBabyInput" placeholder="例如：蛋白过敏 / 暂无记录" />
+    </view>
+  </view>
+
+  <view class="tip-card card">
+    <view class="tip-title">放心记录</view>
+    <view class="tip-text">宝宝信息只会保存在这台手机里。保存后会回到刚才的记录页，宝宝和月龄会自动填好。</view>
+  </view>
+
+  <view class="bottom-actions">
+    <view class="bottom-actions-inner">
+      <view class="secondary-action" bindtap="cancelEdit">取消</view>
+      <view class="primary-action" bindtap="saveBaby">保存并返回</view>
+    </view>
+  </view>
+</view>

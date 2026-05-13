@@ -12,7 +12,7 @@ const RISK_CATEGORY_NOTICES = {
 function getRiskNotice(result) {
   if (!result) return ''
   if (result.isHighRisk || result.riskLevel === '高') {
-    return '高风险问题请先看红旗信号：本页内容不能替代急救、医生诊断或线下处理，一旦情况紧急请立即就医或拨打当地急救电话。'
+    return '高风险问题请先看是否有需要及时就医的表现：本页内容不能替代急救、医生诊断或线下处理，一旦情况紧急请立即就医或拨打当地急救电话。'
   }
   return RISK_CATEGORY_NOTICES[result.categoryId] || ''
 }
@@ -88,7 +88,7 @@ function prepareResult(result) {
     riskNotice: getRiskNotice(result),
     profileHint: buildProfileHint(result),
     tools: toolService.getRecommendedTools(result),
-    dataSourceNote: '当前内容基于已整理题库和参考资料，不是实时联网搜索结果。上线后可由后台持续更新。',
+    dataSourceNote: '当前内容来自已整理的育儿资料，不是实时联网搜索结果。上线后可持续更新。',
     contentBoundaryNotice: '养娃新手村当前为本地数据 MVP，内容用于问前梳理和家长沟通参考，不提供诊断、处方或急救替代方案。'
   })
 }
@@ -188,7 +188,7 @@ Page({
 
   openTool(event) {
     if (!this.data.result) return
-    const toolId = event.currentTarget.dataset.id
+    const toolId = (event.detail && event.detail.id) || event.currentTarget.dataset.id
     const tool = (this.data.result.tools || []).find((item) => item.id === toolId)
     if (!tool) return
     this.closeToolPanel()

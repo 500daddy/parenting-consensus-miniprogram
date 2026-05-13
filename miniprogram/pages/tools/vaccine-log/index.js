@@ -104,6 +104,22 @@ function buildDraft(options) {
   }
 }
 
+function getProfileBabyFields() {
+  const profile = service.getProfile()
+  const baby = profile.baby || {}
+  return {
+    babyName: baby.name && baby.name !== '未设置' ? baby.name : '',
+    babyAge: baby.age && baby.age !== '未设置' ? baby.age : ''
+  }
+}
+
+function getBabyProfileState(draft) {
+  return {
+    isBabyProfileReady: Boolean(draft.babyName && draft.babyAge),
+    babyProfileHintText: '完善宝宝信息后，可自动带入宝宝和月龄。'
+  }
+}
+
 Page({
   data: {
     draft: {},
@@ -120,7 +136,22 @@ Page({
     minDate: getMinDate(),
     maxDate: getTodayDate(),
     maxScheduleDate: getMaxScheduleDate(),
+    isBabyProfileReady: false,
+    babyProfileHintText: '',
     actionIconPaths: service.actionIconPaths
+  },
+
+  onShow() {
+    if (!this.data.draft || !Object.keys(this.data.draft).length) return
+    const babyFields = getProfileBabyFields()
+    const nextDraft = Object.assign({}, this.data.draft, babyFields)
+    const babyProfileState = getBabyProfileState(nextDraft)
+    this.setData({
+      'draft.babyName': babyFields.babyName,
+      'draft.babyAge': babyFields.babyAge,
+      isBabyProfileReady: babyProfileState.isBabyProfileReady,
+      babyProfileHintText: babyProfileState.babyProfileHintText
+    })
   },
 
   onLoad(options) {
@@ -131,6 +162,7 @@ Page({
     const vaccinatedAtParts = getDateTimeParts(draft.vaccinatedAt)
     const reactionParts = getDateTimeParts(draft.reactionStartedAt || draft.vaccinatedAt)
     const nextVaccinationDate = draft.nextVaccinationAt || getTodayDate()
+    const babyProfileState = getBabyProfileState(draft)
     this.setData({
       draft: Object.assign({}, draft, {
         vaccinatedAt: `${vaccinatedAtParts.date} ${vaccinatedAtParts.time}`,
@@ -143,7 +175,9 @@ Page({
       vaccinatedAtTime: vaccinatedAtParts.time,
       reactionDate: reactionParts.date,
       reactionTime: reactionParts.time,
-      nextVaccinationDate
+      nextVaccinationDate,
+      isBabyProfileReady: babyProfileState.isBabyProfileReady,
+      babyProfileHintText: babyProfileState.babyProfileHintText
     })
   },
 
@@ -307,5 +341,9 @@ Page({
 
   goRecords() {
     wx.navigateTo({ url: '/pages/tools/records/index' })
+  },
+
+  goEditBabyProfile() {
+    wx.navigateTo({ url: '/pages/profile/baby-edit/index?from=vaccine_log' })
   }
 })

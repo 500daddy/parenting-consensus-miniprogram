@@ -8,22 +8,6 @@
     <button wx:if="{{records.length}}" class="btn-plain head-new-button" bindtap="goNewRecord">新建</button>
   </view>
 
-  <view class="tool-hub card">
-    <view class="tool-hub-head">
-      <view>
-        <view class="tool-hub-title">小工具</view>
-        <view class="tool-hub-sub">按需要选择，记录都只保存在本机</view>
-      </view>
-      <view class="tool-hub-count">{{availableTools.length}} 个</view>
-    </view>
-    <view class="tool-tabs">
-      <view wx:for="{{toolTabs}}" wx:key="id" class="tool-tab {{activeToolGroup === item.id ? 'active' : ''}}" data-group="{{item.id}}" bindtap="changeToolGroup">{{item.name}}</view>
-    </view>
-    <view class="tool-hub-grid">
-      <tool-card wx:for="{{visibleTools}}" wx:key="id" tool="{{item}}" bind:select="openTool" />
-    </view>
-  </view>
-
   <view wx:if="{{!records.length}}" class="records-empty card">
     <image class="records-empty-icon pixel-img" src="{{actionIconPaths.tools}}" mode="aspectFit" />
     <view class="records-empty-copy">

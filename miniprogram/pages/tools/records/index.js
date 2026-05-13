@@ -123,8 +123,6 @@ Page({
     showGrowthTools: true,
     showRecordTools: false,
     activeType: 'all',
-    activeToolGroup: 'all',
-    toolTabs: toolService.getToolHubTabs(),
     filterTabs: [
       { id: 'all', name: '全部' },
       { id: 'doctor', name: '就医' },
@@ -133,7 +131,6 @@ Page({
       { id: 'growth', name: '生长' }
     ],
     availableTools: toolService.getAllTools(),
-    visibleTools: toolService.getToolsByHubGroup('all'),
     actionIconPaths: service.actionIconPaths
   },
 
@@ -171,13 +168,8 @@ Page({
       showFeedingTools,
       showVaccineTools,
       showGrowthTools,
-      showRecordTools,
-      visibleTools: this.getVisibleTools(this.data.activeToolGroup)
+      showRecordTools
     })
-  },
-
-  getVisibleTools(group) {
-    return toolService.getToolsByHubGroup(group)
   },
 
   buildRecords(doctorRecords, feedingRecords, vaccineRecords, growthRecords, feedingExpanded, vaccineExpanded, growthExpanded, activeType) {
@@ -216,13 +208,6 @@ Page({
     })
   },
 
-  openTool(event) {
-    const id = event.detail && event.detail.id
-    const tool = (this.data.availableTools || []).find((item) => item.id === id)
-    if (!tool) return
-    wx.navigateTo({ url: tool.path })
-  },
-
   toggleFeedingRecords() {
     this.setData({
       isFeedingExpanded: !this.data.isFeedingExpanded
@@ -255,14 +240,6 @@ Page({
     const type = event.currentTarget.dataset.type || 'all'
     this.setData({ activeType: type })
     this.onShow()
-  },
-
-  changeToolGroup(event) {
-    const group = event.currentTarget.dataset.group || 'all'
-    this.setData({
-      activeToolGroup: group,
-      visibleTools: this.getVisibleTools(group)
-    })
   },
 
   editRecord(event) {

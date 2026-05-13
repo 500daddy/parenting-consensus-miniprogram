@@ -89,10 +89,10 @@ const glossaryTerms = {
     summary: '身体水分不足，宝宝可能表现为尿量明显变少、哭时眼泪少、口唇干、精神差。',
     reminder: '小宝宝脱水进展可能较快，持续呕吐、腹泻或高热时要特别留意。'
   },
-  '红旗信号': {
-    title: '红旗信号',
+  '需要及时就医的表现': {
+    title: '需要及时就医的表现',
     summary: '提示可能有风险、需要优先就医或咨询医生的表现，比如呼吸费力、精神明显变差、抽搐、尿量明显减少。',
-    reminder: '看到红旗信号时，不要只等平台答案，应优先线下处理。'
+    reminder: '看到需要及时就医的表现时，不要只等线上答案，应优先线下处理。'
   },
   '精神状态': {
     title: '精神状态',
@@ -141,7 +141,7 @@ const questionCopyOverrides = {
   },
   q_005: {
     summary: '3 个月内发热、精神差、呼吸异常、抽搐、脱水或持续高热时，应优先线下就医。',
-    resultFocus: '先识别必须就医的红旗信号'
+    resultFocus: '先识别必须及时就医的表现'
   },
   q_006: {
     summary: '发烧不建议捂汗，穿盖以舒适透气为主，出汗后及时换干衣，避免过热或着凉。',
@@ -164,8 +164,8 @@ const questionCopyOverrides = {
     resultFocus: '少量溢奶常见，喷射呕吐和体重问题要警惕'
   },
   q_014: {
-    summary: '先按拍嗝、竖抱、排气操、轻柔安抚、调整喂养节奏处理；有红旗信号及时就医。',
-    resultFocus: '给出居家处理顺序，再说明发热、呕吐、便血、精神差等红旗信号'
+    summary: '先按拍嗝、竖抱、排气操、轻柔安抚、调整喂养节奏处理；如果伴随发热、便血、反复呕吐、腹胀硬或精神差，要及时就医。',
+    resultFocus: '给出居家处理顺序，再说明哪些表现需要及时就医'
   },
   q_017: {
     summary: '几天不拉不一定就是便秘，关键看便便是否干硬、排便是否痛苦、肚子胀不胀。',
@@ -192,7 +192,7 @@ const questionCopyOverrides = {
     resultFocus: '1 岁前少盐少糖，不给蜂蜜'
   },
   q_027: {
-    summary: '夜醒先排查饥饿、出牙/不适、睡眠联想和白天作息；不必一上来就强行训练。',
+    summary: '夜醒先排查饥饿、出牙/不适、睡眠联想和白天作息；不必一上来就做睡眠训练。',
     resultFocus: '先排查原因，再逐步调整作息和安抚方式'
   },
   q_028: {
@@ -261,7 +261,7 @@ const resultCopyOverrides = {
     minoritySummary: '寒战、精神差、呼吸异常或持续高热时，不要只靠穿盖调整。',
     reasonTitle: '避免过热',
     reasonDescription: '发热护理的目标是舒服和安全，不是把汗捂出来。',
-    authorityView: '儿科医生和健康科普通常建议发热时保持舒适穿盖和适宜室温，不建议通过捂汗来退烧。'
+    authorityView: '儿科医生和健康科普资料通常建议发热时保持舒适穿盖和适宜室温，不建议通过捂汗来退烧。'
   }),
   q_011: makeDirectResultOverride('q_011', {
     conclusion: '主流共识认为：多数新生儿常见约每 2-3 小时吃一次，一天可能 8-12 次，也可能因为猛长期或安抚需求更频繁。不要只卡钟点，宝宝有寻乳、吸吮、醒来找奶等饥饿信号时可按需喂；早产、低体重、黄疸、吃奶弱或体重增长不理想时按医生建议。',
@@ -307,7 +307,7 @@ const resultCopyOverrides = {
     minoritySummary: '喷射状、绿色、带血、体重不增或精神差，不按普通吐奶处理。',
     reasonTitle: '区分溢奶和呕吐',
     reasonDescription: '少量溢奶和喷射状呕吐风险不同，不能只看“吐了”。',
-    authorityView: '儿科医生和健康科普通常区分生理性溢奶和异常呕吐；喷射状呕吐、体重不增或精神差应就医。'
+    authorityView: '儿科医生和健康科普资料通常区分生理性溢奶和异常呕吐；喷射状呕吐、体重不增或精神差应就医。'
   }),
   q_014: makeDirectResultOverride('q_014', {
     conclusion: '主流共识认为：宝宝胀气或肠绞痛，可以先按顺序做几件低风险护理：喂后拍嗝、竖抱一会儿、轻柔排气操或腹部按摩、抱哄安抚、减少过度刺激，并观察喂养节奏。若伴随发热、反复呕吐、便血、肚子明显胀硬、吃奶差或精神差，应及时就医。',
@@ -315,15 +315,15 @@ const resultCopyOverrides = {
     mainSummary: '拍嗝、竖抱、排气操、轻柔按摩和安抚，是家庭可先尝试的步骤。',
     neutralTitle: '减少过度刺激',
     neutralSummary: '过度喂养、频繁换奶或环境刺激，可能让不适更明显。',
-    minorityTitle: '红旗信号先就医',
+    minorityTitle: '异常表现先就医',
     minoritySummary: '发热、呕吐、便血、肚子胀硬、精神差，不适合只按胀气处理。',
     reasonTitle: '按步骤试，不反复折腾',
     reasonDescription: '每次选一两个低风险动作观察反应，不需要频繁换奶或反复大幅调整。',
-    authorityView: '儿科医生和健康科普通常建议用拍嗝、安抚、排气等方式缓解胀气；若伴随异常症状应线下评估。',
+    authorityView: '儿科医生和健康科普资料通常建议用拍嗝、安抚、排气等方式缓解胀气；若伴随异常症状应线下评估。',
     reasonUpdates: {
       q_014_r1: { title: '先从喂后处理开始', description: '拍嗝、竖抱和观察吃奶节奏，通常比立刻换奶或用药更稳妥。' },
       q_014_r3: { title: '环境和节奏也会影响', description: '过度刺激、太饿再喂、吃太急或频繁换奶，都可能让胀气更明显。' },
-      q_014_r4: { title: '红旗信号不当胀气拖', description: '发热、便血、反复呕吐、腹胀硬或精神差，需要及时就医。' }
+      q_014_r4: { title: '别把异常表现当胀气拖', description: '发热、便血、反复呕吐、腹胀硬或精神差，需要及时就医。' }
     }
   }),
   q_017: makeDirectResultOverride('q_017', {
@@ -336,7 +336,7 @@ const resultCopyOverrides = {
     minoritySummary: '明显腹胀、呕吐、便血或精神差，不建议只在家等排便。',
     reasonTitle: '看便便性状',
     reasonDescription: '攒肚和便秘处理不同，不能只按“几天”判断。',
-    authorityView: '儿科医生和健康科普通常建议结合便便性状、排便痛苦程度、腹胀和精神吃奶情况判断便秘。'
+    authorityView: '儿科医生和健康科普资料通常建议结合便便性状、排便痛苦程度、腹胀和精神吃奶情况判断便秘。'
   }),
   q_019: makeDirectResultOverride('q_019', {
     conclusion: '主流共识认为：多数宝宝约 6 个月可以开始辅食，但还要看准备信号：能较好控制头颈、能坐稳或扶坐、对食物有兴趣、挺舌反射减少。不要过早添加，也不要因为焦虑强喂。',
@@ -389,7 +389,7 @@ const resultCopyOverrides = {
     minoritySummary: '渗液、结痂、破溃、明显红肿或睡眠受影响时，应让医生评估。',
     reasonTitle: '减少刺激',
     reasonDescription: '湿疹容易反复，护理重点是修护皮肤屏障和避开刺激。',
-    authorityView: '皮肤科、儿科医生和健康科普通常建议湿疹护理以保湿和避刺激为基础；严重、感染或反复加重需就医。'
+    authorityView: '皮肤科、儿科医生和健康科普资料通常建议湿疹护理以保湿和避刺激为基础；严重、感染或反复加重需就医。'
   }),
   q_041: makeDirectResultOverride('q_041', {
     conclusion: '主流共识认为：宝宝身高体重“不达标”先别只盯一次数字。建议先复核测量是否准确，把身高体重记录到生长曲线里，看连续几次是否下滑；同时回看奶量/辅食、睡眠、近期疾病和排便。若连续增长变慢、跨越多条曲线下滑、吃奶差或伴随疾病表现，应找儿保医生评估。',
@@ -434,8 +434,8 @@ const resultCopyOverrides = {
     minorityTitle: '伴随异常先就医',
     minoritySummary: '发热、呕吐、外伤、呼吸异常、吃奶差或精神差，不适合只按闹觉处理。',
     reasonTitle: '按顺序排查',
-    reasonDescription: '哭闹是信号，不是诊断；先排除常见需求，再看红旗信号。',
-    authorityView: '儿科医生和健康科普通常建议对哭闹先排查基础需求和身体不适；难以安抚或伴随异常表现需就医。',
+    reasonDescription: '哭闹是信号，不是诊断；先排除常见需求，再看是否有需要及时就医的表现。',
+    authorityView: '儿科医生和健康科普资料通常建议对哭闹先排查基础需求和身体不适；难以安抚或伴随异常表现需就医。',
     reasonUpdates: {
       q_047_r1: { title: '先查最常见原因', description: '饿、困、尿布、冷热和胀气最容易处理，先排查能最快减少无效焦虑。' },
       q_047_r3: { title: '看能否被安抚', description: '能逐渐安抚、精神和吃奶正常，多数可继续观察；完全哄不好要谨慎。' },
@@ -448,12 +448,12 @@ const resultCopyOverrides = {
     viewpoints: [
       { id: 'q_002_v1', title: '主流做法：状态好可短时间温水洗', percentage: 60, type: 'majority', summary: '精神尚可、无寒战时，温水洗或擦浴可帮助舒适，但重点是别着凉。', color: '#7EA66A' },
       { id: 'q_002_v2', title: '补充观点：不舒服时先擦浴或休息', percentage: 27, type: 'neutral', summary: '明显乏力、畏寒、哭闹或家长不确定时，先不洗，改为休息、补液和观察。', color: '#F4A340' },
-      { id: 'q_002_v3', title: '少数观点：低月龄或高风险更谨慎', percentage: 13, type: 'minority', summary: '低月龄、持续高热、精神差或伴随红旗信号时，优先咨询医生。', color: '#F36F5B' }
+      { id: 'q_002_v3', title: '少数观点：低月龄或高风险更谨慎', percentage: 13, type: 'minority', summary: '低月龄、持续高热、精神差或伴随呼吸异常、抽搐、尿量明显减少等表现时，优先咨询医生。', color: '#F36F5B' }
     ],
     reasonUpdates: {
       q_002_r2: { title: '看状态再决定', description: '洗澡不是退烧必选项，关键看精神状态、是否寒战和洗后能否保暖。' }
     },
-    authorityView: '儿科医生和健康科普通常建议：发热护理以舒适、补液、休息和观察为主；温水洗浴可以用于舒适护理，但避免冷水、酒精擦浴和洗后受凉。'
+    authorityView: '儿科医生和健康科普资料通常建议：发热护理以舒适、补液、休息和观察为主；温水洗浴可以用于舒适护理，但避免冷水、酒精擦浴和洗后受凉。'
   },
   q_003: {
     conclusion: '主流共识认为：温水擦浴可以作为让宝宝舒服一点的护理方式，但不是必须退烧手段。宝宝精神尚可、能接受时可短时间擦拭；不要用酒精擦浴、冰水澡或反复强行物理降温。',
@@ -461,7 +461,7 @@ const resultCopyOverrides = {
     viewpoints: [
       { id: 'q_003_v1', title: '主流做法：温水擦浴看舒适度', percentage: 60, type: 'majority', summary: '如果宝宝能接受，温水擦浴可帮助散热和舒适，擦后及时保暖。', color: '#7EA66A' },
       { id: 'q_003_v2', title: '补充观点：不强行反复擦', percentage: 27, type: 'neutral', summary: '如果宝宝哭闹、寒战或明显不舒服，反复擦浴可能更折腾。', color: '#F4A340' },
-      { id: 'q_003_v3', title: '少数观点：红旗信号先就医', percentage: 13, type: 'minority', summary: '精神差、呼吸异常、抽搐、疑似脱水或低月龄发热时，不应只依赖物理降温。', color: '#F36F5B' }
+      { id: 'q_003_v3', title: '少数观点：异常表现先就医', percentage: 13, type: 'minority', summary: '精神差、呼吸异常、抽搐、疑似脱水或低月龄发热时，不应只依赖物理降温。', color: '#F36F5B' }
     ],
     reasonUpdates: {
       q_003_r2: { title: '避免刺激降温', description: '酒精、冰水或过冷刺激可能让宝宝更不舒服，也不适合作为家庭常规护理。' }
@@ -485,12 +485,12 @@ const resultCopyOverrides = {
     conclusion: '主流共识认为：宝宝发烧时，3 个月以内发热、精神明显变差、呼吸困难、抽搐、疑似脱水、持续高热不退或家长无法判断，都应优先线下就医或咨询医生。',
     mainstreamConsensus: '主流共识认为：宝宝发烧时，3 个月以内发热、精神明显变差、呼吸困难、抽搐、疑似脱水、持续高热不退或家长无法判断，都应优先线下就医或咨询医生。',
     viewpoints: [
-      { id: 'q_005_v1', title: '主流做法：红旗信号先就医', percentage: 55, type: 'majority', summary: '精神差、呼吸异常、抽搐、脱水、持续高热等，比单一温度更需要重视。', color: '#7EA66A' },
+      { id: 'q_005_v1', title: '主流做法：异常表现先就医', percentage: 55, type: 'majority', summary: '精神差、呼吸异常、抽搐、脱水、持续高热等，比单一温度更需要重视。', color: '#7EA66A' },
       { id: 'q_005_v2', title: '补充观点：低月龄更谨慎', percentage: 30, type: 'neutral', summary: '3 个月以内宝宝发热，建议更早联系医生，不建议只在家观察。', color: '#F4A340' },
       { id: 'q_005_v3', title: '少数观点：不确定也可就医', percentage: 15, type: 'minority', summary: '家长无法判断、症状进展快或宝宝和平时明显不同，也适合尽快咨询。', color: '#F36F5B' }
     ],
     reasonUpdates: {
-      q_005_r2: { title: '红旗信号优先', description: '发热是否危险，重点看精神、呼吸、尿量、抽搐和持续时间。' }
+      q_005_r2: { title: '异常表现优先', description: '发热是否危险，重点看精神、呼吸、尿量、抽搐和持续时间。' }
     },
     authorityView: '儿科医生和医学指南通常建议：低月龄发热、精神差、呼吸异常、抽搐、脱水或持续高热时，应优先线下评估。'
   },
@@ -544,11 +544,11 @@ const resultCopyOverrides = {
     reasonUpdates: {
       q_021_r2: { title: '先停食并记录', description: '疑似过敏时先停止该新食物，记录时间、吃了什么和出现了什么反应。' }
     },
-    authorityView: '儿科、过敏科医生和健康科普通常建议：添加新食物时少量单一引入，出现呼吸异常、面部肿胀或全身反应要及时就医。'
+    authorityView: '儿科、过敏科医生和健康科普资料通常建议：添加新食物时少量单一引入，出现呼吸异常、面部肿胀或全身反应要及时就医。'
   },
   q_027: {
-    conclusion: '主流共识认为：宝宝夜醒频繁先不必急着“训练”。先排查饥饿、出牙或身体不适、睡眠联想、白天小睡和作息变化；如果没有红旗信号，再用固定睡前流程、逐步减少强依赖安抚来调整。',
-    mainstreamConsensus: '主流共识认为：宝宝夜醒频繁先不必急着“训练”。先排查饥饿、出牙或身体不适、睡眠联想、白天小睡和作息变化；如果没有红旗信号，再用固定睡前流程、逐步减少强依赖安抚来调整。',
+    conclusion: '主流共识认为：宝宝夜醒频繁先不必急着“训练”。先排查饥饿、出牙或身体不适、睡眠联想、白天小睡和作息变化；如果没有需要及时就医的表现，再用固定睡前流程、逐步减少强依赖安抚来调整。',
+    mainstreamConsensus: '主流共识认为：宝宝夜醒频繁先不必急着“训练”。先排查饥饿、出牙或身体不适、睡眠联想、白天小睡和作息变化；如果没有需要及时就医的表现，再用固定睡前流程、逐步减少强依赖安抚来调整。',
     viewpoints: [
       { id: 'q_027_v1', title: '主流做法：先排查原因', percentage: 52, type: 'majority', summary: '夜醒常和月龄、饥饿、睡眠联想、出牙/不适和白天作息有关。', color: '#7EA66A' },
       { id: 'q_027_v2', title: '补充观点：逐步调整作息', percentage: 33, type: 'neutral', summary: '固定睡前流程、减少过度疲劳、逐步改变入睡方式，比突然强行改变更稳。', color: '#F4A340' },
@@ -583,7 +583,7 @@ const resultCopyOverrides = {
     reasonUpdates: {
       q_039_r2: { title: '看持续时间和状态', description: '接种后反应是否需要处理，重点看体温趋势、精神、呼吸和过敏表现。' }
     },
-    authorityView: '接种门诊和健康科普通常提醒：接种后低热、局部红肿可先观察；严重过敏、高热不退或精神差应联系医生或接种门诊。'
+    authorityView: '接种门诊和健康科普资料通常提醒：接种后低热、局部红肿可先观察；严重过敏、高热不退或精神差应联系医生或接种门诊。'
   },
   q_050: {
     conclusion: '主流共识认为：先判断宝宝还能不能咳、哭和呼吸。能咳能哭时鼓励继续咳出并观察；如果不能出声、呼吸困难、脸色发青或意识异常，应立即按急救流程处理并拨打当地急救电话。',
@@ -703,6 +703,14 @@ function enrichQuestion(question) {
   })
 }
 
+function buildRelatedQuestionItem(question) {
+  if (!question) return null
+  const summary = question.resultFocus || question.summary || ''
+  return Object.assign({}, question, {
+    relatedSummary: summary.length > 34 ? `${summary.slice(0, 34)}...` : summary
+  })
+}
+
 function enrichSource(source) {
   if (!source) return source
   return Object.assign({}, source, {
@@ -798,7 +806,12 @@ function getQuestionResult(options) {
   result.authoritySources = result.authoritySourceIds.map((sourceId) => {
     return enrichSource(data.authoritySources.find((source) => source.id === sourceId))
   }).filter(Boolean)
-  result.relatedQuestionItems = result.relatedQuestions.map(getQuestionById).filter((item) => item && hasQuestionResult(item.id))
+  result.relatedQuestionItems = result.relatedQuestions
+    .map(getQuestionById)
+    .filter((item) => item && hasQuestionResult(item.id))
+    .slice(0, 2)
+    .map(buildRelatedQuestionItem)
+    .filter(Boolean)
   return result
 }
 

@@ -1,7 +1,6 @@
 const service = require('../../../utils/mockService.js')
 const toolService = require('../../../utils/toolService.js')
 
-const PROFILE_EDIT_INTENT_KEY = 'parenting_profile_edit_intent'
 const sourceTypeOptions = ['家里测量', '体检测量', '医院测量']
 const metricFields = {
   weight: { label: '体重', min: 1, max: 80 },
@@ -42,6 +41,16 @@ function buildDraft(options) {
     headCircumference: '',
     sourceType: sourceTypeOptions[0],
     notes: ''
+  }
+}
+
+function getProfileBabyFields() {
+  const profile = service.getProfile()
+  const baby = profile.baby || {}
+  return {
+    babyName: baby.name && baby.name !== '未设置' ? baby.name : '',
+    babyAge: baby.age && baby.age !== '未设置' ? baby.age : '',
+    babyGender: baby.gender && baby.gender !== '未设置' ? baby.gender : ''
   }
 }
 
@@ -120,6 +129,21 @@ Page({
     })
   },
 
+  onShow() {
+    if (!this.data.draft || !Object.keys(this.data.draft).length) return
+    const babyFields = getProfileBabyFields()
+    const pageState = getGrowthPageState()
+    this.setData({
+      'draft.babyName': babyFields.babyName,
+      'draft.babyAge': babyFields.babyAge,
+      'draft.babyGender': babyFields.babyGender,
+      trendSummary: pageState.trendSummary,
+      growthReference: pageState.growthReference,
+      isBabyProfileReady: pageState.isBabyProfileReady,
+      babyProfileHintText: pageState.babyProfileHintText
+    })
+  },
+
   onInput(event) {
     const field = event.currentTarget.dataset.field
     if (!field) return
@@ -186,12 +210,7 @@ Page({
   },
 
   goEditBabyProfile() {
-    try {
-      wx.setStorageSync(PROFILE_EDIT_INTENT_KEY, 'growth_log')
-    } catch (error) {
-      // Ignore storage failures; profile page is still reachable.
-    }
-    wx.switchTab({ url: '/pages/profile/index' })
+    wx.navigateTo({ url: '/pages/profile/baby-edit/index?from=growth_log' })
   },
 
   goRecords() {

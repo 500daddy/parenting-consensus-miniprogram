@@ -151,6 +151,40 @@
   font-weight: 800;
 }
 
+.profile-hint {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-top: 16rpx;
+  padding: 16rpx;
+  border: 2rpx solid #d8e8cf;
+  border-radius: 14rpx;
+  background: #f7fbf2;
+}
+
+.profile-hint-text {
+  flex: 1;
+  min-width: 0;
+  color: #5f4a3a;
+  font-size: 23rpx;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.profile-hint-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 168rpx;
+  height: 52rpx;
+  padding: 0 14rpx;
+  border-radius: 999rpx;
+  background: #75b86f;
+  color: #ffffff;
+  font-size: 23rpx;
+  font-weight: 900;
+}
+
 .field-group {
   display: flex;
   flex-direction: column;
