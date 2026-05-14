@@ -7,6 +7,7 @@ Page({
     activeCategory: 'all',
     suggestions: [],
     history: [],
+    showBackToTop: false,
     sectionTitle: '推荐问题',
     sectionHint: '按热度排序'
   },
@@ -55,6 +56,19 @@ Page({
   clearKeyword() {
     this.setData({ keyword: '' })
     this.updateSuggestions('')
+  },
+
+  onPageScroll(event) {
+    const shouldShow = event.scrollTop > 640
+    if (shouldShow === this.data.showBackToTop) return
+    this.setData({ showBackToTop: shouldShow })
+  },
+
+  scrollToTop() {
+    if (wx.pageScrollTo) {
+      wx.pageScrollTo({ scrollTop: 0, duration: 220 })
+    }
+    this.setData({ showBackToTop: false })
   },
 
   changeCategory(event) {

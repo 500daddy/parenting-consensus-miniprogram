@@ -171,6 +171,7 @@ if (customTabBar) {
 }
 
 const data = require(path.join(miniprogramRoot, 'mock/data.js'))
+const questionExpansion = require(path.join(miniprogramRoot, 'mock/questionExpansion.js'))
 const service = require(path.join(miniprogramRoot, 'utils/mockService.js'))
 const toolService = require(path.join(miniprogramRoot, 'utils/toolService.js'))
 const resultPageSource = fs.readFileSync(path.join(miniprogramRoot, 'pages/question/result.wxml'), 'utf8')
@@ -208,6 +209,7 @@ const customTabBarLogicSource = fs.readFileSync(path.join(miniprogramRoot, 'cust
 const customTabBarStyleSource = fs.readFileSync(path.join(miniprogramRoot, 'custom-tab-bar/index.wxss'), 'utf8')
 const categoryIds = new Set(data.categories.map((item) => item.id))
 const questionIds = new Set(data.questions.map((item) => item.id))
+const expansionQuestionIds = new Set(questionExpansion.questions.map((item) => item.id))
 const authorityIds = new Set(data.authoritySources.map((item) => item.id))
 const authorityTypes = new Set(['doctor', 'guide', 'wiki', 'creator'])
 const trustLevels = new Set(['high', 'medium'])
@@ -283,12 +285,12 @@ assertInvariant(resultPageSource.indexOf('tool-float-icon pixel-img" src="{{acti
 assertInvariant(resultPageSource.indexOf('<tool-card') > -1 && resultPageConfig.usingComponents && resultPageConfig.usingComponents['tool-card'], 'Result tool panel should reuse the shared tool card component')
 assertInvariant(resultLogicSource.indexOf('event.detail && event.detail.id') > -1, 'Result tool opener should accept tool-card component events')
 assertInvariant(resultPageSource.indexOf('还有更多小工具') > -1 && resultLogicSource.indexOf('goToolRecords') > -1, 'Result tool panel should link users to the broader tool records page')
-assertInvariant(resultPageSource.indexOf('内容说明') > -1, 'Result page should keep the MVP content boundary as a lower-priority note')
 assertInvariant(resultPageSource.indexOf('更多内容') === -1 && resultLogicSource.indexOf('goAuthority') === -1, 'Result page should keep authority content inline instead of pushing users to a secondary page')
 assertInvariant(resultPageSource.indexOf('为什么这么认为') === -1 && resultPageSource.indexOf('权威内容推荐') === -1, 'Result page should avoid bulky explanation/source sections that distract from the answer')
 assertInvariant(resultPageSource.indexOf('判断依据') > -1 && resultPageSource.indexOf('参考来源') > -1, 'Result page should use concise evidence and reference sections')
 assertInvariant(resultLogicSource.indexOf('buildEvidenceItems') > -1 && resultLogicSource.indexOf('buildReferenceSources') > -1, 'Result page should derive evidence and references from the current question result')
 assertInvariant(resultPageSource.indexOf('高可信') === -1 && resultPageSource.indexOf('中可信') === -1 && resultLogicSource.indexOf('处理条件') === -1 && resultLogicSource.indexOf('安全边界') === -1, 'Result reference copy should avoid internal or overly professional wording')
+assertInvariant(resultLogicSource.indexOf('本地数据 MVP') === -1, 'Result content boundary should use user-facing copy instead of MVP wording')
 assertInvariant(profilePageSource.indexOf('隐私说明') > -1, 'Profile page should expose the MVP privacy explanation')
 assertInvariant(profilePageSource.indexOf('审核备注') === -1 && profileLogicSource.indexOf('showReviewNote') === -1, 'Profile page should not expose internal review notes to users')
 assertInvariant(profilePageSource.indexOf('反馈说明') > -1 && profileLogicSource.indexOf('还没有在线提交入口') > -1, 'Profile page should provide an honest seed-user feedback explanation without implying backend submission')
@@ -390,6 +392,50 @@ for (const question of data.questions) {
   assertInvariant(categoryIds.has(question.categoryId), `Question ${question.id} uses unknown category ${question.categoryId}`)
 }
 
+assertInvariant(questionExpansion.questions.length >= 81, 'Question expansion should include at least 81 high-frequency questions')
+assertInvariant(service.getAvailableQuestions().length >= 107, 'Available question library should include the sleep separation supplement')
+assertInvariant(service.questions.filter((item) => item.id.indexOf('qx_') === 0).length === questionExpansion.questions.length, 'Service export should include expansion questions')
+assertInvariant(service.searchQuestions('宝宝鼻塞睡不好怎么办？')[0].id === 'qx_010', 'Expanded question search should match nasal congestion queries')
+assertInvariant(service.searchQuestions('宝宝吃鸡蛋过敏怎么办？')[0].id === 'qx_022', 'Expanded question search should match egg allergy queries')
+assertInvariant(service.searchQuestions('宝宝退烧药吐出来了要不要补吃？')[0].id === 'qx_037', 'Expanded question search should match antipyretic vomit queries')
+assertInvariant(service.searchQuestions('宝宝咳嗽能喝蜂蜜水吗？')[0].id === 'qx_039', 'Expanded question search should match honey cough queries')
+assertInvariant(service.searchQuestions('宝宝辅食要不要加油？')[0].id === 'qx_054', 'Expanded question search should match solid food oil queries')
+assertInvariant(service.searchQuestions('宝宝辅食颗粒感怎么过渡？')[0].id === 'qx_060', 'Expanded question search should match solid food texture queries')
+assertInvariant(service.searchQuestions('宝宝频繁夜醒是缺钙吗？')[0].id === 'qx_061', 'Expanded question search should match night waking queries')
+assertInvariant(service.searchQuestions('宝宝打疫苗前有点流鼻涕能打吗？')[0].id === 'qx_075', 'Expanded question search should match vaccination runny nose queries')
+assertInvariant(service.searchQuestions('宝宝一岁还不会叫爸爸妈妈怎么办？')[0].id === 'qx_080', 'Expanded question search should match language development queries')
+assertInvariant(service.searchQuestions('宝宝什么时候适合分床睡？')[0].id === 'qx_081', 'Expanded question search should match sleep separation queries')
+
+for (const question of questionExpansion.questions) {
+  assertInvariant(categoryIds.has(question.categoryId), `Expansion question ${question.id} uses unknown category ${question.categoryId}`)
+  assertInvariant(!questionIds.has(question.id), `Expansion question ${question.id} duplicates base question id`)
+  assertInvariant(question.searchTerms && question.searchTerms.length >= 3, `Expansion question ${question.id} should include search terms`)
+  assertInvariant(service.hasQuestionResult(question.id), `Expansion question ${question.id} should have a result`)
+}
+
+for (const id of Object.keys(questionExpansion.questionResults)) {
+  const rawResult = questionExpansion.questionResults[id]
+  const result = service.getQuestionResult({ id })
+  assertInvariant(expansionQuestionIds.has(id), `Expansion result ${id} has no matching question`)
+  assertInvariant(rawResult.questionId === id, `Expansion result ${id} has mismatched questionId ${rawResult.questionId}`)
+  assertInvariant(categoryIds.has(rawResult.categoryId), `Expansion result ${id} uses unknown category ${rawResult.categoryId}`)
+  assertInvariant(rawResult.viewpoints.length === 3, `Expansion result ${id} should include exactly 3 viewpoints`)
+  assertInvariant(rawResult.reasons.length === 4, `Expansion result ${id} should include exactly 4 reasons`)
+  assertInvariant(rawResult.warnings.length === 4, `Expansion result ${id} should include exactly 4 warnings`)
+  assertInvariant(rawResult.authoritySourceIds.length >= 2, `Expansion result ${id} should include at least 2 authority sources`)
+  assertInvariant(rawResult.viewpoints.reduce((sum, item) => sum + item.percentage, 0) === 100, `Expansion result ${id} viewpoint percentages do not sum to 100`)
+  assertInvariant(rawResult.reasons.every((item) => reasonTones.has(item.tone)), `Expansion result ${id} has invalid reason tone`)
+  assertInvariant(Boolean(rawResult.disclaimer), `Expansion result ${id} should include disclaimer`)
+  for (const sourceId of rawResult.authoritySourceIds) {
+    assertInvariant(authorityIds.has(sourceId), `Expansion result ${id} references missing authority source ${sourceId}`)
+  }
+  assertInvariant(Boolean(result), `Missing service result for expansion ${id}`)
+  if (result) {
+    assertInvariant(result.relatedQuestionItems.length <= 2, `Expansion related questions for ${id} should be limited to two cards`)
+    assertInvariant(result.authoritySources.length >= 2, `Expansion result ${id} should expose authority sources`)
+  }
+}
+
 for (const id of Object.keys(data.questionResults)) {
   const result = service.getQuestionResult({ id })
   const rawResult = data.questionResults[id]
@@ -464,6 +510,7 @@ const calibratedAnswerIds = [
   'q_030', 'q_034', 'q_039', 'q_041', 'q_043', 'q_047', 'q_050'
 ]
 const plannerPhrases = ['展示', '解释不同', '按条件判断', '匹配当前场景', '先看宝宝的精神、呼吸、进食饮水和症状变化，再决定居家观察、咨询医生或就医']
+const internalOrHardPhrases = ['红旗', '本地数据 MVP', '安全边界', '处理条件', '适应证', '线下评估', '儿科科普', '气道痉挛', '急性病期']
 for (const id of calibratedAnswerIds) {
   const result = service.getQuestionResult({ id })
   assertInvariant(Boolean(result), `Calibrated answer ${id} should be available`)
@@ -478,9 +525,26 @@ for (const id of calibratedAnswerIds) {
     plannerPhrases.forEach((phrase) => {
       assertInvariant(resultCopy.indexOf(phrase) === -1, `Calibrated answer ${id} still contains planner phrase "${phrase}"`)
     })
+    internalOrHardPhrases.forEach((phrase) => {
+      assertInvariant(resultCopy.indexOf(phrase) === -1, `Calibrated answer ${id} still contains hard-to-user phrase "${phrase}"`)
+    })
     assertInvariant(/^主流共识认为：/.test(result.conclusion), `Calibrated answer ${id} should keep the consensus prefix`)
     assertInvariant(result.conclusion.length >= 40, `Calibrated answer ${id} conclusion is too thin`)
     assertInvariant(result.authorityView.indexOf('儿科科普通常') === -1, `Calibrated answer ${id} has awkward authority copy`)
+  }
+}
+for (const question of service.getAvailableQuestions()) {
+  const result = service.getQuestionResult({ id: question.id })
+  const userFacingCopy = [
+    question.title,
+    question.summary,
+    result && result.conclusion,
+    result && result.authorityView,
+    ...((result && result.viewpoints) || []).map((item) => `${item.title} ${item.summary}`),
+    ...((result && result.reasons) || []).map((item) => `${item.title} ${item.description}`)
+  ].join(' ')
+  for (const phrase of internalOrHardPhrases) {
+    assertInvariant(userFacingCopy.indexOf(phrase) === -1, `Question ${question.id} contains hard-to-user phrase "${phrase}"`)
   }
 }
 
@@ -507,6 +571,20 @@ const growthQuestionTools = toolService.getRecommendedTools(service.getQuestionR
 assertInvariant(growthQuestionTools.indexOf('growth_log') > -1 && growthQuestionTools.indexOf('vaccine_log') === -1, 'Growth questions should recommend growth tools without unrelated vaccine logs')
 const vaccineQuestionTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'q_039' })).map((item) => item.id)
 assertInvariant(vaccineQuestionTools.indexOf('vaccine_log') > -1, 'Vaccine reaction questions should recommend the vaccine log')
+const feverMedicineTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'q_004' })).map((item) => item.id)
+assertInvariant(feverMedicineTools.indexOf('doctor_visit') > -1 && feverMedicineTools.indexOf('growth_log') === -1, 'Fever medicine questions should not recommend growth records just because weight is mentioned')
+const solidFoodTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'qx_053' })).map((item) => item.id)
+assertInvariant(solidFoodTools.indexOf('feeding_log') === -1, 'Solid food planning questions should not recommend the milk amount log')
+const growthHeadTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'qx_078' })).map((item) => item.id)
+assertInvariant(growthHeadTools.indexOf('growth_log') > -1 && growthHeadTools.indexOf('vaccine_log') === -1, 'Head circumference questions should recommend growth records without vaccine logs')
+const plainWaterTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'q_018' })).map((item) => item.id)
+assertInvariant(plainWaterTools.indexOf('feeding_log') === -1, 'Plain water questions should not recommend the milk amount log')
+const sleepSeparationTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'qx_081' })).map((item) => item.id)
+assertInvariant(sleepSeparationTools.length === 0, 'Sleep separation questions should not recommend unrelated tools')
+for (const term of ['黄疸', '喘鸣', '湿疹', '热疹', '荨麻疹', '囟门', '肌张力', '发育倒退', '血红蛋白', '铁剂', '鼻后滴漏', '雾化', '复方止咳感冒药']) {
+  assertInvariant(Boolean(service.getGlossaryEntry(term)), `Glossary should explain professional term ${term}`)
+  assertInvariant(service.buildGlossarySegments(`宝宝出现${term}怎么办`).some((item) => item.term === term), `Glossary segmentation should mark professional term ${term}`)
+}
 assertInvariant(toolService.formatRecordTime('2026-05-07 11:43') === '5月7日 11:43', 'Tool record time formatter should parse local date-time strings')
 const missingGrowthReference = toolService.getGrowthStandardReference({ age: '未设置', gender: '男宝' })
 assertInvariant(missingGrowthReference.available === false && missingGrowthReference.message.indexOf('完善宝宝档案') > -1, 'Growth reference should guide users to complete baby profile')

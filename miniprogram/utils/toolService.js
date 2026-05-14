@@ -39,7 +39,7 @@ const toolMatchRules = [
   {
     id: 'feeding_log',
     categories: ['feeding'],
-    keywords: ['奶量', '喝奶', '吃奶', '喂奶', '母乳', '配方奶', '辅食', '吐奶', '溢奶', '体重增长']
+    keywords: ['奶量', '喝奶', '吃奶', '喂奶', '母乳', '配方奶', '吐奶', '溢奶', '混合喂养']
   },
   {
     id: 'vaccine_log',
@@ -49,7 +49,7 @@ const toolMatchRules = [
   {
     id: 'growth_log',
     categories: ['vaccine_check', 'feeding', 'early_development'],
-    keywords: ['身高', '体重', '头围', '生长', '曲线', '不达标', '增长', '体检指标']
+    keywords: ['身高', '身长', '头围', '生长', '曲线', '不达标', '体重增长', '体检指标', '偏大', '偏小']
   }
 ]
 
@@ -530,12 +530,25 @@ function getRecommendedTools(context) {
     Array.isArray(question.aliases) ? question.aliases.join(' ') : ''
   ].filter(Boolean).join(' ')
   const categoryId = source.categoryId || question.categoryId || ''
+  const titleText = [source.title, question.title, question.shortTitle, question.scene].filter(Boolean).join(' ')
   const scored = toolMatchRules.map((rule, index) => {
     const categoryScore = rule.categories.indexOf(categoryId) > -1 ? 1 : 0
     const keywordScore = rule.keywords.reduce((sum, keyword) => (
       text.indexOf(keyword) > -1 ? sum + 1 : sum
     ), 0)
-    const score = keywordScore * 3 + categoryScore
+    let score = keywordScore * 3 + categoryScore
+    if (rule.id === 'feeding_log' && categoryId === 'solid_food') {
+      score = 0
+    }
+    if (rule.id === 'feeding_log' && titleText.indexOf('喝水') > -1) {
+      score = 0
+    }
+    if (rule.id === 'vaccine_log' && titleText.indexOf('疫苗') === -1 && titleText.indexOf('接种') === -1) {
+      score = 0
+    }
+    if (rule.id === 'growth_log' && !/(身高|身长|体重不达标|体重增长|头围|生长|曲线|偏大|偏小|发育|体检指标)/.test(titleText + text)) {
+      score = 0
+    }
     return { rule, index, score, keywordScore }
   }).filter((item) => item.score > 0 && (item.keywordScore > 0 || item.rule.id === 'doctor_visit'))
     .sort((left, right) => right.score - left.score || left.index - right.index)

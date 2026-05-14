@@ -1364,26 +1364,6 @@
   border-color: #ead8b8;
 }
 
-.content-note {
-  margin-top: 16rpx;
-  padding: 20rpx;
-  background: #fffaf3;
-  border-color: #ead8b8;
-}
-
-.content-note-title {
-  color: #7a5d28;
-  font-size: 24rpx;
-  font-weight: 800;
-}
-
-.content-note-text {
-  margin-top: 8rpx;
-  color: #8b8178;
-  font-size: 23rpx;
-  line-height: 1.45;
-}
-
 .related-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

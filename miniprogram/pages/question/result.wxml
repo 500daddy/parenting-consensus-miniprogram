@@ -210,10 +210,6 @@
         </view>
       </view>
       <view class="disclaimer card">{{result.disclaimer}}</view>
-      <view class="content-note card">
-        <view class="content-note-title">内容说明</view>
-        <view class="content-note-text">{{result.contentBoundaryNotice}}</view>
-      </view>
     </view>
 
     <view wx:if="{{result.relatedQuestionItems.length}}" class="section">

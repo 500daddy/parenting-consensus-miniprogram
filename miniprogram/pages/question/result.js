@@ -189,8 +189,7 @@ function prepareResult(result) {
     evidenceItems: buildEvidenceItems(result),
     referenceSummary: buildReferenceSummary(result),
     referenceSources: buildReferenceSources(result),
-    dataSourceNote: '当前内容来自已整理的育儿资料，不是实时联网搜索结果。上线后可持续更新。',
-    contentBoundaryNotice: '养娃新手村当前为本地数据 MVP，内容用于问前梳理和家长沟通参考，不提供诊断、处方或急救替代方案。'
+    dataSourceNote: '当前内容来自已整理的育儿资料，不是实时联网搜索结果。上线后可持续更新。'
   })
 }
 

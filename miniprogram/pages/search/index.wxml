@@ -61,4 +61,8 @@
       </view>
     </view>
   </view>
+
+  <view wx:if="{{showBackToTop}}" class="back-top-btn" bindtap="scrollToTop" aria-label="回到顶部">
+    <view class="back-top-arrow"></view>
+  </view>
 </view>

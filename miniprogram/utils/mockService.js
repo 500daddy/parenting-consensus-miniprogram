@@ -1,4 +1,5 @@
 const data = require('../mock/data.js')
+const questionExpansion = require('../mock/questionExpansion.js')
 
 const HISTORY_KEY = 'parenting_consensus_history'
 const FAVORITES_KEY = 'parenting_consensus_favorites'
@@ -73,6 +74,8 @@ const reasonIconPaths = {
   red: actionIconPaths.warning,
   purple: actionIconPaths.question
 }
+const allQuestions = data.questions.concat(questionExpansion.questions || [])
+const allQuestionResults = Object.assign({}, data.questionResults, questionExpansion.questionResults || {})
 const glossaryTerms = {
   '生理性溢奶': {
     title: '生理性溢奶',
@@ -123,6 +126,71 @@ const glossaryTerms = {
     title: '卡噎',
     summary: '食物或异物堵住气道，宝宝可能咳不出声、呼吸困难、脸色发青。',
     reminder: '这是急救场景，出现呼吸困难或意识异常时应立即急救并联系急救电话。'
+  },
+  '复方止咳感冒药': {
+    title: '复方止咳感冒药',
+    summary: '一种药里可能同时含有止咳、退热、抗过敏等多种成分，儿童自行使用更容易用错或重复用药。',
+    reminder: '小宝宝咳嗽、流鼻涕时，不建议家长自行使用这类药，最好先问医生或药师。'
+  },
+  '雾化': {
+    title: '雾化',
+    summary: '把药液变成细小雾气，让宝宝通过吸入的方式用药。它是一种给药方式，不是所有咳嗽都需要。',
+    reminder: '是否雾化、用什么药、用多少，需要医生根据呼吸情况判断。'
+  },
+  '喘鸣': {
+    title: '喘鸣',
+    summary: '呼吸时听到像吹哨一样的声音，常提示气道可能变窄或呼吸不太顺。',
+    reminder: '如果伴随呼吸费力、胸口起伏明显、嘴唇发青或精神差，要及时就医。'
+  },
+  '黄疸': {
+    title: '黄疸',
+    summary: '宝宝皮肤或眼白发黄，多见于新生儿。轻重和持续时间需要结合月龄、吃奶、精神和检测结果判断。',
+    reminder: '黄疸明显、吃奶差、嗜睡或医生要求复查时，要按时就诊。'
+  },
+  '湿疹': {
+    title: '湿疹',
+    summary: '宝宝常见的反复皮肤问题，可能表现为发红、干燥、粗糙、痒，严重时会渗液或破溃。',
+    reminder: '基础护理是保湿和减少刺激；渗液、感染或痒到睡不好时要看医生。'
+  },
+  '热疹': {
+    title: '热疹',
+    summary: '常和闷热、出汗、穿盖过多有关的小红疹，凉快透气后可能会缓解。',
+    reminder: '如果皮疹反复、渗液、伴发热或家长分不清，建议让医生看一下。'
+  },
+  '荨麻疹': {
+    title: '荨麻疹',
+    summary: '皮肤上突然出现一片片凸起、发痒的风团，可能和过敏、感染或其他刺激有关。',
+    reminder: '如果同时有面部肿胀、咳喘、呼吸异常或全身反应，要及时就医。'
+  },
+  '囟门': {
+    title: '囟门',
+    summary: '宝宝头顶骨头还没有完全闭合的柔软区域，儿保体检时会结合头围和发育一起看。',
+    reminder: '如果囟门明显鼓起、凹陷，或伴随呕吐、嗜睡、抽搐，应及时就医。'
+  },
+  '肌张力': {
+    title: '肌张力',
+    summary: '可以简单理解为宝宝肌肉的松紧度。太紧、太软或左右明显不一样，都可能影响动作发育。',
+    reminder: '如果动作明显落后、姿势异常或左右不对称，建议做儿保或发育评估。'
+  },
+  '发育倒退': {
+    title: '发育倒退',
+    summary: '宝宝原本已经会的能力突然不会了，比如会翻身后又不会、会发声后明显减少。',
+    reminder: '这类变化不建议只在家观察，应尽快咨询儿保或发育专科。'
+  },
+  '血红蛋白': {
+    title: '血红蛋白',
+    summary: '血液检查里常用来判断是否贫血的指标之一，数值高低要结合宝宝月龄和医生解释看。',
+    reminder: '体检提示异常时，不要只看单个数字，按医生建议复查或处理。'
+  },
+  '铁剂': {
+    title: '铁剂',
+    summary: '用于补铁的药物或补充剂，常用于医生判断需要补铁或贫血治疗时。',
+    reminder: '铁剂不建议自行长期使用，剂量和时间应按医生建议。'
+  },
+  '鼻后滴漏': {
+    title: '鼻后滴漏',
+    summary: '鼻涕往喉咙后面流，可能刺激咽喉，让宝宝平躺或夜里更容易咳嗽。',
+    reminder: '如果伴随呼吸费力、喘鸣、持续高热或精神差，要及时就医。'
   }
 }
 
@@ -319,7 +387,7 @@ const resultCopyOverrides = {
     minoritySummary: '发热、呕吐、便血、肚子胀硬、精神差，不适合只按胀气处理。',
     reasonTitle: '按步骤试，不反复折腾',
     reasonDescription: '每次选一两个低风险动作观察反应，不需要频繁换奶或反复大幅调整。',
-    authorityView: '儿科医生和健康科普资料通常建议用拍嗝、安抚、排气等方式缓解胀气；若伴随异常症状应线下评估。',
+    authorityView: '儿科医生和健康科普资料通常建议用拍嗝、安抚、排气等方式缓解胀气；若伴随异常症状应去医院评估。',
     reasonUpdates: {
       q_014_r1: { title: '先从喂后处理开始', description: '拍嗝、竖抱和观察吃奶节奏，通常比立刻换奶或用药更稳妥。' },
       q_014_r3: { title: '环境和节奏也会影响', description: '过度刺激、太饿再喂、吃太急或频繁换奶，都可能让胀气更明显。' },
@@ -492,7 +560,7 @@ const resultCopyOverrides = {
     reasonUpdates: {
       q_005_r2: { title: '异常表现优先', description: '发热是否危险，重点看精神、呼吸、尿量、抽搐和持续时间。' }
     },
-    authorityView: '儿科医生和医学指南通常建议：低月龄发热、精神差、呼吸异常、抽搐、脱水或持续高热时，应优先线下评估。'
+    authorityView: '儿科医生和医学指南通常建议：低月龄发热、精神差、呼吸异常、抽搐、脱水或持续高热时，应优先去医院评估。'
   },
   q_008: {
     conclusion: '主流共识认为：宝宝咳嗽有痰多数先不急着吃止咳药，尤其不要自行用复方感冒止咳药。先观察呼吸是否费力、精神和进食是否正常；若喘憋、呼吸急促、高热、精神差或持续加重，应及时就医。',
@@ -505,7 +573,7 @@ const resultCopyOverrides = {
     reasonUpdates: {
       q_008_r2: { title: '药不一定是第一步', description: '咳嗽有痰先看呼吸和状态，儿童止咳感冒药需要谨慎使用。' }
     },
-    authorityView: '儿科科普和用药建议通常提醒：儿童咳嗽先看呼吸和精神状态，不建议自行给小宝宝使用复方止咳感冒药。'
+    authorityView: '儿科医生和用药建议通常提醒：儿童咳嗽先看呼吸和精神状态，不建议自行给小宝宝使用复方止咳感冒药。'
   },
   q_018: {
     conclusion: '主流共识认为：多数 6 个月前的健康宝宝不需要额外喝水，母乳或配方奶通常已经提供所需水分。若发热、腹泻、呕吐、脱水风险或医生特别建议，才需要按医生指导处理。',
@@ -726,15 +794,15 @@ function formatHeat(value) {
 }
 
 function getQuestionById(id) {
-  return enrichQuestion(data.questions.find((item) => item.id === id))
+  return enrichQuestion(allQuestions.find((item) => item.id === id))
 }
 
 function hasQuestionResult(id) {
-  return Boolean(id && data.questionResults[id])
+  return Boolean(id && allQuestionResults[id])
 }
 
 function getAvailableQuestions() {
-  return data.questions.filter((item) => hasQuestionResult(item.id)).slice().sort(sortQuestions).map(enrichQuestion)
+  return allQuestions.filter((item) => hasQuestionResult(item.id)).slice().sort(sortQuestions).map(enrichQuestion)
 }
 
 function getPriorityQuestions(priority) {
@@ -795,8 +863,8 @@ function applyResultCopyOverride(result) {
 
 function getQuestionResult(options) {
   const id = options && options.id ? options.id : getDefaultQuestionId(options && options.keyword)
-  if (!id || !data.questionResults[id]) return null
-  const result = applyResultCopyOverride(Object.assign({}, data.questionResults[id]))
+  if (!id || !allQuestionResults[id]) return null
+  const result = applyResultCopyOverride(Object.assign({}, allQuestionResults[id]))
   result.question = getQuestionById(id)
   result.category = getCategory(result.categoryId)
   result.donutStyle = buildDonutStyle(result.viewpoints)
@@ -1117,7 +1185,7 @@ module.exports = {
   PENDING_CATEGORY_KEY,
   PROFILE_KEY,
   categories: data.categories.map(enrichCategory),
-  questions: data.questions.map(enrichQuestion),
+  questions: allQuestions.map(enrichQuestion),
   profile: normalizeProfile(EMPTY_PROFILE),
   actionIconPaths,
   profileIconPaths,

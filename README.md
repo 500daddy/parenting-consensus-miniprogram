@@ -22,7 +22,7 @@
 - 我的：本地登录入口、宝宝档案编辑、历史、反馈说明、补充问题、隐私说明、免责声明。
 - 结果页：主流共识、观点比例、权威内容、安全提醒、宝宝档案提醒、前置健康内容边界和高风险提示。
 - 上线准备：发布态配置已开启请求域名校验和代码压缩；当前版本仍保留 source map，方便小范围种子用户阶段排查问题。
-- 当前热门 6 个问题均已补齐完整 mock 共识结果，可从首页、搜索、分类、收藏、历史等入口闭环查看。
+- 当前已有 107 个完整 mock 共识结果，可从首页、搜索、分类、收藏、历史等入口闭环查看；其中 81 个来自高频问题扩充。
 - 首页 hero 使用本地新手村家庭插画资源：`miniprogram/assets/hero/village-hero.png`。
 
 ## 当前待办
@@ -37,6 +37,7 @@
 ## 数据与扩展
 
 - mock 数据在 `miniprogram/mock/data.js`。
+- 高频扩展题库在 `miniprogram/mock/questionExpansion.js`。
 - 查询、搜索、收藏和历史逻辑在 `miniprogram/utils/mockService.js`。
 - 本地缓存 key：`parenting_consensus_history`、`parenting_consensus_favorites`、`parenting_consensus_profile`。
 - 通用卡片组件已预留在 `miniprogram/components/`，后续可逐步替换页面内重复卡片。
