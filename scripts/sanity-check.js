@@ -232,13 +232,15 @@ assertInvariant(resultPageSource.indexOf('judgement-pill') > -1, 'Result page sh
 assertInvariant(resultPageSource.indexOf('bindtap="changeQuestion"') > -1, 'Result page change button should switch to another question in place')
 assertInvariant(resultPageSource.indexOf('wx:if="{{!noResult}}" class="change-btn"') > -1, 'Result page should hide change button when there is no search result')
 assertInvariant(resultLogicSource.indexOf('changeQuestion()') > -1 && resultLogicSource.indexOf('loadResult({ id: nextQuestion.id })') > -1, 'Result page should load the next question without leaving the page')
-assertInvariant(resultLogicSource.indexOf('slice(0, 4)') > -1, 'Result no-match page should show four fallback questions')
+assertInvariant(resultLogicSource.indexOf('getFallbackQuestions(keyword)') > -1, 'Result no-match page should use keyword-aware fallback questions')
 assertInvariant(resultPageSource.indexOf('relatedSummary') > -1 && resultPageSource.indexOf('related-footer') > -1, 'Related question cards should use concise copy and clear actions')
 assertInvariant(resultPageSource.indexOf('section-link" bindtap="goSearch"') > -1, 'Related question header action should be tappable')
 assertInvariant(resultPageSource.indexOf('提交这个问题') > -1 && resultLogicSource.indexOf('addPendingQuestion') > -1, 'Result empty state should let users submit missing questions')
 assertInvariant(searchPageSource.indexOf('提交这个问题') > -1 && searchLogicSource.indexOf('addPendingQuestion') > -1, 'Search empty state should collect missing questions')
 assertInvariant(resultLogicSource.indexOf('validatePendingQuestion') > -1 && searchLogicSource.indexOf('validatePendingQuestion') > -1, 'Missing-question submission should validate question quality before storing')
 assertInvariant(searchPageSource.indexOf('宝宝夜里频繁醒怎么办') > -1 && resultPageSource.indexOf('宝宝夜里频繁醒怎么办') > -1, 'Missing-question empty states should show a complete-question example')
+assertInvariant(searchPageSource.indexOf('submitTip') > -1 && searchLogicSource.indexOf('buildSubmitTip') > -1, 'Search missing-question validation should show a friendly inline tip')
+assertInvariant(searchLogicSource.indexOf('帮我补成宝宝问题') > -1 && searchLogicSource.indexOf('applySubmitTipAction') > -1, 'Search missing-question tip should offer one-tap wording help')
 assertInvariant(searchPageSource.indexOf('scroll-view class="category-scroll"') === -1, 'Search categories should be fully visible instead of hidden behind horizontal scroll')
 assertInvariant(resultLogicSource.indexOf('不是实时联网搜索结果') > -1, 'Result page should disclose that answers are not live web search results')
 for (const file of ['utils/mockService.js', 'pages/question/result.js', 'mock/questions.json', 'mock/questionResult.json', 'mock/data.js']) {
@@ -392,8 +394,8 @@ for (const question of data.questions) {
   assertInvariant(categoryIds.has(question.categoryId), `Question ${question.id} uses unknown category ${question.categoryId}`)
 }
 
-assertInvariant(questionExpansion.questions.length >= 81, 'Question expansion should include at least 81 high-frequency questions')
-assertInvariant(service.getAvailableQuestions().length >= 107, 'Available question library should include the sleep separation supplement')
+assertInvariant(questionExpansion.questions.length >= 82, 'Question expansion should include at least 82 high-frequency questions')
+assertInvariant(service.getAvailableQuestions().length >= 108, 'Available question library should include real user feedback supplements')
 assertInvariant(service.questions.filter((item) => item.id.indexOf('qx_') === 0).length === questionExpansion.questions.length, 'Service export should include expansion questions')
 assertInvariant(service.searchQuestions('宝宝鼻塞睡不好怎么办？')[0].id === 'qx_010', 'Expanded question search should match nasal congestion queries')
 assertInvariant(service.searchQuestions('宝宝吃鸡蛋过敏怎么办？')[0].id === 'qx_022', 'Expanded question search should match egg allergy queries')
@@ -405,6 +407,7 @@ assertInvariant(service.searchQuestions('宝宝频繁夜醒是缺钙吗？')[0].
 assertInvariant(service.searchQuestions('宝宝打疫苗前有点流鼻涕能打吗？')[0].id === 'qx_075', 'Expanded question search should match vaccination runny nose queries')
 assertInvariant(service.searchQuestions('宝宝一岁还不会叫爸爸妈妈怎么办？')[0].id === 'qx_080', 'Expanded question search should match language development queries')
 assertInvariant(service.searchQuestions('宝宝什么时候适合分床睡？')[0].id === 'qx_081', 'Expanded question search should match sleep separation queries')
+assertInvariant(service.searchQuestions('小朋友多大可以穿拖鞋？')[0].id === 'qx_082', 'Expanded question search should match slipper age queries')
 
 for (const question of questionExpansion.questions) {
   assertInvariant(categoryIds.has(question.categoryId), `Expansion question ${question.id} uses unknown category ${question.categoryId}`)
@@ -553,6 +556,11 @@ assertInvariant(loggedInProfile.isLoggedIn === true, 'Profile login should mark 
 service.clearPendingQuestions()
 assertInvariant(service.validatePendingQuestion('发烧').valid === false, 'Pending question validation should reject broad one-word symptoms')
 assertInvariant(service.validatePendingQuestion('宝宝夜里频繁醒怎么办？').valid === true, 'Pending question validation should accept complete parenting questions')
+assertInvariant(service.validatePendingQuestion('小朋友多大可以穿拖鞋？').valid === true, 'Pending question validation should accept child lifestyle questions')
+const missingParentingTermValidation = service.validatePendingQuestion('什么时候可以用枕头？')
+assertInvariant(missingParentingTermValidation.valid === false && missingParentingTermValidation.message.indexOf('宝宝') > -1, 'Pending question validation should gently explain how to add a baby context')
+const missingQuestionIntentValidation = service.validatePendingQuestion('宝宝用枕头睡觉')
+assertInvariant(missingQuestionIntentValidation.valid === false && missingQuestionIntentValidation.message.indexOf('提问') > -1, 'Pending question validation should gently explain how to make it a question')
 assertInvariant(service.addPendingQuestion('发烧', 'sanity').valid === false, 'Pending question pool should not store broad one-word symptoms')
 service.addPendingQuestion('宝宝总是揉眼睛怎么办', 'sanity')
 service.addPendingQuestion('宝宝总是揉眼睛怎么办', 'sanity')
@@ -581,6 +589,10 @@ const plainWaterTools = toolService.getRecommendedTools(service.getQuestionResul
 assertInvariant(plainWaterTools.indexOf('feeding_log') === -1, 'Plain water questions should not recommend the milk amount log')
 const sleepSeparationTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'qx_081' })).map((item) => item.id)
 assertInvariant(sleepSeparationTools.length === 0, 'Sleep separation questions should not recommend unrelated tools')
+const slipperTools = toolService.getRecommendedTools(service.getQuestionResult({ id: 'qx_082' })).map((item) => item.id)
+assertInvariant(slipperTools.length === 0, 'Slipper age questions should not recommend unrelated tools')
+const unknownShoeFallbacks = service.getFallbackQuestions('小朋友能不能穿凉鞋').map((item) => item.categoryId)
+assertInvariant(unknownShoeFallbacks.indexOf('early_development') > -1 && unknownShoeFallbacks.filter((item) => item === 'fever_care').length < 2, 'Fallback questions for shoe-related misses should avoid fever-only recommendations')
 for (const term of ['黄疸', '喘鸣', '湿疹', '热疹', '荨麻疹', '囟门', '肌张力', '发育倒退', '血红蛋白', '铁剂', '鼻后滴漏', '雾化', '复方止咳感冒药']) {
   assertInvariant(Boolean(service.getGlossaryEntry(term)), `Glossary should explain professional term ${term}`)
   assertInvariant(service.buildGlossarySegments(`宝宝出现${term}怎么办`).some((item) => item.term === term), `Glossary segmentation should mark professional term ${term}`)

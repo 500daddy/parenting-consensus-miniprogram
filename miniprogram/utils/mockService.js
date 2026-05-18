@@ -810,6 +810,33 @@ function getPriorityQuestions(priority) {
   return getAvailableQuestions().filter((item) => item.priority === target)
 }
 
+function pickUniqueQuestions(ids, existingIds) {
+  const used = existingIds || {}
+  return ids.map(getQuestionById)
+    .filter((item) => {
+      if (!item || used[item.id] || !hasQuestionResult(item.id)) return false
+      used[item.id] = true
+      return true
+    })
+}
+
+function getFallbackQuestions(keyword) {
+  const text = (keyword || '').trim()
+  const used = {}
+  const matchedRule = FALLBACK_CATEGORY_RULES.find((rule) => (
+    rule.keywords.some((keywordItem) => text.indexOf(keywordItem) > -1)
+  ))
+  const categoryQuestions = matchedRule
+    ? getQuestionsByCategory(matchedRule.categoryId).filter((item) => {
+      if (used[item.id]) return false
+      used[item.id] = true
+      return true
+    }).slice(0, 2)
+    : []
+  const defaultQuestions = pickUniqueQuestions(DEFAULT_FALLBACK_QUESTION_IDS, used)
+  return categoryQuestions.concat(defaultQuestions).slice(0, 4)
+}
+
 function getDefaultQuestionId(keyword) {
   const text = (keyword || '').trim()
   const availableQuestions = getAvailableQuestions()
@@ -996,7 +1023,8 @@ const PENDING_QUESTION_TERMS = [
   '吃', '喝', '奶', '母乳', '辅食', '过敏', '湿疹', '红屁股',
   '睡', '夜醒', '哭', '胀气', '肠绞痛', '便秘', '拉肚子', '腹泻',
   '呕吐', '吐奶', '疫苗', '体检', '身高', '体重', '翻身', '坐',
-  '爬', '走', '头围', '牙', '出牙', '皮疹', '误食', '噎', '分床'
+  '爬', '走', '走路', '头围', '牙', '出牙', '皮疹', '误食', '噎',
+  '分床', '小朋友', '拖鞋', '鞋', '穿', '学步', '摔倒'
 ]
 const PENDING_QUESTION_INTENTS = [
   '吗', '么', '怎么办', '怎么', '要不要', '能不能', '可以', '需要',
@@ -1005,6 +1033,41 @@ const PENDING_QUESTION_INTENTS = [
 const TOO_BROAD_PENDING_QUESTIONS = [
   '发烧', '发热', '睡觉', '吃奶', '喝奶', '辅食', '咳嗽', '湿疹',
   '奶粉', '疫苗', '哭', '便秘', '腹泻', '拉肚子', '过敏', '分床'
+]
+const DEFAULT_FALLBACK_QUESTION_IDS = ['q_011', 'q_027', 'q_001', 'q_041']
+const FALLBACK_CATEGORY_RULES = [
+  {
+    categoryId: 'early_development',
+    keywords: ['鞋', '拖鞋', '穿', '走路', '摔', '跑', '跳', '学步', '发育', '翻身', '坐', '爬']
+  },
+  {
+    categoryId: 'sleep',
+    keywords: ['睡', '夜醒', '分床', '抱睡', '哄睡', '小睡']
+  },
+  {
+    categoryId: 'feeding',
+    keywords: ['奶', '喝奶', '吃奶', '母乳', '奶粉', '奶瓶', '吐奶']
+  },
+  {
+    categoryId: 'solid_food',
+    keywords: ['辅食', '吃饭', '吃菜', '蛋黄', '肉', '酸奶', '喝水']
+  },
+  {
+    categoryId: 'skin_allergy',
+    keywords: ['皮肤', '红疹', '湿疹', '热疹', '痒', '蚊子', '过敏']
+  },
+  {
+    categoryId: 'vaccine_check',
+    keywords: ['疫苗', '接种', '体检', '头围', '贫血']
+  },
+  {
+    categoryId: 'common_illness',
+    keywords: ['咳嗽', '鼻涕', '鼻塞', '感冒', '呼吸']
+  },
+  {
+    categoryId: 'fever_care',
+    keywords: ['发烧', '发热', '退烧', '体温']
+  }
 ]
 
 function normalizePendingQuestion(keyword) {
@@ -1020,18 +1083,18 @@ function validatePendingQuestion(keyword) {
     return { valid: false, text: '', message: '先输入想问的问题' }
   }
   if (text.length < PENDING_QUESTION_MIN_LENGTH || TOO_BROAD_PENDING_QUESTIONS.indexOf(text) > -1) {
-    return { valid: false, text, message: '问题写完整一点' }
+    return { valid: false, text, message: '再写具体一点就可以提交' }
   }
   if (text.length > PENDING_QUESTION_MAX_LENGTH) {
     return { valid: false, text, message: '问题精简到40字内' }
   }
   const hasParentingTerm = PENDING_QUESTION_TERMS.some((term) => text.indexOf(term) > -1)
   if (!hasParentingTerm) {
-    return { valid: false, text, message: '请写成育儿问题' }
+    return { valid: false, text, reason: 'missing_parenting_term', message: '可以加上宝宝、孩子或小朋友再提交' }
   }
   const hasQuestionIntent = /[?？]$/.test(text) || PENDING_QUESTION_INTENTS.some((term) => text.indexOf(term) > -1)
   if (!hasQuestionIntent) {
-    return { valid: false, text, message: '请写成完整问句' }
+    return { valid: false, text, reason: 'missing_question_intent', message: '像提问一样写会更好收录' }
   }
   return { valid: true, text, message: '可以提交' }
 }
@@ -1198,6 +1261,7 @@ module.exports = {
   getQuestionById,
   hasQuestionResult,
   getAvailableQuestions,
+  getFallbackQuestions,
   getDefaultQuestionId,
   getDailyQuestionId,
   getTodayQuestionResult,

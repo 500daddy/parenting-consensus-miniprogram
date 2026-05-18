@@ -8,6 +8,7 @@ Page({
     suggestions: [],
     history: [],
     showBackToTop: false,
+    submitTip: null,
     sectionTitle: '推荐问题',
     sectionHint: '按热度排序'
   },
@@ -25,7 +26,7 @@ Page({
 
   onInput(event) {
     const keyword = event.detail.value
-    this.setData({ keyword })
+    this.setData({ keyword, submitTip: null })
     this.updateSuggestions(keyword)
   },
 
@@ -97,11 +98,49 @@ Page({
     const keyword = (this.data.keyword || '').trim()
     const validation = service.validatePendingQuestion(keyword)
     if (!validation.valid) {
-      wx.showToast({ title: validation.message, icon: 'none' })
+      this.setData({ submitTip: this.buildSubmitTip(validation) })
       return
     }
     service.addPendingQuestion(validation.text, 'search_empty')
+    this.setData({ submitTip: null })
     wx.showToast({ title: '已加入待补充问题池', icon: 'none' })
+  },
+
+  buildSubmitTip(validation) {
+    const text = validation.text || (this.data.keyword || '').trim()
+    if (validation.reason === 'missing_parenting_term') {
+      return {
+        title: '再补一个宝宝场景就可以提交',
+        text: '我们还没识别到这是育儿问题。可以加上“宝宝/孩子/小朋友”，例如：小朋友多大可以穿拖鞋？',
+        actionText: text && text.indexOf('宝宝') !== 0 && text.indexOf('孩子') !== 0 && text.indexOf('小朋友') !== 0 ? '帮我补成宝宝问题' : ''
+      }
+    }
+    if (validation.reason === 'missing_question_intent') {
+      return {
+        title: '写成一句完整提问更容易补充',
+        text: '可以加上“怎么办/能不能/多大/什么时候”等问法，例如：宝宝夜里频繁醒怎么办？',
+        actionText: text && !/[?？]$/.test(text) ? '加上问号' : ''
+      }
+    }
+    return {
+      title: validation.message || '这个问题还需要再补充一下',
+      text: '请尽量写清楚宝宝场景和想问的点，例如：宝宝夜里频繁醒怎么办？',
+      actionText: ''
+    }
+  },
+
+  applySubmitTipAction() {
+    const tip = this.data.submitTip
+    const text = (this.data.keyword || '').trim()
+    if (!tip || !text) return
+    let nextText = text
+    if (tip.actionText === '帮我补成宝宝问题') {
+      nextText = `宝宝${text}`
+    } else if (tip.actionText === '加上问号') {
+      nextText = `${text}？`
+    }
+    this.setData({ keyword: nextText, submitTip: null })
+    this.updateSuggestions(nextText)
   },
 
   updateSuggestions(keyword) {

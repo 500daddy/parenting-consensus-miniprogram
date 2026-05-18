@@ -274,6 +274,43 @@
   font-weight: 800;
 }
 
+.submit-tip {
+  margin-top: 18rpx;
+  padding: 18rpx;
+  border: 2rpx solid #f1d8b8;
+  border-radius: 16rpx;
+  background: #fff8ec;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.48);
+}
+
+.submit-tip-title {
+  color: #6f4b22;
+  font-size: 25rpx;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.submit-tip-text {
+  margin-top: 8rpx;
+  color: #8a7560;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
+.submit-tip-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46rpx;
+  margin-top: 12rpx;
+  padding: 0 18rpx;
+  border-radius: 999rpx;
+  background: #eaf6df;
+  color: #4f8a43;
+  font-size: 23rpx;
+  font-weight: 800;
+}
+
 .back-top-btn {
   position: fixed;
   right: 30rpx;

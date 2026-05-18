@@ -227,7 +227,7 @@ Page({
         keyword,
         noResult: true,
         result: null,
-        fallbackQuestions: service.getAvailableQuestions().slice(0, 4)
+        fallbackQuestions: service.getFallbackQuestions(keyword)
       })
       return
     }
@@ -322,7 +322,7 @@ Page({
     const keyword = (this.data.keyword || '').trim()
     const validation = service.validatePendingQuestion(keyword)
     if (!validation.valid) {
-      wx.showToast({ title: validation.message, icon: 'none' })
+      wx.showToast({ title: validation.message || '问题再补充一下', icon: 'none' })
       return
     }
     service.addPendingQuestion(validation.text, 'result_empty')

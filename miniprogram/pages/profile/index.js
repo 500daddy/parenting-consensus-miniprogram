@@ -329,7 +329,7 @@ Page({
   savePendingQuestion() {
     const validation = service.validatePendingQuestion(this.data.pendingQuestionDraft)
     if (!validation.valid) {
-      wx.showToast({ title: validation.message, icon: 'none' })
+      wx.showToast({ title: validation.message || '问题再补充一下', icon: 'none' })
       return
     }
     service.addPendingQuestion(validation.text, 'profile')
