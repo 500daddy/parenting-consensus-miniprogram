@@ -1,0 +1,32 @@
+name: Parenting content question
+description: Suggest or correct a parenting question, glossary term, risk reminder, or source note.
+title: "[Content]: "
+labels: ["content"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Parenting question
+      description: What question should be added or corrected?
+      placeholder: 例如：宝宝发烧伴随拉肚子怎么办？
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Age, scenario, symptoms, or conditions where this applies.
+  - type: textarea
+    id: risk
+    attributes:
+      label: Risk boundary
+      description: When should caregivers seek offline medical care first?
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Please include reviewable links or references when possible.
+    validations:
+      required: true
