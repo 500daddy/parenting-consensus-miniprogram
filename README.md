@@ -1,6 +1,6 @@
 # 养娃新手村
 
-> 养娃路上，先来村里问问。
+> 记录一个全职爸爸，自学vibe coding之路。
 
 [English](./README.en.md) · [开源发布方案](./docs/open-source-launch-plan.md) · [贡献指南](./CONTRIBUTING.md) · [安全与健康内容边界](./SECURITY.md)
 
